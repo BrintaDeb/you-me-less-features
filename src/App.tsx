@@ -71,9 +71,10 @@ export function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeFilmStory, setActiveFilmStory] = useState<WeddingStory | null>(null);
 
-  // Smooth momentum scrolling (auto-paused during modals, mobile drawer, or admin operations)
+  // Smooth momentum scrolling (disabled on functional portals like admin and client-lounge for pure native scroll; auto-paused during modals/drawer)
   useSmoothScroll({
-    isPaused: !!activeFilmStory || isMobileMenuOpen || currentView === 'admin'
+    enabled: currentView !== 'admin' && currentView !== 'client-lounge',
+    isPaused: !!activeFilmStory || isMobileMenuOpen
   });
 
   // Native View Transition Helper

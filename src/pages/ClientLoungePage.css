@@ -9,6 +9,8 @@
   background-color: var(--bg-primary);
   color: var(--text-primary);
   position: relative;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 /* ==========================================================================
@@ -24,7 +26,9 @@
   padding-left: env(safe-area-inset-left, 0px);
   padding-right: env(safe-area-inset-right, 0px);
   position: relative;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
+  min-height: calc(100vh - var(--nav-height));
 }
 
 .lounge-auth-bg {

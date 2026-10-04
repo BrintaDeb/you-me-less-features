@@ -39,8 +39,10 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
+/* When Lenis is paused, do not force overflow: hidden on html root.
+   Modals handle their own body overflow lock explicitly. */
 .lenis.lenis-stopped {
-  overflow: hidden;
+  /* Native document scroll preserved */
 }
 
 .lenis.lenis-scrolling iframe {

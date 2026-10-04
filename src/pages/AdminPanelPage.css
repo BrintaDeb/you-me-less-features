@@ -6,6 +6,8 @@
   color: #EDE8E2;
   padding-top: var(--nav-height);
   font-family: var(--font-sans);
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 /* 1. AUTH SCREEN */
@@ -15,6 +17,9 @@
   justify-content: center;
   padding-top: calc(var(--nav-height) + 60px);
   padding-bottom: 80px;
+  overflow-x: clip;
+  overflow-y: visible;
+  min-height: calc(100vh - var(--nav-height));
 }
 
 .admin-auth-card {

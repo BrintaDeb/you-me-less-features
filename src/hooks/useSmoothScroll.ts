@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 
 interface UseSmoothScrollOptions {
+  enabled?: boolean;
   isPaused?: boolean;
 }
 
@@ -23,7 +24,7 @@ export function smoothScrollTo(
 
   const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
 
-  if (lenis) {
+  if (lenis && !lenis.isStopped) {
     if (typeof target === 'number') {
       lenis.scrollTo(target, {
         duration: options?.immediate ? 0 : (options?.duration ?? 1.15),
@@ -57,7 +58,7 @@ export function smoothScrollTo(
     }
   }
 
-  // Fallback for touchscreens / reduced motion
+  // Fallback for touchscreens / reduced motion / disabled Lenis (native browser scroll)
   const behavior: ScrollBehavior = options?.immediate ? 'auto' : 'smooth';
 
   if (typeof target === 'number') {
@@ -74,10 +75,25 @@ export function smoothScrollTo(
   }
 }
 
-export function useSmoothScroll({ isPaused = false }: UseSmoothScrollOptions = {}) {
+export function useSmoothScroll({ enabled = true, isPaused = false }: UseSmoothScrollOptions = {}) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // If smooth scrolling is disabled for this route/view, ensure any prior Lenis instance is fully torn down
+    if (!enabled) {
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+      }
+      if (typeof window !== 'undefined') {
+        delete (window as unknown as { __lenis?: Lenis }).__lenis;
+        document.documentElement.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped', 'lenis-scrolling');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      }
+      return;
+    }
+
     // Only enable Lenis momentum scroll on devices with fine pointer (mouse/trackpad), not touchscreens
     const hasFinePointer = typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches;
     const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -110,6 +126,18 @@ export function useSmoothScroll({ isPaused = false }: UseSmoothScrollOptions = {
     }
     rafId = requestAnimationFrame(raf);
 
+    // Dynamic content ResizeObserver to update Lenis limits on layout shifts/image loads
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && document.body) {
+      resizeObserver = new ResizeObserver(() => {
+        lenis.resize();
+      });
+      resizeObserver.observe(document.body);
+      if (document.documentElement) {
+        resizeObserver.observe(document.documentElement);
+      }
+    }
+
     // Global in-page anchor link handler (smooth gliding without layout conflicts)
     const handleAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a[href^="#"]');
@@ -128,25 +156,31 @@ export function useSmoothScroll({ isPaused = false }: UseSmoothScrollOptions = {
 
     return () => {
       document.removeEventListener('click', handleAnchorClick);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
       if (typeof window !== 'undefined') {
         delete (window as unknown as { __lenis?: Lenis }).__lenis;
+        document.documentElement.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped', 'lenis-scrolling');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
       }
     };
-  }, []);
+  }, [enabled]);
 
   // Handle modal pausing/resuming
   useEffect(() => {
-    if (!lenisRef.current) return;
+    if (!lenisRef.current || !enabled) return;
 
     if (isPaused) {
       lenisRef.current.stop();
     } else {
       lenisRef.current.start();
     }
-  }, [isPaused]);
+  }, [enabled, isPaused]);
 
   return lenisRef;
 }
