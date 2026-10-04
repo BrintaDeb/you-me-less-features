@@ -147,53 +147,6 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Decorative Golden Heart Seal on Bottom Edge ──────────────────────── */
-.deckle-heart-seal {
-  position: absolute;
-  bottom: -15px;
-  left: 62%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #FAF5EE 0%, #EAE0CC 100%);
-  border: 1px dashed rgba(184, 134, 11, 0.75);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.25), 
-    0 0 10px rgba(212, 175, 55, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 12;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-}
-
-.deckle-heart-seal:hover {
-  transform: translateX(-50%) scale(1.15);
-  box-shadow: 
-    0 6px 16px rgba(0, 0, 0, 0.35), 
-    0 0 14px rgba(212, 175, 55, 0.6);
-}
-
-.deckle-heart-seal-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #891212;
-  animation: pulseHeart 2.5s ease-in-out infinite;
-}
-
-@keyframes pulseHeart {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.12);
-  }
-}
-
 /* ── Mobile Viewport Adaptations ─────────────────────────────────────── */
 @media (max-width: 768px) {
   .deckle-banner-wrapper {
@@ -209,14 +162,5 @@
   .deckle-quote-author {
     font-size: 0.68rem;
     letter-spacing: 0.18em;
-  }
-  .deckle-heart-seal {
-    bottom: -13px;
-    width: 26px;
-    height: 26px;
-  }
-  .deckle-heart-seal-inner svg {
-    width: 12px;
-    height: 12px;
   }
 }

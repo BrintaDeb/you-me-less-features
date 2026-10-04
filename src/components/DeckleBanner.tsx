@@ -8,7 +8,6 @@ interface DeckleBannerProps {
   title?: string;
   className?: string;
   variant?: 'crimson' | 'charcoal';
-  showSeal?: boolean;
 }
 
 export const DeckleBanner: React.FC<DeckleBannerProps> = ({
@@ -17,8 +16,7 @@ export const DeckleBanner: React.FC<DeckleBannerProps> = ({
   prefix,
   title,
   className = '',
-  variant = 'crimson',
-  showSeal = true
+  variant = 'crimson'
 }) => {
   return (
     <div className={`deckle-banner-wrapper ${variant} ${className}`} aria-hidden={!title}>
@@ -62,17 +60,6 @@ export const DeckleBanner: React.FC<DeckleBannerProps> = ({
         >
           <path d="M0,0 L1440,0 C1320,34 1200,16 1080,28 C960,42 840,22 720,32 C600,40 480,16 360,26 C240,36 120,18 0,32 Z" />
         </svg>
-
-        {/* Decorative Golden Heart Seal on bottom wave edge */}
-        {showSeal && (
-          <div className="deckle-heart-seal" aria-hidden="true" title="Crafted with Love by YOU & ME">
-            <div className="deckle-heart-seal-inner">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
