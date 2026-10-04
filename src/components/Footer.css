@@ -165,6 +165,24 @@
   color: var(--text-subtle);
 }
 
+.footer-attribution-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(212, 175, 55, 0.45);
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+.footer-attribution-link:hover {
+  color: var(--accent-gold);
+  text-decoration-color: var(--accent-gold);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .footer-attribution-link:hover {
+  color: var(--gm-wine, #8A1212);
+  text-decoration-color: var(--gm-wine, #8A1212);
+}
+
 @media (max-width: 960px) {
   .footer-top {
     grid-template-columns: 1fr 1fr;

@@ -169,8 +169,28 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="footer-bottom">
           <div className="footer-bottom-left">
             <p>© {new Date().getFullYear()} by YOU &amp; ME. All rights reserved.</p>
-            <p className="footer-attribution">Affiliated by Brand Project</p>
-            <p className="footer-attribution">Designed by Brinta</p>
+            <p className="footer-attribution">
+              Affiliated by{' '}
+              <a
+                href={businessInfo.affiliatedBy.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-attribution-link"
+              >
+                {businessInfo.affiliatedBy.name}
+              </a>
+            </p>
+            <p className="footer-attribution">
+              Designed by{' '}
+              <a
+                href={businessInfo.designedBy.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-attribution-link"
+              >
+                {businessInfo.designedBy.name}
+              </a>
+            </p>
           </div>
 
           <div className="footer-bottom-right">

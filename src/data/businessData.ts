@@ -185,8 +185,14 @@ export const businessInfo = {
     ],
     highlight: "Documentary-style wedding photography, genuine candid emotion, and timeless heirloom portraits."
   },
-  affiliatedBy: "Affiliated by Brand Project",
-  designedBy: "Designed by Brinta",
+  affiliatedBy: {
+    name: "Brand Project",
+    url: "https://brandproject.in/"
+  },
+  designedBy: {
+    name: "Brinta",
+    url: "https://brinta-deb-portfolio.onrender.com"
+  },
   attribution: "Affiliated by Brand Project\nDesigned by Brinta"
 };
 
