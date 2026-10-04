@@ -10,7 +10,6 @@ import { FaqSection } from './components/FaqSection';
 import { EnquirySection } from './components/EnquirySection';
 import { MarqueeRibbon } from './components/MarqueeRibbon';
 import { DeckleBanner } from './components/DeckleBanner';
-import { CelebrationsSection } from './components/CelebrationsSection';
 import { couplesData, getStoryBySlug } from './data/couplesData';
 import type { WeddingStory } from './data/couplesData';
 import { audioAtmosphere } from './utils/audioAtmosphere';
@@ -26,7 +25,6 @@ const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m 
 const AccessibilityPage = lazy(() => import('./pages/AccessibilityPage').then(m => ({ default: m.AccessibilityPage })));
 const ClientLoungePage = lazy(() => import('./pages/ClientLoungePage').then(m => ({ default: m.ClientLoungePage })));
 const AdminPanelPage = lazy(() => import('./pages/AdminPanelPage').then(m => ({ default: m.AdminPanelPage })));
-const CelebrationsPage = lazy(() => import('./pages/CelebrationsPage').then(m => ({ default: m.CelebrationsPage })));
 const VideoModal = lazy(() => import('./components/VideoModal').then(m => ({ default: m.VideoModal })));
 
 const RouteLoadingFallback = () => (
@@ -68,7 +66,7 @@ const RouteLoadingFallback = () => (
 );
 
 export function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'portfolio' | 'story' | 'about' | 'privacy' | 'accessibility' | 'client-lounge' | 'admin' | 'celebrations'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'portfolio' | 'story' | 'about' | 'privacy' | 'accessibility' | 'client-lounge' | 'admin'>('home');
   const [selectedStory, setSelectedStory] = useState<WeddingStory | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeFilmStory, setActiveFilmStory] = useState<WeddingStory | null>(null);
@@ -113,7 +111,7 @@ export function App() {
         setCurrentView('about');
         setSelectedStory(null);
       } else if (pathname === '/celebrations' || pathname === '/packages') {
-        setCurrentView('celebrations');
+        setCurrentView('home');
         setSelectedStory(null);
       } else if (pathname === '/client-lounge') {
         setCurrentView('client-lounge');
@@ -167,8 +165,6 @@ export function App() {
       document.title = `${selectedStory.title} — Wedding Story | YOU & ME`;
     } else if (currentView === 'portfolio') {
       document.title = 'Portfolio & Archive | YOU & ME Wedding Photography';
-    } else if (currentView === 'celebrations') {
-      document.title = 'Celebrations & Packages | YOU & ME Wedding Photography';
     } else if (currentView === 'about') {
       document.title = 'About Us & Team | YOU & ME Wedding Photography';
     } else if (currentView === 'client-lounge') {
@@ -197,10 +193,7 @@ export function App() {
         setCurrentView('portfolio');
         setSelectedStory(null);
         window.history.pushState(null, '', '/portfolio');
-      } else if (view === 'celebrations' || view === 'packages') {
-        setCurrentView('celebrations');
-        setSelectedStory(null);
-        window.history.pushState(null, '', '/celebrations');
+
       } else if (view === 'about') {
         setCurrentView('about');
         setSelectedStory(null);
@@ -282,8 +275,7 @@ export function App() {
             author="YOU & ME Atelier"
           />
 
-          {/* Golden Moment Signature: Pick Your Celebration & Investment Packages */}
-          <CelebrationsSection onViewAllCelebrations={() => navigateTo('celebrations')} />
+
 
           {/* Scene 4 — Signature Portfolio Showcase */}
           <PortfolioShowcase
@@ -311,9 +303,7 @@ export function App() {
           />
         )}
 
-        {currentView === 'celebrations' && (
-          <CelebrationsPage />
-        )}
+
 
         {currentView === 'story' && selectedStory && (
           <StoryGalleryPage

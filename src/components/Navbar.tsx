@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, House, Film, Heart, Info, Key, Calendar } from 'lucide-react';
+import { Menu, X, House, Film, Info, Key, Calendar } from 'lucide-react';
 import { AudioToggle } from './AudioToggle';
 import { ThemeToggle } from './ThemeToggle';
 import { businessInfo } from '../data/businessData';
@@ -38,11 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         smoothScrollTo(0);
         return;
       }
-      if (target === 'celebrations' || target === 'packages') {
-        onNavigate('celebrations');
-        smoothScrollTo(0);
-        return;
-      }
+
       if (target === 'about') {
         onNavigate('about');
         smoothScrollTo(0);
@@ -125,18 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </a>
             </li>
 
-            <li>
-              <a
-                href="/celebrations"
-                className={`pill-nav-item ${currentView === 'celebrations' ? 'active' : ''}`}
-                onClick={(e) => handleLinkClick(e, 'celebrations')}
-              >
-                <div className="pill-icon-badge">
-                  <Heart size={15} />
-                </div>
-                <span className="pill-nav-label">Celebrations</span>
-              </a>
-            </li>
+
 
             <li>
               <a

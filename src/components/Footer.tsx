@@ -86,11 +86,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   About Us
                 </a>
               </li>
-              <li>
-                <a href="/celebrations" onClick={(e) => handleLinkClick(e, 'celebrations')}>
-                  Celebrations &amp; Pricing
-                </a>
-              </li>
+
               <li>
                 <a href="/client-lounge" onClick={(e) => handleLinkClick(e, 'client-lounge')}>
                   VIP Client Lounge

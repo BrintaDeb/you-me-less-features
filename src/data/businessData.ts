@@ -246,7 +246,7 @@ export const teamMembers: TeamMember[] = [
       },
       bookingPolicy: {
         title: "Collective Atelier Booking",
-        description: "Motion storytelling is seamlessly integrated into your wedding package. All cinema commissions feature unified direction with our photography crew.",
+        description: "Motion storytelling is seamlessly integrated into your wedding coverage. All cinema commissions feature unified direction with our photography crew.",
         status: "Integral Lead on All Cinema Commissions"
       }
     }
@@ -329,7 +329,7 @@ export const faqs: FAQItem[] = [
   {
     id: "faq-3",
     question: "Do you work with a second shooter?",
-    answer: "Most of our packages include a second photographer to ensure we capture every angle and moment of your day."
+    answer: "Our wedding commissions include a second photographer to ensure we capture every angle and moment of your day."
   },
   {
     id: "faq-4",
@@ -354,6 +354,6 @@ export const faqs: FAQItem[] = [
   {
     id: "faq-8",
     question: "Do we get printing rights?",
-    answer: "Yes, all our packages include a print release, giving you the freedom to print your photos for personal use."
+    answer: "Yes, all our commissions include a print release, giving you the freedom to print your photos for personal use."
   }
 ];

@@ -709,10 +709,10 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectStory }) =
               BOOK YOUR DATE <ArrowRight size={15} />
             </a>
             <a
-              href="/#packages"
+              href="/#contact"
               className="gm-cta-btn-secondary"
             >
-              VIEW PACKAGES
+              GET IN TOUCH
             </a>
           </div>
         </div>

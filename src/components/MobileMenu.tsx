@@ -99,17 +99,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onNavig
             Full Portfolio <ArrowRight size={20} opacity={0.6} />
           </a>
         </li>
-        <li className="mobile-nav-item">
-          <a
-            href="/celebrations"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('celebrations');
-            }}
-          >
-            Celebrations &amp; Packages <ArrowRight size={20} opacity={0.6} />
-          </a>
-        </li>
+
         <li className="mobile-nav-item">
           <a
             href="#films"
