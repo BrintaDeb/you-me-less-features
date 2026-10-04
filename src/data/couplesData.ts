@@ -37,7 +37,7 @@ export const couplesData: WeddingStory[] = [
     "isFeatured": true,
     "videoUrl": "/assets/videos/urmi_jasraj.mp4",
     "videoPoster": "/assets/posters/urmi_jasraj.jpg",
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "jasraj-urmi-1",
@@ -188,12 +188,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_13027171867b4ad992db16fa4f2f1477~mv2.jpg",
         "alt": "Jasraj & Urmi wedding photography frame 25",
         "caption": "Jasraj & Urmi — Frame 25"
-      },
-      {
-        "id": "jasraj-urmi-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Jasraj & Urmi wedding photography frame 26",
-        "caption": "Jasraj & Urmi — Frame 26"
       }
     ]
   },
@@ -209,7 +203,7 @@ export const couplesData: WeddingStory[] = [
     "isFeatured": true,
     "videoUrl": "/assets/videos/avik_binita.mp4",
     "videoPoster": "/assets/posters/avik_binita.jpg",
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "avik-binita-1",
@@ -360,12 +354,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_53ae2b641d3945bc858367758af86d22~mv2.jpg",
         "alt": "Avik & Binita wedding photography frame 25",
         "caption": "Avik & Binita — Frame 25"
-      },
-      {
-        "id": "avik-binita-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Avik & Binita wedding photography frame 26",
-        "caption": "Avik & Binita — Frame 26"
       }
     ]
   },
@@ -379,7 +367,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_93a1874f42494eb78aac00dbcf896ff3~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_dc686bb4c36145d19ae72e83d26d2062~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "arnab-shirsha-1",
@@ -536,12 +524,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_e4e130114ab143d7ac148b5ea2e93197~mv2.jpg",
         "alt": "Arnab & Shirsha wedding photography frame 26",
         "caption": "Arnab & Shirsha — Frame 26"
-      },
-      {
-        "id": "arnab-shirsha-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Arnab & Shirsha wedding photography frame 27",
-        "caption": "Arnab & Shirsha — Frame 27"
       }
     ]
   },
@@ -555,7 +537,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_cfd2f03dff284098aff0fda2dd499eb0~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_3d7e37d698ee4dc08147d5d7efad3eff~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "pranjit-debasrita-1",
@@ -712,12 +694,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_4cad8a993d684667b1a30fb5b6e24521~mv2.jpg",
         "alt": "Pranjit & Debasrita wedding photography frame 26",
         "caption": "Pranjit & Debasrita — Frame 26"
-      },
-      {
-        "id": "pranjit-debasrita-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Pranjit & Debasrita wedding photography frame 27",
-        "caption": "Pranjit & Debasrita — Frame 27"
       }
     ]
   },
@@ -733,7 +709,7 @@ export const couplesData: WeddingStory[] = [
     "isFeatured": true,
     "videoUrl": "/assets/videos/ankita_subhadeep.mp4",
     "videoPoster": "/assets/posters/ankita_subhadeep.jpg",
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "subhadeep-ankita-1",
@@ -884,12 +860,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_63ba68ba2438483680c55bdd4c6cc8b6~mv2.jpg",
         "alt": "Subhadeep & Ankita wedding photography frame 25",
         "caption": "Subhadeep & Ankita — Frame 25"
-      },
-      {
-        "id": "subhadeep-ankita-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Subhadeep & Ankita wedding photography frame 26",
-        "caption": "Subhadeep & Ankita — Frame 26"
       }
     ]
   },
@@ -903,7 +873,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_2890e126c4a4499d8b68bf77b33ca45b~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_5e0f953699a94885b500b82b1e6c4fd8~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "girish-sruti-1",
@@ -1060,12 +1030,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_1e3998d7243d415c94d0e37fd5f312e7~mv2.jpg",
         "alt": "Girish & Sruti wedding photography frame 26",
         "caption": "Girish & Sruti — Frame 26"
-      },
-      {
-        "id": "girish-sruti-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Girish & Sruti wedding photography frame 27",
-        "caption": "Girish & Sruti — Frame 27"
       }
     ]
   },
@@ -1081,7 +1045,7 @@ export const couplesData: WeddingStory[] = [
     "isFeatured": true,
     "videoUrl": "/assets/videos/suchi_hira.mp4",
     "videoPoster": "/assets/posters/suchi_hira.jpg",
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "hira-suchi-1",
@@ -1238,12 +1202,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_d2bc562b22c348d398fd2e47a87b5010~mv2.jpg",
         "alt": "Hira & Suchi wedding photography frame 26",
         "caption": "Hira & Suchi — Frame 26"
-      },
-      {
-        "id": "hira-suchi-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Hira & Suchi wedding photography frame 27",
-        "caption": "Hira & Suchi — Frame 27"
       }
     ]
   },
@@ -1259,7 +1217,7 @@ export const couplesData: WeddingStory[] = [
     "isFeatured": true,
     "videoUrl": "/assets/videos/paraj_mrinmoyee.mp4",
     "videoPoster": "/assets/posters/paraj_mrinmoyee.jpg",
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "paraj-mrinmoyee-1",
@@ -1416,12 +1374,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_391bdb3317384c79a02765ccd16ff01b~mv2.jpg",
         "alt": "Paraj & Mrinmoyee wedding photography frame 26",
         "caption": "Paraj & Mrinmoyee — Frame 26"
-      },
-      {
-        "id": "paraj-mrinmoyee-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Paraj & Mrinmoyee wedding photography frame 27",
-        "caption": "Paraj & Mrinmoyee — Frame 27"
       }
     ]
   },
@@ -1435,7 +1387,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_039ddf2f2d0847cb866718ab862dc0d8~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_687c64f0612648539f6fd93cbd9b5fb2~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "debotpal-souvikta-1",
@@ -1586,12 +1538,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_11707df2a08c40ed9152ac3f93138f5f~mv2.jpg",
         "alt": "Debotpal & Souvikta wedding photography frame 25",
         "caption": "Debotpal & Souvikta — Frame 25"
-      },
-      {
-        "id": "debotpal-souvikta-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Debotpal & Souvikta wedding photography frame 26",
-        "caption": "Debotpal & Souvikta — Frame 26"
       }
     ]
   },
@@ -1605,7 +1551,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_eed76c2f25514c00a130716751d71550~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_6ce10cc3db244736b8997d4af93a3110~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "nitin-biswarupa-1",
@@ -1762,12 +1708,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_60a08e2889f2403e989db447e78e7806~mv2.jpg",
         "alt": "Nitin & Biswarupa wedding photography frame 26",
         "caption": "Nitin & Biswarupa — Frame 26"
-      },
-      {
-        "id": "nitin-biswarupa-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Nitin & Biswarupa wedding photography frame 27",
-        "caption": "Nitin & Biswarupa — Frame 27"
       }
     ]
   },
@@ -1781,7 +1721,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_a5c442af4ee84d86b472f078c628b328~mv2.jpeg",
     "heroImage": "https://static.wixstatic.com/media/62230b_fdf89ad9bb0d4d4facdf1c5aedab209c~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "debarshi-paramita-1",
@@ -1932,12 +1872,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_dcf98bbf7fcf48969e1142cbe87f78a2~mv2.jpg",
         "alt": "Debarshi & Paramita wedding photography frame 25",
         "caption": "Debarshi & Paramita — Frame 25"
-      },
-      {
-        "id": "debarshi-paramita-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Debarshi & Paramita wedding photography frame 26",
-        "caption": "Debarshi & Paramita — Frame 26"
       }
     ]
   },
@@ -1951,7 +1885,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_2aa4f2b0ab7f4b73bbeabdd4682e0969~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_88033c8d7b9f4c35a836a396002bf18d~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "salem-ambalika-1",
@@ -2102,12 +2036,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_ded6579a990b4115a13e9e85bfb53e90~mv2.jpg",
         "alt": "Salem & Ambalika wedding photography frame 25",
         "caption": "Salem & Ambalika — Frame 25"
-      },
-      {
-        "id": "salem-ambalika-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Salem & Ambalika wedding photography frame 26",
-        "caption": "Salem & Ambalika — Frame 26"
       }
     ]
   },
@@ -2121,7 +2049,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_4a3c9d9d3cd04862936e4058de5d8630~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_6486e844337347a2be66dc2956f46b7a~mv2.jpeg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "rohan-satarupa-1",
@@ -2278,12 +2206,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_6e91744fbaa44b49a1a87ef2ff0c7f01~mv2.jpg",
         "alt": "Rohan & Satarupa wedding photography frame 26",
         "caption": "Rohan & Satarupa — Frame 26"
-      },
-      {
-        "id": "rohan-satarupa-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Rohan & Satarupa wedding photography frame 27",
-        "caption": "Rohan & Satarupa — Frame 27"
       }
     ]
   },
@@ -2297,7 +2219,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_c90c4f3fa4aa4fc5905d8417bcad03b6~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_4f6a985a6e814452b2360953eca3bdc1~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "abir-poushali-1",
@@ -2448,12 +2370,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_133f9d19b6cf4571befbb75cdcecb4fb~mv2.jpg",
         "alt": "Abir & Poushali wedding photography frame 25",
         "caption": "Abir & Poushali — Frame 25"
-      },
-      {
-        "id": "abir-poushali-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Abir & Poushali wedding photography frame 26",
-        "caption": "Abir & Poushali — Frame 26"
       }
     ]
   },
@@ -2467,7 +2383,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_1a2f219d4e8e49a9b4d499e5e159b3f7~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_04f23ae74235453e9932da9b98baa807~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 24,
+    "imageCount": 23,
     "images": [
       {
         "id": "aneek-debolina-1",
@@ -2606,12 +2522,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_9df91c4fbffb4b33b6772bc4f194e96c~mv2.jpg",
         "alt": "Aneek & Debolina wedding photography frame 23",
         "caption": "Aneek & Debolina — Frame 23"
-      },
-      {
-        "id": "aneek-debolina-24",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Aneek & Debolina wedding photography frame 24",
-        "caption": "Aneek & Debolina — Frame 24"
       }
     ]
   },
@@ -2625,7 +2535,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_36c626817ccc4004908e39ea9f6d7aed~mv2.jpeg",
     "heroImage": "https://static.wixstatic.com/media/62230b_3ba42bacf5f54fd6b5b3faac13b44831~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "mukut-sanghita-1",
@@ -2782,12 +2692,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_9995141a2d8c433fb1cef0ca7ffdc5fd~mv2.jpg",
         "alt": "Mukut & Sanghita wedding photography frame 26",
         "caption": "Mukut & Sanghita — Frame 26"
-      },
-      {
-        "id": "mukut-sanghita-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Mukut & Sanghita wedding photography frame 27",
-        "caption": "Mukut & Sanghita — Frame 27"
       }
     ]
   },
@@ -2801,7 +2705,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_529612e2dbbe43dfa57f83974a7ebe64~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_314845a05e074316ab4ed410e1f51c84~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "rajshekhar-rinaksi-1",
@@ -2952,12 +2856,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_0de34b7f8aa64496a48b64b8b7cc791c~mv2.jpg",
         "alt": "Rajshekhar & Rinaksi wedding photography frame 25",
         "caption": "Rajshekhar & Rinaksi — Frame 25"
-      },
-      {
-        "id": "rajshekhar-rinaksi-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Rajshekhar & Rinaksi wedding photography frame 26",
-        "caption": "Rajshekhar & Rinaksi — Frame 26"
       }
     ]
   },
@@ -2971,7 +2869,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_cdd94dc0f16741ca8add96312f448b51~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_4dc7c77d42824d0493d32df264e0f21b~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "subhro-bhaswati-1",
@@ -3128,12 +3026,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_bae6ec766b774b48b2efa5cdefe20146~mv2.jpg",
         "alt": "Subhro & Bhaswati wedding photography frame 26",
         "caption": "Subhro & Bhaswati — Frame 26"
-      },
-      {
-        "id": "subhro-bhaswati-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Subhro & Bhaswati wedding photography frame 27",
-        "caption": "Subhro & Bhaswati — Frame 27"
       }
     ]
   },
@@ -3147,7 +3039,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_63ff5bee6456459b9c969d886641f6b0~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_5595eba1088844c5bfbf25b5c7afbcd6~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "deepshekhar-debomoul-1",
@@ -3298,12 +3190,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_5dd6365e6752404da1b5955fb21ee184~mv2.jpg",
         "alt": "Deepshekhar & Debomoul wedding photography frame 25",
         "caption": "Deepshekhar & Debomoul — Frame 25"
-      },
-      {
-        "id": "deepshekhar-debomoul-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Deepshekhar & Debomoul wedding photography frame 26",
-        "caption": "Deepshekhar & Debomoul — Frame 26"
       }
     ]
   },
@@ -3317,7 +3203,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_c1fe9fe76f0c426cadbdab52c870471d~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_7614f9f8be6e436684b7d8979d828e29~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 26,
+    "imageCount": 25,
     "images": [
       {
         "id": "hrituraj-ananya-1",
@@ -3468,12 +3354,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_b53081f2c1b045698eb993daaa85bc1a~mv2.jpg",
         "alt": "Hrituraj & Ananya wedding photography frame 25",
         "caption": "Hrituraj & Ananya — Frame 25"
-      },
-      {
-        "id": "hrituraj-ananya-26",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Hrituraj & Ananya wedding photography frame 26",
-        "caption": "Hrituraj & Ananya — Frame 26"
       }
     ]
   },
@@ -3487,7 +3367,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_07b927aa24ef48838319aa5495a2c392~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_ca2c629a08814b30be5fc5d5dcd432ce~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "pushpak-gracy-1",
@@ -3644,12 +3524,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_16770ae32a394603aa7b61c96c76b55b~mv2.jpg",
         "alt": "Pushpak & Gracy wedding photography frame 26",
         "caption": "Pushpak & Gracy — Frame 26"
-      },
-      {
-        "id": "pushpak-gracy-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Pushpak & Gracy wedding photography frame 27",
-        "caption": "Pushpak & Gracy — Frame 27"
       }
     ]
   },
@@ -3663,7 +3537,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_325c11cb35684fc89cf36458dcaa7244~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_d5a7cf39e608456e9a96b0eb7697823f~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "arpan-pinki-1",
@@ -3820,12 +3694,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_5eced7d7061d43f2861eb38f3ba024a0~mv2.jpg",
         "alt": "Arpan & Pinki wedding photography frame 26",
         "caption": "Arpan & Pinki — Frame 26"
-      },
-      {
-        "id": "arpan-pinki-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Arpan & Pinki wedding photography frame 27",
-        "caption": "Arpan & Pinki — Frame 27"
       }
     ]
   },
@@ -3839,7 +3707,7 @@ export const couplesData: WeddingStory[] = [
     "coverImage": "https://static.wixstatic.com/media/62230b_1da9015c1ef742ef97e5e232bc3b32de~mv2.jpg",
     "heroImage": "https://static.wixstatic.com/media/62230b_00204b54866a470c8531c031d4163c75~mv2.jpg",
     "isFeatured": false,
-    "imageCount": 27,
+    "imageCount": 26,
     "images": [
       {
         "id": "aniket-baishali-1",
@@ -3996,12 +3864,6 @@ export const couplesData: WeddingStory[] = [
         "url": "https://static.wixstatic.com/media/62230b_6c9e7163b7584a7fbe9115360269b8a8~mv2.jpg",
         "alt": "Aniket & Baishali wedding photography frame 26",
         "caption": "Aniket & Baishali — Frame 26"
-      },
-      {
-        "id": "aniket-baishali-27",
-        "url": "https://static.wixstatic.com/media/c837a6_c3fc9f07c36b40709682844c0de11e30~mv2.png",
-        "alt": "Aniket & Baishali wedding photography frame 27",
-        "caption": "Aniket & Baishali — Frame 27"
       }
     ]
   }
