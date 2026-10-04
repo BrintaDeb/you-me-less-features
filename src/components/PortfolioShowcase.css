@@ -306,8 +306,9 @@
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-weight: 600;
-  color: var(--accent-gold-light, #e8c882);
+  font-weight: 700;
+  color: #ECC150;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .portfolio-card-badge {
@@ -373,9 +374,10 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--accent-gold-light, #e8c882);
-  font-weight: 500;
+  color: #ECC150;
+  font-weight: 600;
   font-size: 0.82rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
   transition: all 0.25s ease;
 }
 

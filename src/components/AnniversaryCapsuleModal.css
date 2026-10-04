@@ -427,10 +427,45 @@
   border-bottom-color: var(--border-subtle);
 }
 
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .capsule-eyebrow {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .vow-letter-heading {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .roadmap-title {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .item-year {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .item-gift {
+  color: var(--text-muted, #3D302A);
+  font-weight: 500;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .milestone-highlight-card {
+  background: rgba(142, 101, 35, 0.08);
+  border-color: rgba(142, 101, 35, 0.28);
+}
+
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .milestone-desc {
-  color: var(--text-secondary);
+  color: var(--text-secondary, #241B17);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .vow-letter-body {
+  color: var(--text-secondary, #241B17);
 }
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .vow-sign-off {
-  color: var(--text-muted);
+  color: var(--text-muted, #3D302A);
+  font-weight: 600;
 }

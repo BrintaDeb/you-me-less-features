@@ -209,6 +209,22 @@ button, input, select, textarea {
   text-rendering: optimizeLegibility;
 }
 
+/* Universal Input Placeholders: High contrast across both themes */
+::placeholder {
+  color: var(--text-subtle, #52423B);
+  opacity: 0.88;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) ::placeholder {
+  color: #52423B !important;
+  opacity: 0.9 !important;
+}
+
+:is([data-theme="burgundy"], [data-theme="dark"]) ::placeholder {
+  color: #B09E95 !important;
+  opacity: 0.85 !important;
+}
+
 button {
   cursor: pointer;
   border: none;

@@ -316,67 +316,72 @@
   border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .header-badge {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tier-pill-master {
+  background: rgba(142, 101, 35, 0.14);
+  color: #784B0C;
+  border-color: rgba(142, 101, 35, 0.4);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tier-pill-fast {
+  background: rgba(46, 125, 50, 0.12);
+  color: #1B5E20;
+  border-color: rgba(46, 125, 50, 0.35);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tier-pill-locked {
+  background: rgba(229, 37, 58, 0.1);
+  color: #C61025;
+  border-color: rgba(229, 37, 58, 0.3);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tier-curation-notice {
+  color: #784B0C;
+  background: rgba(142, 101, 35, 0.1);
+  border: 1px solid rgba(142, 101, 35, 0.3);
+  font-weight: 600;
+}
+
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .download-progress-container {
   background: #F4EDE2;
   border-color: var(--border-medium);
 }
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .progress-status {
-  color: #14100E;
+  color: #110D0C;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .progress-percentage {
+  color: #784B0C;
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .download-finished-banner {
+  background: rgba(46, 125, 50, 0.12);
+  border-color: rgba(46, 125, 50, 0.35);
+  color: #1B5E20;
+  font-weight: 600;
 }
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .download-tier-subtitle {
-  color: var(--text-secondary);
+  color: var(--text-secondary, #241B17);
 }
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tier-spec {
-  color: var(--text-secondary);
+  color: var(--text-secondary, #241B17);
 }
 
-.progress-info-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-}
-
-.progress-status {
-  color: #E2DDD5;
-}
-
-.progress-percentage {
-  font-weight: 600;
-  color: #D4AF37;
-}
-
-.download-progress-bar {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 9999px;
-  overflow: hidden;
-}
-
-.download-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #C8A46B, #EAC765);
-  transition: width 0.4s ease;
-  border-radius: 9999px;
-}
-
-.download-finished-banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(46, 125, 50, 0.15);
-  border: 1px solid rgba(46, 125, 50, 0.4);
-  color: #A5D6A7;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  margin-bottom: 20px;
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tier-spec strong {
+  color: var(--text-primary, #110D0C);
+  font-weight: 700;
 }
 
 /* Actions */

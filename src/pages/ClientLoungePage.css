@@ -2268,7 +2268,7 @@
   color: var(--text-muted);
 }
 
-/* White theme overrides for modals */
+/* White / Light Theme Contrast & Legibility Overrides */
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .family-share-modal,
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .zip-packaging-card {
   background: #FFFFFF;
@@ -2281,5 +2281,277 @@
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .role-pin-badge {
   background: #F4EDE2;
-  color: var(--accent-gold);
+  color: #110D0C;
+  font-weight: 700;
+  border-color: rgba(26, 20, 18, 0.22);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .family-share-header .header-badge {
+  color: var(--accent-gold-body, #784B0C);
+  background: rgba(142, 101, 35, 0.14);
+  border-color: rgba(142, 101, 35, 0.4);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .role-badge.master {
+  color: var(--accent-gold-body, #784B0C);
+  background: rgba(142, 101, 35, 0.16);
+  border-color: rgba(142, 101, 35, 0.45);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .role-desc {
+  color: #3D302A;
+  font-weight: 500;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .role-action-btn.copy-btn {
+  background: #F4EDE2;
+  border-color: rgba(26, 20, 18, 0.25);
+  color: #110D0C;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .role-action-btn.copy-btn:hover {
+  background: #8A1212;
+  border-color: #8A1212;
+  color: #FFFFFF;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .role-action-btn.whatsapp-btn {
+  background: #15803D;
+  border-color: #15803D;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .role-action-btn.whatsapp-btn:hover {
+  background: #166534;
+  border-color: #166534;
+}
+
+/* Auth Gate White Theme Overrides */
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .crest-text-top {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .crest-text-bot {
+  color: #3D302A;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .crest-crown-icon {
+  color: var(--accent-gold-body, #784B0C);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .crest-seal-ring {
+  background: radial-gradient(circle, rgba(142, 101, 35, 0.2) 0%, rgba(142, 101, 35, 0.05) 70%);
+  border-color: #8F5B12;
+  box-shadow: 0 0 20px rgba(142, 101, 35, 0.2);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-eyebrow {
+  color: #8A1212;
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .segmented-pin-box {
+  color: #110D0C !important;
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-remember-checkbox {
+  color: #241B17;
+  font-weight: 500;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-biometric-btn {
+  background: #FAF7F2;
+  border-color: rgba(26, 20, 18, 0.25);
+  color: #110D0C;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-quick-demo-btn {
+  background: rgba(142, 101, 35, 0.1);
+  border-color: rgba(142, 101, 35, 0.5);
+  color: #784B0C;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-tier-hints {
+  background: #FAF7F2;
+  border-color: rgba(26, 20, 18, 0.18);
+  color: #3D302A;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-tier-hints strong {
+  color: #784B0C;
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-encryption-badge {
+  background: #FAF7F2;
+  border-color: rgba(26, 20, 18, 0.2);
+  color: #241B17;
+  font-weight: 500;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-back-link {
+  color: #241B17;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .auth-back-link:hover {
+  color: #8A1212;
+}
+
+/* Hero & Dashboard White Theme Overrides */
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .suite-tag {
+  color: var(--accent-gold-body, #784B0C);
+  background: rgba(142, 101, 35, 0.14);
+  border-color: rgba(142, 101, 35, 0.4);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .suite-tag.role-couple {
+  color: var(--accent-gold-body, #784B0C);
+  background: rgba(142, 101, 35, 0.16);
+  border-color: rgba(142, 101, 35, 0.45);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .couple-heraldic-seal {
+  color: var(--accent-gold-body, #784B0C);
+  border-color: #8F5B12;
+  background: rgba(142, 101, 35, 0.14);
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(142, 101, 35, 0.2);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .meta-chip.gold-badge {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .stat-label {
+  color: #3D302A;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .download-cta-pill,
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .share-cta-pill {
+  background: rgba(142, 101, 35, 0.1);
+  border-color: rgba(142, 101, 35, 0.35);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .download-cta-pill .cta-title,
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .share-cta-pill .cta-title {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .download-cta-pill .stat-label,
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .share-cta-pill .stat-label {
+  color: #3D302A;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .hero-anniversary-card .anniversary-card-badge {
+  color: var(--accent-gold-body, #784B0C);
+  background: rgba(142, 101, 35, 0.14);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .hero-anniversary-card .anniversary-card-desc {
+  color: #3D302A;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .hero-anniversary-card .anniversary-card-action {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+/* Cinema Pavilion White Theme */
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cinema-tag {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+/* Curation Tracker White Theme */
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tracker-eyebrow {
+  color: var(--accent-gold-body, #784B0C);
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tracker-headline .dim {
+  color: #3D302A;
+  font-weight: 500;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .tracker-footer-hint {
+  color: #3D302A;
+  font-weight: 500;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .action-pill-btn {
+  background: #FFFFFF;
+  border-color: rgba(26, 20, 18, 0.24);
+  color: #110D0C;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(45, 30, 22, 0.05);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .action-pill-btn:hover {
+  background: #8A1212;
+  border-color: #8A1212;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(138, 18, 18, 0.2);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .action-pill-btn.gold-highlight-btn {
+  background: rgba(142, 101, 35, 0.12);
+  border-color: #8F5B12;
+  color: #5C3806;
+  font-weight: 700;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .action-pill-btn.gold-highlight-btn:hover {
+  background: #8F5B12;
+  border-color: #8F5B12;
+  color: #FFFFFF;
+}
+
+/* Workbench White Theme */
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .workbench-search-input {
+  background: #FFFFFF;
+  border-color: rgba(26, 20, 18, 0.24);
+  color: #110D0C;
+  font-weight: 500;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .workbench-search-input::placeholder {
+  color: #52423B;
+  opacity: 1;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .chapter-chip {
+  background: #FFFFFF;
+  border-color: rgba(26, 20, 18, 0.22);
+  color: #241B17;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .chapter-chip:hover {
+  border-color: #8A1212;
+  color: #8A1212;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .chapter-chip.active {
+  background: #8A1212;
+  border-color: #8A1212;
+  color: #FFFFFF;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(138, 18, 18, 0.25);
 }

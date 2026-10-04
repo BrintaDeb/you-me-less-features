@@ -1,4 +1,8 @@
 .video-modal-overlay {
+  --text-primary: #FAF2EB;
+  --text-secondary: #EADBD3;
+  --text-muted: #D1BDB4;
+  --border-medium: rgba(250, 242, 235, 0.28);
   position: fixed;
   inset: 0;
   background: rgba(5, 4, 3, 0.94);
@@ -13,6 +17,7 @@
   height: 100vh;
   height: 100svh;
   height: 100dvh;
+  color: #FAF2EB;
 }
 
 .video-modal-header {
@@ -27,25 +32,27 @@
 .video-modal-title {
   font-family: var(--font-serif);
   font-size: 1.4rem;
-  color: var(--text-primary);
+  color: #FAF2EB !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .video-modal-close-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-medium);
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 50%;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-primary);
+  color: #FFFFFF !important;
   transition: all var(--transition-fast);
+  cursor: pointer;
 }
 .video-modal-close-btn:hover {
-  background: var(--accent-wine);
-  border-color: var(--accent-wine-light);
-  color: #fff;
+  background: #8A1212 !important;
+  border-color: #A51B28 !important;
+  color: #FFFFFF !important;
 }
 
 .video-modal-container {

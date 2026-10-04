@@ -1,4 +1,8 @@
 .lightbox-overlay {
+  --text-primary: #FAF2EB;
+  --text-secondary: #EADBD3;
+  --text-muted: #D1BDB4;
+  --border-medium: rgba(250, 242, 235, 0.28);
   position: fixed;
   inset: 0;
   background: rgba(5, 4, 3, 0.96);
@@ -13,6 +17,7 @@
   height: 100vh;
   height: 100svh;
   height: 100dvh;
+  color: #FAF2EB;
 }
 
 .lightbox-header {
@@ -28,8 +33,13 @@
 
 .lightbox-counter {
   font-size: 0.9rem;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: #EADBD3 !important;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .lightbox-header-actions {
@@ -43,8 +53,8 @@
   align-items: center;
   gap: 8px;
   background: rgba(26, 12, 16, 0.85);
-  border: 1px solid rgba(212, 175, 55, 0.55);
-  color: #FFFFFF;
+  border: 1px solid rgba(212, 175, 55, 0.65);
+  color: #FFFFFF !important;
   padding: 8px 18px;
   border-radius: 9999px;
   font-family: var(--font-sans);
@@ -59,9 +69,9 @@
 }
 
 .lightbox-download-btn:hover {
-  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
-  color: #14100E;
-  border-color: #D4AF37;
+  background: linear-gradient(135deg, #ECC150 0%, #D4AF37 100%);
+  color: #12050A !important;
+  border-color: #ECC150;
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
 }
@@ -69,25 +79,25 @@
 .lightbox-download-btn.success {
   background: rgba(30, 80, 40, 0.85);
   border-color: #4CAF50;
-  color: #E8F5E9;
+  color: #E8F5E9 !important;
 }
 
 .lightbox-close-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-medium);
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 50%;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-primary);
+  color: #FFFFFF !important;
   transition: all var(--transition-fast);
 }
 .lightbox-close-btn:hover {
-  background: var(--accent-wine);
-  border-color: var(--accent-wine-light);
-  color: #fff;
+  background: #8A1212 !important;
+  border-color: #A51B28 !important;
+  color: #FFFFFF !important;
 }
 
 .lightbox-content {
@@ -112,31 +122,34 @@
 .lightbox-caption {
   margin-top: 16px;
   font-family: var(--font-serif);
-  font-size: 1.1rem;
-  color: var(--text-secondary);
+  font-size: 1.15rem;
+  color: #FAF2EB !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
   text-align: center;
+  font-style: italic;
+  letter-spacing: 0.01em;
 }
 
 .lightbox-nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-medium);
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 50%;
   width: 50px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-primary);
+  color: #FFFFFF !important;
   transition: all var(--transition-fast);
   z-index: 10;
 }
 .lightbox-nav-btn:hover {
-  background: var(--accent-gold);
-  color: #000;
-  border-color: var(--accent-gold);
+  background: #ECC150 !important;
+  color: #12050A !important;
+  border-color: #ECC150 !important;
 }
 
 .lightbox-nav-btn.prev {

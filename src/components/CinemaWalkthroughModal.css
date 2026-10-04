@@ -206,7 +206,7 @@
   min-width: 70px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -283,8 +283,8 @@
 }
 
 .cinema-counter .dim {
-  color: rgba(255, 255, 255, 0.4);
-  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
 }
 
 .cinema-caption-text {

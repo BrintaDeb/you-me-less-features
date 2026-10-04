@@ -822,7 +822,8 @@
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .form-input::placeholder,
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .form-textarea::placeholder {
-  color: rgba(26, 20, 18, 0.38);
+  color: #52423B !important;
+  opacity: 0.9 !important;
 }
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .form-input:hover,

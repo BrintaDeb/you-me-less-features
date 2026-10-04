@@ -230,6 +230,18 @@
   font-weight: 600;
 }
 
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cinema-walkthrough-btn {
+  background: rgba(143, 91, 18, 0.08);
+  border-color: rgba(143, 91, 18, 0.4);
+  color: #784B0C;
+  font-weight: 600;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cinema-walkthrough-btn:hover {
+  background: #784B0C;
+  color: #FFFFFF;
+}
+
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .gallery-item:hover {
   box-shadow: 0 15px 35px rgba(45, 30, 22, 0.16);
 }

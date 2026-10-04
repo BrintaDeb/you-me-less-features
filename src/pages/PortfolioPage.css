@@ -458,7 +458,8 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent-gold, #D4AF37);
+  color: #ECC150;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .gm-collection-hover-pill {
@@ -622,13 +623,14 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: var(--accent-gold, #D4AF37);
+  color: #ECC150;
   font-family: var(--font-sans);
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-top: 2px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 /* ── 3. REEL 02 · PRESS PLAY — OUR FILMS ────────────────── */
