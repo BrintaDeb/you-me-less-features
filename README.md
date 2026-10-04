@@ -41,8 +41,8 @@ A high-end digital flagship and interactive portfolio for **YOU & ME**, designed
 
 ```bash
 # Clone repository
-git clone https://github.com/BrintaDeb/you-me.git
-cd you-me
+git clone https://github.com/BrintaDeb/you-me-less-features.git
+cd you-me-less-features
 
 # Install dependencies
 npm install
