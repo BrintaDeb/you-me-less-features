@@ -19,7 +19,6 @@ from auth import VALID_PASSCODES, create_access_token
 from database import engine
 from models import Base
 from routes.admin_media import router as media_router
-from routes.admin_sections import router as sections_router
 from routes.public_sections import router as public_router
 from routes.public_stories import router as stories_router
 from schemas import AdminLoginRequest, AdminLoginResponse
@@ -83,7 +82,6 @@ app.mount("/media", StaticFiles(directory=MEDIA_STORAGE_DIR), name="media")
 
 # ── Routers ───────────────────────────────────────────────
 app.include_router(media_router)
-app.include_router(sections_router)
 app.include_router(public_router)
 app.include_router(stories_router)
 

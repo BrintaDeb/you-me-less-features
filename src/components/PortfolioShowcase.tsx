@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ArrowRight, Sparkles, Image as ImageIcon, MapPin, Film, Compass, Camera } from 'lucide-react';
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
-import { usePublicSections } from '../hooks/usePublicSections';
 import { handleImageError } from '../utils/imageFallback';
 import { LetterFlipHeading } from './LetterFlipHeading';
 import { PhotoShowreel } from './PhotoShowreel';
@@ -48,9 +47,6 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  // Dynamic storyboard strip from API (renders above grid if configured)
-  const { sections } = usePublicSections();
-  const storyboardItems = sections?.['storyboard'] ?? [];
 
   const filteredCouples = couplesData.filter(c => {
     if (selectedCategory === 'All') return true;
@@ -80,33 +76,6 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({
           </p>
         </div>
 
-        {/* Dynamic Editor's Selection Strip — only shown when the API has storyboard items */}
-        {storyboardItems.length > 0 && (
-          <div className="portfolio-dynamic-strip" aria-label="Editor's selection">
-            <div className="portfolio-dynamic-strip-label">
-              <Sparkles size={12} /> Editor's Selection
-            </div>
-            <div className="portfolio-dynamic-strip-scroll">
-              {storyboardItems.map(item => {
-                const url = import.meta.env.DEV && item.url.startsWith('/uploads/')
-                  ? `http://localhost:8000${item.url}`
-                  : item.url;
-                return (
-                  <div key={item.id} className="portfolio-dynamic-thumb">
-                    <img
-                      src={url}
-                      alt={item.alt_text || item.title || 'Selected frame'}
-                      className="portfolio-dynamic-thumb-img"
-                      loading="lazy"
-                      decoding="async"
-                      onError={handleImageError}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
 
         <div className="portfolio-filters" role="tablist" aria-label="Filter portfolio by category">
           {categories.map(cat => (

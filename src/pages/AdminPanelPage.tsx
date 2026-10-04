@@ -37,8 +37,6 @@ import JSZip from 'jszip';
 import type { WeddingStory, WeddingImage } from '../data/couplesData';
 import { galleryStorage } from '../utils/galleryStorage';
 import { triggerHaptic } from '../utils/haptics';
-import { adminLogin } from '../services/mediaApi';
-import { SectionEditorWidget } from '../components/admin/SectionEditorWidget';
 import './AdminPanelPage.css';
 
 interface AdminPanelPageProps {
@@ -87,7 +85,6 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
     setAuthError(false);
     sessionStorage.setItem('youandme_admin_authenticated', 'true');
     triggerHaptic('success');
-    acquireApiToken('admin77');
   };
 
   const handleCopyPasscode = () => {
@@ -100,22 +97,7 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
   };
 
   // Active Admin Tab
-  const [activeTab, setActiveTab] = useState<'upload' | 'collections' | 'new-couple' | 'analytics' | 'media-manager'>('upload');
-
-  // JWT token for the backend Media Manager API
-  const [apiToken, setApiToken] = useState<string>(() =>
-    sessionStorage.getItem('youandme_api_token') || ''
-  );
-
-  const acquireApiToken = useCallback(async (pc: string) => {
-    try {
-      const res = await adminLogin(pc);
-      setApiToken(res.token);
-      sessionStorage.setItem('youandme_api_token', res.token);
-    } catch {
-      // Backend may not be running — silent fallback, media tab will show connection error
-    }
-  }, []);
+  const [activeTab, setActiveTab] = useState<'upload' | 'collections' | 'new-couple' | 'analytics'>('upload');
 
   // Stories and PINs state
   const [stories, setStories] = useState<WeddingStory[]>([]);
@@ -269,11 +251,6 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
         else if (e.key === '2') { setActiveTab('collections'); triggerHaptic('light'); }
         else if (e.key === '3') { setActiveTab('new-couple'); triggerHaptic('light'); }
         else if (e.key === '4') { setActiveTab('analytics'); triggerHaptic('light'); }
-        else if (e.key === '5') {
-          setActiveTab('media-manager');
-          triggerHaptic('light');
-          if (!apiToken) acquireApiToken('admin77');
-        }
         else if (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key === 'k')) {
           e.preventDefault();
           setActiveTab('collections');
@@ -287,7 +264,7 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isManagePhotosModalOpen, isEditStoryModalOpen, inlineEditingStoryId, confirmModal, apiToken, acquireApiToken]);
+  }, [isManagePhotosModalOpen, isEditStoryModalOpen, inlineEditingStoryId, confirmModal]);
 
   // Derived Filtered Stories
   const filteredStories = useMemo(() => {
@@ -969,18 +946,7 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
               <span className="tab-key-hint">4</span>
             </button>
 
-            <button
-              type="button"
-              className={`admin-tab-btn ${activeTab === 'media-manager' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('media-manager');
-                triggerHaptic('light');
-                if (!apiToken) acquireApiToken('admin77');
-              }}
-            >
-              <Images size={16} /> Homepage Media Manager
-              <span className="tab-key-hint">5</span>
-            </button>
+
           </div>
         </div>
       </div>
@@ -1884,55 +1850,7 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
         </section>
       )}
 
-      {/* TAB 5: HOMEPAGE MEDIA MANAGER */}
-      {activeTab === 'media-manager' && (
-        <section className="admin-tab-content">
-          <div className="container-wide">
-            <div className="media-manager-header">
-              <div className="eyebrow"><Images size={14} /> Dynamic Homepage Media</div>
-              <h3 className="media-manager-title">Homepage Section Media Manager</h3>
-              <p className="media-manager-desc">
-                Assign and reorder the media shown on the live public homepage for each section.
-                Upload files via the <strong>Upload &amp; ZIP Importer</strong> tab first, then
-                drag-and-drop them into the desired order below and click Save.
-              </p>
-              {!apiToken && (
-                <div className="media-manager-notice">
-                  <span>⚠️ Backend not connected. Start the FastAPI server on port 8000 to manage media.</span>
-                  <button type="button" className="btn btn-outline" style={{ fontSize: '0.78rem', padding: '6px 14px' }}
-                    onClick={() => acquireApiToken('admin77')}>
-                    Retry Connection
-                  </button>
-                </div>
-              )}
-            </div>
 
-            {apiToken && (
-              <div className="media-manager-widgets">
-                <SectionEditorWidget
-                  sectionId="hero"
-                  sectionLabel="Hero Slideshow"
-                  description="Background images cycling in the opening cinematic hero section (pure wedding photography only)."
-                  token={apiToken}
-                  allowedType="image"
-                />
-                <SectionEditorWidget
-                  sectionId="storyboard"
-                  sectionLabel="Storyboard / Portfolio Strip"
-                  description="Editor's selection strip displayed above the portfolio grid."
-                  token={apiToken}
-                />
-                <SectionEditorWidget
-                  sectionId="films"
-                  sectionLabel="Wedding Films Posters"
-                  description="Poster images for the cinematic films section."
-                  token={apiToken}
-                />
-              </div>
-            )}
-          </div>
-        </section>
-      )}
 
       {/* MODAL 1: MANAGE ASSIGNED PHOTOS FOR ACTIVE STORY */}
       {isManagePhotosModalOpen && activeStory && (

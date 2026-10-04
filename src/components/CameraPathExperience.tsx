@@ -4,8 +4,6 @@ import { featuredStories } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
 import { businessInfo } from '../data/businessData';
 import { triggerHaptic } from '../utils/haptics';
-import { usePublicSections } from '../hooks/usePublicSections';
-import { SkeletonSlide } from './SkeletonSlide';
 import { handleImageError } from '../utils/imageFallback';
 import { LetterFlipHeading } from './LetterFlipHeading';
 import { smoothScrollTo } from '../hooks/useSmoothScroll';
@@ -70,33 +68,8 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
 
-  // ── Dynamic media from API (strictly pure images, excluding video posters & screenshots) ──
-  const { sections, isLoading: sectionsLoading } = usePublicSections();
-  const heroSlides: HeroSlide[] = (() => {
-    const apiHero = sections?.['hero'];
-    if (apiHero && apiHero.length > 0) {
-      const pureImages = apiHero.filter(item => {
-        if (!item || !item.url) return false;
-        if (item.type !== 'image') return false;
-        if (/\.(mp4|webm|ogg|mov)$/i.test(item.url)) return false;
-        // Strictly exclude video posters and screenshots
-        if (item.url.includes('/posters/') || item.url.toLowerCase().includes('screenshot')) return false;
-        return true;
-      });
-
-      if (pureImages.length > 0) {
-        return pureImages.map(item => ({
-          image: import.meta.env.DEV && item.url.startsWith('/uploads/')
-            ? `http://localhost:8000${item.url}`
-            : item.url,
-          alt: item.alt_text || item.title || 'Wedding photography',
-          couple: item.title || '',
-          location: '',
-        }));
-      }
-    }
-    return HERO_SLIDES; // static fallback of authentic photography
-  })();
+  // ── Authentic photography hero slides ──
+  const heroSlides: HeroSlide[] = HERO_SLIDES;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -210,33 +183,29 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
       {/* Scene 1 — Cinematic Opening */}
       <section className="hero-scene" aria-label="Hero Wedding Showcase">
         <div className="hero-background-wrapper" aria-hidden="true">
-          {sectionsLoading ? (
-            <SkeletonSlide />
-          ) : (
-            heroSlides.map((slide, idx) => {
-              const isActive = currentSlide === idx;
-              return (
+          {heroSlides.map((slide, idx) => {
+            const isActive = currentSlide === idx;
+            return (
+              <div
+                key={slide.image}
+                className={`hero-slide-layer ${isActive ? 'active' : ''}`}
+              >
                 <div
-                  key={slide.image}
-                  className={`hero-slide-layer ${isActive ? 'active' : ''}`}
-                >
-                  <div
-                    className="hero-slide-ambient"
-                    style={{ backgroundImage: `url(${slide.image})` }}
-                    aria-hidden="true"
-                  />
-                  <img
-                    src={slide.image}
-                    alt={slide.alt}
-                    className="hero-slide-img"
-                    loading={idx === 0 ? 'eager' : 'lazy'}
-                    fetchPriority={idx === 0 ? 'high' : undefined}
-                    onError={handleImageError}
-                  />
-                </div>
-              );
-            })
-          )}
+                  className="hero-slide-ambient"
+                  style={{ backgroundImage: `url(${slide.image})` }}
+                  aria-hidden="true"
+                />
+                <img
+                  src={slide.image}
+                  alt={slide.alt}
+                  className="hero-slide-img"
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={idx === 0 ? 'high' : undefined}
+                  onError={handleImageError}
+                />
+              </div>
+            );
+          })}
           <div className="hero-overlay-gradient" />
         </div>
 
