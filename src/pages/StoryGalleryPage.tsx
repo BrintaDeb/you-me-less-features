@@ -36,7 +36,7 @@ export const StoryGalleryPage: React.FC<StoryGalleryPageProps> = ({
       if (isMounted && stories && stories.length > 0) {
         setAllStories(stories);
       }
-    }).catch(() => {});
+    }).catch(() => { });
     return () => {
       isMounted = false;
     };
