@@ -47,3 +47,6 @@ backend/uploads/*
 *.zip
 *.tar.gz
 backend/hostinger_export/*.zip
+
+.vercel
+.env*

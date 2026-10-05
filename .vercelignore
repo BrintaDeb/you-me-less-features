@@ -1,0 +1,29 @@
+# Vercel Deployment Ignore
+backend/
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py
+*.pyc
+*.db
+*.sqlite
+*.sqlite3
+
+# Build & Cache Artifacts
+dist/
+dist-ssr/
+.cache/
+*.log
+
+# Large Archives & Temporary Exports
+*.zip
+*.tar.gz
+*.rar
+hostinger_export/
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
