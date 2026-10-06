@@ -129,6 +129,22 @@ class GalleryStorageManager {
       await this.savePinWithRole(pin.trim(), story.id, 'couple');
     }
 
+    // Asynchronously sync to backend database (Hostinger MySQL/SQLite API) without blocking UI
+    try {
+      const backendBase = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+      fetch(`${backendBase}/api/public/stories`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...story,
+          pin: pin?.trim()
+        }),
+        signal: AbortSignal.timeout(3000)
+      }).catch(() => {
+        // Graceful silent fallback: data safely preserved in client IndexedDB & localStorage
+      });
+    } catch {}
+
     return true;
   }
 

@@ -1,6 +1,7 @@
-/* ==========================================================================
-   DECKLE / WAVY CLOTH BANNER — PURE EDITORIAL TYPOGRAPHY
-   Matches reference image with organic silk ribbon waves, refined quote & seal
+﻿/* ==========================================================================
+   AUTHENTIC TORN / RIPPED PAPER EDITORIAL BANNER
+   Unified single-surface fine-art torn paper banner.
+   Zero seams, 100% continuous blended gradient from top rip to bottom rip.
    ========================================================================== */
 
 .deckle-banner-wrapper {
@@ -11,68 +12,77 @@
   overflow: visible;
 }
 
-.deckle-banner-wrapper.crimson {
-  --banner-bg: #891212;
-  --banner-text: #FAF0E6;
-  --banner-accent: #E8C882;
-  --banner-shadow: rgba(40, 10, 10, 0.35);
-}
-
-.deckle-banner-wrapper.charcoal {
-  --banner-bg: #1A1215;
-  --banner-text: #FAF0E6;
-  --banner-accent: #D4AF37;
-  --banner-shadow: rgba(0, 0, 0, 0.45);
-}
-
-/* ── Smooth Organic Cloth Wave Edges ───────────────────────────────────── */
-.deckle-edge {
-  position: relative;
-  width: 100%;
-  height: clamp(26px, 3.8vw, 48px);
-  color: var(--banner-bg);
-  line-height: 0;
-  pointer-events: none;
-  z-index: 2;
-  filter: drop-shadow(0 4px 10px var(--banner-shadow));
-}
-
-.deckle-edge.top {
-  margin-bottom: -1px;
-}
-
-.deckle-edge.bottom {
-  margin-top: -1px;
-  position: relative;
-}
-
-.deckle-edge svg {
-  display: block;
+/* ── Absolute Unified Torn Paper SVG ─────────────────────────────────────── */
+.deckle-paper-svg {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+  /* Organic drop-shadow conforming to the real torn paper contour */
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.72)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
 }
 
-/* ── Central Crimson Banner Surface ────────────────────────────────────── */
+.deckle-paper-body {
+  shape-rendering: geometricPrecision;
+}
+
+.deckle-paper-vignette {
+  shape-rendering: geometricPrecision;
+  mix-blend-mode: soft-light;
+}
+
+.deckle-paper-fiber {
+  mix-blend-mode: screen;
+  shape-rendering: geometricPrecision;
+}
+
+.deckle-paper-tear-line {
+  shape-rendering: geometricPrecision;
+}
+
+/* ── Fine paper grain overlay ────────────────────────────────────────────── */
+.deckle-paper-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+/* ── Subtle paper fold / crease lighting ─────────────────────────────────── */
+.deckle-paper-folds {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    linear-gradient(112deg, transparent 32%, rgba(255, 255, 255, 0.03) 35%, rgba(0, 0, 0, 0.06) 38%, transparent 42%),
+    linear-gradient(76deg, transparent 62%, rgba(255, 255, 255, 0.025) 65%, rgba(0, 0, 0, 0.05) 68%, transparent 72%);
+  mix-blend-mode: soft-light;
+  z-index: 2;
+}
+
+/* ── Editorial Content Container (Transparent, Zero Seams) ───────────────── */
 .deckle-banner-content {
-  background-color: var(--banner-bg);
-  color: var(--banner-text);
-  padding: clamp(2.8rem, 5.5vw, 4.2rem) clamp(1.5rem, 4vw, 3rem);
-  text-align: center;
   position: relative;
+  z-index: 3;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #FAF0E6;
+  padding: clamp(3.2rem, 6.2vw, 5rem) clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: 
-    radial-gradient(ellipse at 50% 50%, rgba(255, 235, 205, 0.12) 0%, rgba(0, 0, 0, 0.18) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 60%, rgba(0, 0, 0, 0.12) 100%);
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 12px 32px var(--banner-shadow);
 }
 
-/* ── Header Title (Optional Variant) ──────────────────────────────────── */
+/* ── Header Title (Optional Variant) ─────────────────────────────────────── */
 .deckle-banner-header {
   display: flex;
   align-items: baseline;
@@ -80,6 +90,8 @@
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 1.2rem;
+  position: relative;
+  z-index: 4;
 }
 
 .deckle-banner-prefix {
@@ -100,7 +112,7 @@
   margin: 0;
 }
 
-/* ── Quote Container & Typography ─────────────────────────────────────── */
+/* ── Quote Typography (Exact Color & Font Integrity) ─────────────────────── */
 .deckle-quote-container {
   max-width: 920px;
   margin: 0 auto;
@@ -147,13 +159,13 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Mobile Viewport Adaptations ─────────────────────────────────────── */
+/* ── Mobile Viewport Adaptations ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   .deckle-banner-wrapper {
     margin: 2rem 0;
   }
   .deckle-banner-content {
-    padding: 2.2rem 1.2rem;
+    padding: 2.6rem 1.2rem;
   }
   .deckle-quote-text {
     font-size: 1.15rem;

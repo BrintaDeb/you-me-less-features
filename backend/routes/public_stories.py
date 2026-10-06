@@ -108,3 +108,97 @@ def get_studio_config(db: Session = Depends(get_db)):
     """Fetch studio configurations, FAQs, and team members."""
     configs = db.query(StudioConfigModel).all()
     return {c.key: c.value for c in configs}
+
+
+from pydantic import BaseModel
+from typing import List, Any
+import uuid
+
+class StoryPayload(BaseModel):
+    id: Optional[str] = None
+    slug: str
+    title: str
+    legacyUrl: Optional[str] = ""
+    legacy_url: Optional[str] = ""
+    category: Optional[str] = "Wedding"
+    tagline: Optional[str] = ""
+    coverImage: Optional[str] = ""
+    cover_image: Optional[str] = ""
+    heroImage: Optional[str] = ""
+    hero_image: Optional[str] = ""
+    isFeatured: Optional[bool] = False
+    is_featured: Optional[bool] = False
+    videoUrl: Optional[str] = None
+    video_url: Optional[str] = None
+    videoPoster: Optional[str] = None
+    video_poster: Optional[str] = None
+    location: Optional[str] = None
+    date: Optional[str] = None
+    imageCount: Optional[int] = 0
+    image_count: Optional[int] = 0
+    images: Optional[List[Any]] = []
+    pin: Optional[str] = None
+
+
+@router.post("/stories")
+def save_or_update_story(payload: StoryPayload, db: Session = Depends(get_db)):
+    """Create or update a wedding story in database (Hostinger-ready)."""
+    story_id = payload.id or f"story-custom-{uuid.uuid4().hex[:8]}"
+    existing = db.query(WeddingStoryModel).filter((WeddingStoryModel.id == story_id) | (WeddingStoryModel.slug == payload.slug)).first()
+
+    cover = payload.coverImage or payload.cover_image or ""
+    hero = payload.heroImage or payload.hero_image or cover
+    legacy = payload.legacyUrl or payload.legacy_url or f"/portfolio/{payload.slug}"
+    video = payload.videoUrl or payload.video_url or ""
+    poster = payload.videoPoster or payload.video_poster or ""
+
+    if existing:
+        existing.title = payload.title
+        existing.slug = payload.slug
+        existing.category = payload.category or "Wedding"
+        existing.tagline = payload.tagline or ""
+        existing.cover_image = cover or existing.cover_image
+        existing.hero_image = hero or existing.hero_image
+        existing.video_url = video
+        existing.video_poster = poster
+        existing.location = payload.location or ""
+        existing.date = payload.date or ""
+        existing.image_count = payload.imageCount or payload.image_count or len(payload.images or [])
+        existing.images = payload.images or []
+        db.commit()
+        db.refresh(existing)
+        return {"status": "updated", "id": existing.id, "slug": existing.slug}
+    else:
+        new_story = WeddingStoryModel(
+            id=story_id,
+            slug=payload.slug,
+            title=payload.title,
+            legacy_url=legacy,
+            category=payload.category or "Wedding",
+            tagline=payload.tagline or "",
+            cover_image=cover,
+            hero_image=hero,
+            is_featured=payload.isFeatured or payload.is_featured or False,
+            video_url=video,
+            video_poster=poster,
+            location=payload.location or "",
+            date=payload.date or "",
+            image_count=payload.imageCount or payload.image_count or len(payload.images or []),
+            images=payload.images or []
+        )
+        db.add(new_story)
+        db.commit()
+        db.refresh(new_story)
+        return {"status": "created", "id": new_story.id, "slug": new_story.slug}
+
+
+@router.delete("/stories/{story_id}")
+def delete_story(story_id: str, db: Session = Depends(get_db)):
+    """Delete a wedding story from database."""
+    story = db.query(WeddingStoryModel).filter((WeddingStoryModel.id == story_id) | (WeddingStoryModel.slug == story_id)).first()
+    if not story:
+        raise HTTPException(status_code=404, detail="Story not found")
+    db.delete(story)
+    db.commit()
+    return {"status": "deleted", "id": story_id}
+

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, House, Film, Info, Key, Calendar } from 'lucide-react';
+import { Menu, X, House, Film, Info, Key, Calendar, Clapperboard } from 'lucide-react';
 import { AudioToggle } from './AudioToggle';
 import { ThemeToggle } from './ThemeToggle';
 import { businessInfo } from '../data/businessData';
@@ -20,6 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showBrandLogo, setShowBrandLogo] = useState(currentView !== 'home');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +31,31 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Reveal top-left brand logo when scrolled down into the next section on Home page
+  useEffect(() => {
+    if (currentView !== 'home') return;
+
+    const checkLogoVisibility = () => {
+      const nextSection = document.getElementById('camera-journey') || document.querySelector('.camera-track-section');
+      if (nextSection) {
+        const rect = nextSection.getBoundingClientRect();
+        setShowBrandLogo(rect.top <= 100);
+      } else {
+        setShowBrandLogo(window.scrollY >= window.innerHeight * 0.75);
+      }
+    };
+
+    checkLogoVisibility();
+    window.addEventListener('scroll', checkLogoVisibility, { passive: true });
+    window.addEventListener('resize', checkLogoVisibility, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', checkLogoVisibility);
+      window.removeEventListener('resize', checkLogoVisibility);
+    };
+  }, [currentView]);
+
+  const isLogoVisible = currentView !== 'home' || showBrandLogo;
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
     e.preventDefault();
     if (onNavigate) {
@@ -39,16 +65,34 @@ export const Navbar: React.FC<NavbarProps> = ({
         return;
       }
 
+      if (target === 'behind-the-scenes') {
+        onNavigate('behind-the-scenes');
+        smoothScrollTo(0);
+        return;
+      }
+
       if (target === 'about') {
         onNavigate('about');
         smoothScrollTo(0);
         return;
       }
+
       if (target === 'client-lounge') {
         onNavigate('client-lounge');
         smoothScrollTo(0);
         return;
       }
+
+      if (target === 'contact') {
+        if (currentView === 'home') {
+          smoothScrollTo('contact');
+        } else {
+          onNavigate('contact');
+          smoothScrollTo(0);
+        }
+        return;
+      }
+
       if (currentView !== 'home') {
         onNavigate('home');
         setTimeout(() => {
@@ -62,10 +106,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className={`floating-pill-header ${isScrolled ? 'is-scrolled' : ''}`}>
-      {/* Brand Logo — Floating Standalone Outside Header Section */}
+      {/* Brand Logo — Floating Standalone Outside Header Section (hidden on hero until next section) */}
       <a
         href="/"
-        className="standalone-brand-logo"
+        className={`standalone-brand-logo ${isLogoVisible ? 'is-visible' : ''}`}
+        aria-hidden={!isLogoVisible}
+        tabIndex={isLogoVisible ? 0 : -1}
         onClick={(e) => {
           e.preventDefault();
           if (onNavigate) onNavigate('home');
@@ -117,11 +163,22 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div className="pill-icon-badge">
                   <Film size={15} />
                 </div>
-                <span className="pill-nav-label">Stories</span>
+                <span className="pill-nav-label">Gallery</span>
               </a>
             </li>
 
-
+            <li>
+              <a
+                href="/behind-the-scenes"
+                className={`pill-nav-item ${currentView === 'behind-the-scenes' ? 'active' : ''}`}
+                onClick={(e) => handleLinkClick(e, 'behind-the-scenes')}
+              >
+                <div className="pill-icon-badge">
+                  <Clapperboard size={15} />
+                </div>
+                <span className="pill-nav-label">BTS</span>
+              </a>
+            </li>
 
             <li>
               <a
@@ -151,8 +208,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <li>
               <a
-                href="#contact"
-                className="pill-nav-item"
+                href="/contact"
+                className={`pill-nav-item ${currentView === 'contact' ? 'active' : ''}`}
                 onClick={(e) => handleLinkClick(e, 'contact')}
               >
                 <div className="pill-icon-badge">

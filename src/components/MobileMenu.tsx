@@ -96,10 +96,21 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onNavig
               handleNavClick('portfolio');
             }}
           >
-            Full Portfolio <ArrowRight size={20} opacity={0.6} />
+            Gallery <ArrowRight size={20} opacity={0.6} />
           </a>
         </li>
 
+        <li className="mobile-nav-item">
+          <a
+            href="/behind-the-scenes"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick('behind-the-scenes');
+            }}
+          >
+            BTS <ArrowRight size={20} opacity={0.6} />
+          </a>
+        </li>
         <li className="mobile-nav-item">
           <a
             href="#films"
@@ -135,13 +146,13 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onNavig
         </li>
         <li className="mobile-nav-item">
           <a
-            href="#contact"
+            href="/contact"
             onClick={(e) => {
               e.preventDefault();
-              handleNavClick('home', 'contact');
+              handleNavClick('contact');
             }}
           >
-            Check Your Date <ArrowRight size={20} opacity={0.6} />
+            Contact &amp; Check Date <ArrowRight size={20} opacity={0.6} />
           </a>
         </li>
       </ul>

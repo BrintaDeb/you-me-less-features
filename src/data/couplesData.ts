@@ -18,6 +18,7 @@ export interface WeddingStory {
   isFeatured: boolean;
   videoUrl?: string;
   videoPoster?: string;
+  initialTime?: number;
   location?: string;
   date?: string;
   imageCount: number;

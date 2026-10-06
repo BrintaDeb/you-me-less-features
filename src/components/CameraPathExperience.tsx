@@ -5,8 +5,8 @@ import type { WeddingStory } from '../data/couplesData';
 import { businessInfo } from '../data/businessData';
 import { triggerHaptic } from '../utils/haptics';
 import { handleImageError } from '../utils/imageFallback';
-import { LetterFlipHeading } from './LetterFlipHeading';
 import { smoothScrollTo } from '../hooks/useSmoothScroll';
+import { CursorSparkles } from './CursorSparkles';
 import './CameraPathExperience.css';
 
 interface CameraPathExperienceProps {
@@ -54,17 +54,23 @@ const HERO_SLIDES: HeroSlide[] = [
   }
 ];
 
+const MORPH_WORDS = ['WEDDING', 'MOMENTS', 'STORIES', 'FOREVER', 'MEMORIES'];
+
 export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
   onSelectStory,
   onPlayFilm
 }) => {
   const trackRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeStoryIdx, setActiveStoryIdx] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [prevSlide, setPrevSlide] = useState<number | null>(null);
   const [heroRevealed, setHeroRevealed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [morphWordIdx, setMorphWordIdx] = useState(0);
+  const [morphTransitioning, setMorphTransitioning] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
 
@@ -87,15 +93,55 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
+  // ── Liquid text morph: cycle through MORPH_WORDS every 2.5s ──
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMorphTransitioning(true);
+      setTimeout(() => {
+        setMorphWordIdx(i => (i + 1) % MORPH_WORDS.length);
+        setMorphTransitioning(false);
+      }, 420); // half of CSS transition duration
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Preload and pre-decode all hero slide images to ensure seamless, flicker-free crossfades
+  useEffect(() => {
+    heroSlides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.image;
+      if (img.decode) {
+        img.decode().catch(() => {});
+      }
+    });
+  }, [heroSlides]);
+
+  const goToSlide = (nextIndex: number) => {
+    setCurrentSlide((prev) => {
+      if (prev === nextIndex) return prev;
+      setPrevSlide(prev);
+      return nextIndex;
+    });
+  };
+
   // Auto-advance hero background images in intervals of 5 seconds
   useEffect(() => {
     if (!heroSlides.length) return;
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+      goToSlide((currentSlide + 1) % heroSlides.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [heroSlides.length]);
+  }, [currentSlide, heroSlides.length]);
+
+  // Clean up prevSlide after 1.8s crossfade has fully completed
+  useEffect(() => {
+    if (prevSlide === null) return;
+    const timer = setTimeout(() => {
+      setPrevSlide(null);
+    }, 1900);
+    return () => clearTimeout(timer);
+  }, [prevSlide]);
 
   useEffect(() => {
     let animFrame: number;
@@ -181,14 +227,20 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
   return (
     <div className="camera-path-container" id="stories">
       {/* Scene 1 — Cinematic Opening */}
-      <section className="hero-scene" aria-label="Hero Wedding Showcase">
+      <section className="hero-scene" aria-label="Hero Wedding Showcase" ref={heroRef as React.RefObject<HTMLElement>}>
+        {/* Golden cursor sparkle trail — scoped to hero only */}
+        <CursorSparkles containerRef={heroRef as React.RefObject<HTMLElement>} />
         <div className="hero-background-wrapper" aria-hidden="true">
           {heroSlides.map((slide, idx) => {
             const isActive = currentSlide === idx;
+            const isPrev = prevSlide === idx;
             return (
               <div
                 key={slide.image}
-                className={`hero-slide-layer ${isActive ? 'active' : ''}`}
+                className={`hero-slide-layer ${isActive ? 'active' : ''} ${isPrev ? 'prev' : ''}`}
+                style={{
+                  zIndex: isActive ? 3 : isPrev ? 2 : 1
+                }}
               >
                 <div
                   className="hero-slide-ambient"
@@ -199,8 +251,9 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
                   src={slide.image}
                   alt={slide.alt}
                   className="hero-slide-img"
-                  loading={idx === 0 ? 'eager' : 'lazy'}
-                  fetchPriority={idx === 0 ? 'high' : undefined}
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority={idx === 0 ? 'high' : 'auto'}
                   onError={handleImageError}
                 />
               </div>
@@ -215,34 +268,31 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
               src="/assets/brand/logo_white.png"
               alt={businessInfo.name}
               className="hero-logo-img logo-theme-dark"
-              width="240"
-              height="74"
+              width="260"
+              height="80"
             />
             <img
               src="/assets/brand/logo_black.png"
               alt={businessInfo.name}
               className="hero-logo-img logo-theme-light"
-              width="240"
-              height="74"
+              width="260"
+              height="80"
             />
           </div>
 
           <div className="eyebrow">
-            <Sparkles size={14} /> Wedding Stories, Honestly Told
+            <Sparkles size={14} /> Documentary Photography &amp; Cinema
           </div>
 
-          <LetterFlipHeading
-            prefix="Scripting"
-            text="LOVE STORIES"
-            as="h1"
-            align="center"
-            delay={180}
-            className="hero-heading-flip"
-          />
-
-          <p className="hero-tagline">
-            Documentary wedding photography shaped by warmth, emotion, and artistry. Scripting your visual love stories into timeless heirloom art.
-          </p>
+          <h1 className="hero-heading">
+            <span
+              className={`hero-morph-word ${morphTransitioning ? 'morph-out' : 'morph-in'}`}
+              aria-live="polite"
+            >
+              {MORPH_WORDS[morphWordIdx]}
+            </span>
+            {' '}Stories, Honestly Told
+          </h1>
 
           <div className="hero-actions">
             <button
@@ -281,7 +331,7 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
                     aria-selected={isActive}
                     aria-label={`Switch to slide ${idx + 1}: ${slide.couple}`}
                     className={`hero-carousel-dot ${isActive ? 'active' : ''}`}
-                    onClick={() => setCurrentSlide(idx)}
+                    onClick={() => goToSlide(idx)}
                   >
                     <span className="dot-progress" />
                   </button>
@@ -524,11 +574,6 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
                       <span className="card-category-pill">
                         {story.category}
                       </span>
-                      {story.videoUrl && (
-                        <span className="card-film-badge">
-                          <Film size={12} /> 4K Film
-                        </span>
-                      )}
                     </div>
 
                     {/* Bottom Editorial Content */}

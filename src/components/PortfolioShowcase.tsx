@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowRight, Sparkles, Image as ImageIcon, MapPin, Film, Compass, Camera } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, Sparkles, Image as ImageIcon, MapPin } from 'lucide-react';
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
 import { handleImageError } from '../utils/imageFallback';
@@ -12,17 +12,6 @@ interface PortfolioShowcaseProps {
   onViewAllPortfolio: () => void;
 }
 
-const categories = ['All', 'Candid & Documentary', 'Traditional Wedding', 'Destination Wedding', 'Bengali Wedding'];
-
-const CAMERA_NOTES = [
-  'Leica M11 • 50mm Summilux • f/1.4',
-  'Hasselblad X2D 100C • 38mm f/2.5',
-  'Sony Cinema FX3 • Anamorphic Cine',
-  'Leica Q3 • 28mm Summilux • Natural Twilight',
-  'Sony A7R V • 85mm f/1.4 GM • Golden Hour',
-  'Hasselblad X2D • 55mm • Calibrated Emulation'
-];
-
 const CURATORIAL_TAGS = [
   'Editorial Monograph',
   'Ceremonial Splendor',
@@ -32,29 +21,27 @@ const CURATORIAL_TAGS = [
   'Heritage Ritual'
 ];
 
-const COORDINATES_MAP: Record<string, string> = {
-  'Kolkata': "22°34'N 88°21'E • Calcutta Classical",
-  'Rajasthan': "26°55'N 75°49'E • Royal Heritage",
-  'Goa': "15°29'N 73°49'E • Coastal Horizon",
-  'Traditional Bengali Wedding': "22°32'N 88°24'E • Traditional Atelier",
-  'Grand Heritage Palace': "24°35'N 73°41'E • Heritage Palace",
-  'Calcutta Classical': "22°34'N 88°21'E • Calcutta Classical"
+const LOCATION_NAME_MAP: Record<string, string> = {
+  'Kolkata': 'Calcutta Classical',
+  'Rajasthan': 'Royal Heritage, Rajasthan',
+  'Goa': 'Coastal Horizon, Goa',
+  'Traditional Bengali Wedding': 'Traditional Atelier',
+  'Grand Heritage Palace': 'Grand Heritage Palace',
+  'Calcutta Classical': 'Calcutta Classical'
+};
+
+const cleanLocation = (loc?: string): string => {
+  if (!loc) return 'Calcutta Classical';
+  const mapped = LOCATION_NAME_MAP[loc] || loc;
+  return mapped.replace(/\d+°\d+'?[NSEW]?\s*\d+°\d+'?[NSEW]?\s*[•·-]?\s*/gi, '').trim() || 'Calcutta Classical';
 };
 
 export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({
   onSelectStory,
   onViewAllPortfolio
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
-
-
-  const filteredCouples = couplesData.filter(c => {
-    if (selectedCategory === 'All') return true;
-    return c.category.toLowerCase().includes(selectedCategory.toLowerCase());
-  });
-
-  // Display top 6 for homepage showcase
-  const displayedCouples = filteredCouples.slice(0, 6);
+  // Display top 6 curated stories for homepage editorial showcase
+  const displayedCouples = couplesData.slice(0, 6);
 
   return (
     <section className="portfolio-showcase" id="portfolio" aria-labelledby="portfolio-heading">
@@ -76,23 +63,6 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({
           </p>
         </div>
 
-
-        <div className="portfolio-filters" role="tablist" aria-label="Filter portfolio by category">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              type="button"
-              role="tab"
-              data-magnetic
-              aria-selected={selectedCategory === cat}
-              className={`filter-pill ${selectedCategory === cat ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
         {/* Cinematic Dual-Ribbon Photo Showreel */}
         <PhotoShowreel
           onPhotoClick={onSelectStory}
@@ -100,11 +70,10 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({
         />
 
         {/* Interactive Editorial Magazine Grid */}
-        <div className="editorial-magazine-grid" key={selectedCategory}>
+        <div className="editorial-magazine-grid">
           {displayedCouples.map((story, idx) => {
-            const cameraNote = CAMERA_NOTES[idx % CAMERA_NOTES.length];
             const curatorialTag = CURATORIAL_TAGS[idx % CURATORIAL_TAGS.length];
-            const locCoordinates = COORDINATES_MAP[story.location || ''] || story.location || "22°34'N 88°21'E • Calcutta Classical";
+            const displayLocation = cleanLocation(story.location);
 
             return (
               <article
@@ -138,27 +107,10 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({
                     onError={handleImageError}
                   />
 
-                  {/* Editorial Callout Marginalia (Floating Top Banner) */}
-                  <div className="editorial-card-plate-bar">
-                    <span className="editorial-plate-tag">
-                      <Compass size={11} className="gold-icon" />
-                      PLATE {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <span className="editorial-craft-note">
-                      <Camera size={11} className="gold-icon" />
-                      {cameraNote}
-                    </span>
-                  </div>
-
                   <div className="portfolio-card-gradient">
                     <div className="portfolio-card-top-meta">
                       <span className="portfolio-card-cat">{story.category}</span>
                       <span className="portfolio-curatorial-tag">{curatorialTag}</span>
-                      {story.videoUrl && (
-                        <span className="portfolio-card-badge" title="Includes Cinematic Film">
-                          <Film size={11} /> 4K Film
-                        </span>
-                      )}
                     </div>
 
                     <h3 className="portfolio-card-name">{story.title}</h3>
@@ -173,9 +125,9 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({
                           <ImageIcon size={13} style={{ display: 'inline', marginRight: 4, verticalAlign: 'middle' }} />
                           {story.imageCount} Master Frames
                         </span>
-                        <span className="portfolio-card-loc" title={locCoordinates}>
+                        <span className="portfolio-card-loc" title={displayLocation}>
                           <MapPin size={11} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />
-                          {locCoordinates}
+                          {displayLocation}
                         </span>
                       </div>
                       <span className="portfolio-card-link">

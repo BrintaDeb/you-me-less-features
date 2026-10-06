@@ -82,6 +82,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </a>
               </li>
               <li>
+                <a href="/behind-the-scenes" onClick={(e) => handleLinkClick(e, 'behind-the-scenes')}>
+                  Behind The Scenes
+                </a>
+              </li>
+              <li>
                 <a href="#about" onClick={(e) => handleLinkClick(e, 'about')}>
                   About Us
                 </a>
@@ -90,6 +95,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <a href="/client-lounge" onClick={(e) => handleLinkClick(e, 'client-lounge')}>
                   VIP Client Lounge
+                </a>
+              </li>
+              <li>
+                <a href="/contact" onClick={(e) => handleLinkClick(e, 'contact')}>
+                  Contact Atelier
                 </a>
               </li>
             </ul>

@@ -26,11 +26,11 @@
 
 /* ── 1. Standalone Brand Logo (Outside Header Section — Pure Transparent) ── */
 .standalone-brand-logo {
-  pointer-events: auto;
+  pointer-events: none;
   position: absolute;
   left: clamp(16px, 3.5vw, 44px);
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scale(0.92);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -41,9 +41,19 @@
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   text-decoration: none;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.45s;
   cursor: pointer;
+}
+
+.standalone-brand-logo.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(-50%) scale(1);
 }
 
 :is([data-theme="burgundy"], [data-theme="dark"]) .standalone-brand-logo {
@@ -54,19 +64,19 @@
   -webkit-backdrop-filter: none !important;
 }
 
-.standalone-brand-logo:hover {
+.standalone-brand-logo.is-visible:hover {
   transform: translateY(-50%) scale(1.06);
   background: transparent !important;
   box-shadow: none !important;
 }
 
-:is([data-theme="burgundy"], [data-theme="dark"]) .standalone-brand-logo:hover {
+:is([data-theme="burgundy"], [data-theme="dark"]) .standalone-brand-logo.is-visible:hover {
   background: transparent !important;
   box-shadow: none !important;
   border: none !important;
 }
 
-.standalone-brand-logo:active {
+.standalone-brand-logo.is-visible:active {
   transform: translateY(-50%) scale(0.97);
 }
 
@@ -171,12 +181,12 @@ body:has(.admin-page) .logo-theme-dark,
 .pill-nav-item {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 6px 14px 6px 9px;
+  gap: 6px;
+  padding: 6px 12px 6px 8px;
   border-radius: 9999px;
   text-decoration: none;
   font-family: var(--font-sans);
-  font-size: 0.83rem;
+  font-size: 0.81rem;
   font-weight: 600;
   letter-spacing: 0.015em;
   color: #2C221D;

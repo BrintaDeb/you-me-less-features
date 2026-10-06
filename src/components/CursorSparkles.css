@@ -1,0 +1,21 @@
+﻿/* -- CursorSparkles - Hero golden particle trail -- */
+.cs-sparkle-host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.cs-particle {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+  will-change: transform, opacity, left, top;
+  font-style: normal;
+  font-family: "Segoe UI Symbol", "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", -apple-system, sans-serif;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.75), 0 0 16px rgba(245, 200, 66, 0.4);
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.6));
+  -webkit-user-select: none;
+}

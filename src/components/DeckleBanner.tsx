@@ -1,5 +1,6 @@
 import React from 'react';
 import './DeckleBanner.css';
+import { UNIFIED_TORN_PATHS } from './deckleBannerUnifiedPaths';
 
 interface DeckleBannerProps {
   quote?: string;
@@ -18,21 +19,95 @@ export const DeckleBanner: React.FC<DeckleBannerProps> = ({
   className = '',
   variant = 'crimson'
 }) => {
-  return (
-    <div className={`deckle-banner-wrapper ${variant} ${className}`} aria-hidden={!title}>
-      {/* Top Organic Wave Edge (Smooth Silk Ribbon SVG) */}
-      <div className="deckle-edge top" aria-hidden="true">
-        <svg
-          viewBox="0 0 1440 54"
-          fill="currentColor"
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0,0 C120,24 240,38 360,18 C480,2 600,28 720,18 C840,8 960,30 1080,16 C1200,4 1320,22 1440,14 L1440,54 L0,54 Z" />
-        </svg>
-      </div>
+  const isCrimson = variant === 'crimson';
 
-      {/* Main Banner Surface */}
+  return (
+    <div className={`deckle-banner-wrapper ${variant} ${className}`} aria-hidden={!title && !quote ? undefined : undefined}>
+      {/* ── UNIFIED TORN PAPER BACKGROUND (100% continuous, zero seams, perfectly blended) ── */}
+      <svg
+        className="deckle-paper-svg"
+        viewBox={UNIFIED_TORN_PATHS.viewBox}
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          {/* Crimson fine-art paper gradient */}
+          <linearGradient id="deckleCrimsonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#7a0f0f" />
+            <stop offset="18%" stopColor="#891212" />
+            <stop offset="50%" stopColor="#961717" />
+            <stop offset="82%" stopColor="#891212" />
+            <stop offset="100%" stopColor="#700d0d" />
+          </linearGradient>
+          <radialGradient id="deckleCrimsonVignette" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="#a31c1c" stopOpacity="0.32" />
+            <stop offset="65%" stopColor="#891212" stopOpacity="0" />
+            <stop offset="100%" stopColor="#4f0808" stopOpacity="0.38" />
+          </radialGradient>
+
+          {/* Charcoal fine-art paper gradient */}
+          <linearGradient id="deckleCharcoalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#140e10" />
+            <stop offset="20%" stopColor="#1a1215" />
+            <stop offset="50%" stopColor="#22181c" />
+            <stop offset="80%" stopColor="#1a1215" />
+            <stop offset="100%" stopColor="#120c0e" />
+          </linearGradient>
+          <radialGradient id="deckleCharcoalVignette" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="#2e2025" stopOpacity="0.3" />
+            <stop offset="65%" stopColor="#1a1215" stopOpacity="0" />
+            <stop offset="100%" stopColor="#0a0607" stopOpacity="0.45" />
+          </radialGradient>
+        </defs>
+
+        {/* 1. Exposed Cotton Paper Fibers along top & bottom tears */}
+        <path
+          d={UNIFIED_TORN_PATHS.topFiber}
+          fill={isCrimson ? "rgba(255, 242, 228, 0.28)" : "rgba(240, 230, 220, 0.22)"}
+          className="deckle-paper-fiber"
+        />
+        <path
+          d={UNIFIED_TORN_PATHS.botFiber}
+          fill={isCrimson ? "rgba(255, 242, 228, 0.28)" : "rgba(240, 230, 220, 0.22)"}
+          className="deckle-paper-fiber"
+        />
+
+        {/* 2. Main Continuous Torn Paper Body (Seamless from top rip to bottom rip!) */}
+        <path
+          d={UNIFIED_TORN_PATHS.bodyPath}
+          fill={isCrimson ? "url(#deckleCrimsonGrad)" : "url(#deckleCharcoalGrad)"}
+          className="deckle-paper-body"
+        />
+
+        {/* 3. Subtle atmospheric depth vignette on the same paper body */}
+        <path
+          d={UNIFIED_TORN_PATHS.bodyPath}
+          fill={isCrimson ? "url(#deckleCrimsonVignette)" : "url(#deckleCharcoalVignette)"}
+          className="deckle-paper-vignette"
+        />
+
+        {/* 4. Fine micro-highlight reflection along physical tear lines */}
+        <path
+          d={UNIFIED_TORN_PATHS.topLine}
+          stroke="rgba(255, 255, 255, 0.2)"
+          strokeWidth="0.8"
+          fill="none"
+          className="deckle-paper-tear-line"
+        />
+        <path
+          d={UNIFIED_TORN_PATHS.botLine}
+          stroke="rgba(255, 255, 255, 0.2)"
+          strokeWidth="0.8"
+          fill="none"
+          className="deckle-paper-tear-line"
+        />
+      </svg>
+
+      {/* Tactile paper grain & fold lighting overlays */}
+      <div className="deckle-paper-grain" aria-hidden="true" />
+      <div className="deckle-paper-folds" aria-hidden="true" />
+
+      {/* Editorial Quote Content (Floating cleanly on the unified paper surface) */}
       <div className="deckle-banner-content">
         {title && (
           <div className="deckle-banner-header">
@@ -49,18 +124,8 @@ export const DeckleBanner: React.FC<DeckleBannerProps> = ({
           </div>
         )}
       </div>
-
-      {/* Bottom Organic Wave Edge (Smooth Silk Ribbon SVG) */}
-      <div className="deckle-edge bottom" aria-hidden="true">
-        <svg
-          viewBox="0 0 1440 54"
-          fill="currentColor"
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0,0 L1440,0 C1320,34 1200,16 1080,28 C960,42 840,22 720,32 C600,40 480,16 360,26 C240,36 120,18 0,32 Z" />
-        </svg>
-      </div>
     </div>
   );
 };
+
+

@@ -47,7 +47,13 @@ const InstagramIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-export const AboutSection: React.FC = () => {
+interface AboutSectionProps {
+  showTeamSection?: boolean;
+}
+
+export const AboutSection: React.FC<AboutSectionProps> = ({
+  showTeamSection = true
+}) => {
   // Team filter & modal state
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [activeTab, setActiveTab] = useState<'all' | 'direction' | 'cinematography' | 'candid' | 'post'>('all');
@@ -166,7 +172,7 @@ export const AboutSection: React.FC = () => {
             </div>
 
             <h2 id="about-heading" className="about-title">
-              About Us — Scripting Visual Love Stories
+              {businessInfo.about.title}
             </h2>
 
             {businessInfo.about.paragraphs.map((para, i) => (
@@ -219,97 +225,93 @@ export const AboutSection: React.FC = () => {
             onMouseEnter={() => setIsAutoPlaying(false)}
             onMouseLeave={() => setIsAutoPlaying(true)}
           >
-            <img
-              src="/assets/brand/double_heart.png"
-              alt=""
-              className="about-heart-badge"
-              aria-hidden="true"
-            />
+            {/* Main Interactive Dynamic Showcase Wrapper (Frame + Centered Bottom Dots) */}
+            <div className="dynamic-showcase-wrapper">
+              {/* Main Interactive Dynamic Frame */}
+              <div
+                className="about-frame-main dynamic-showcase-frame"
+                onClick={() => handleOpenLightbox(activePhotoIndex)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Open photo in lightbox: ${currentPhoto.title}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleOpenLightbox(activePhotoIndex);
+                  }
+                }}
+              >
+                <img
+                  key={currentPhoto.id}
+                  src={currentPhoto.url}
+                  alt={currentPhoto.title}
+                  className="dynamic-main-img"
+                  loading="eager"
+                  onError={handleImageError}
+                />
 
-            {/* Main Interactive Dynamic Frame */}
-            <div
-              className="about-frame-main dynamic-showcase-frame"
-              onClick={() => handleOpenLightbox(activePhotoIndex)}
-              role="button"
-              tabIndex={0}
-              aria-label={`Open photo in lightbox: ${currentPhoto.title}`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleOpenLightbox(activePhotoIndex);
-                }
-              }}
-            >
-              <img
-                key={currentPhoto.id}
-                src={currentPhoto.url}
-                alt={currentPhoto.title}
-                className="dynamic-main-img"
-                loading="eager"
-                onError={handleImageError}
-              />
+                {/* Gradient Vignette */}
+                <div className="dynamic-frame-overlay" />
 
-              {/* Gradient Vignette */}
-              <div className="dynamic-frame-overlay" />
+                {/* Top HUD: Category & Fullscreen Prompt */}
+                <div className="dynamic-hud-top">
+                  <span className="dynamic-tag-pill">
+                    <Sparkles size={12} /> {currentPhoto.tag}
+                  </span>
+                  <span className="dynamic-counter-pill">
+                    {String(activePhotoIndex + 1).padStart(2, '0')} / {String(dynamicAboutPhotos.length).padStart(2, '0')}
+                  </span>
+                </div>
 
-              {/* Top HUD: Category & Fullscreen Prompt */}
-              <div className="dynamic-hud-top">
-                <span className="dynamic-tag-pill">
-                  <Sparkles size={12} /> {currentPhoto.tag}
-                </span>
-                <span className="dynamic-counter-pill">
-                  {String(activePhotoIndex + 1).padStart(2, '0')} / {String(dynamicAboutPhotos.length).padStart(2, '0')}
-                </span>
-              </div>
+                {/* Bottom HUD: Craft Details & Click to Expand */}
+                <div className="dynamic-hud-bottom">
+                  <div className="dynamic-hud-text">
+                    <h4 className="dynamic-hud-title">{currentPhoto.title}</h4>
+                    <p className="dynamic-hud-sub">{currentPhoto.subtitle}</p>
+                    <div className="dynamic-hud-gear">
+                      <Camera size={12} /> {currentPhoto.gear}
+                    </div>
+                  </div>
 
-              {/* Bottom HUD: Craft Details & Click to Expand */}
-              <div className="dynamic-hud-bottom">
-                <div className="dynamic-hud-text">
-                  <h4 className="dynamic-hud-title">{currentPhoto.title}</h4>
-                  <p className="dynamic-hud-sub">{currentPhoto.subtitle}</p>
-                  <div className="dynamic-hud-gear">
-                    <Camera size={12} /> {currentPhoto.gear}
+                  <div className="dynamic-hud-expand-pill">
+                    <Maximize2 size={13} />
+                    <span>Expand Lightbox</span>
                   </div>
                 </div>
 
-                <div className="dynamic-hud-expand-pill">
-                  <Maximize2 size={13} />
-                  <span>Expand Lightbox</span>
-                </div>
+                {/* Arrow Nav Buttons */}
+                <button
+                  type="button"
+                  className="dynamic-arrow-btn prev"
+                  onClick={handlePrevPhoto}
+                  aria-label="Previous photograph"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  className="dynamic-arrow-btn next"
+                  onClick={handleNextPhoto}
+                  aria-label="Next photograph"
+                >
+                  <ChevronRight size={20} />
+                </button>
               </div>
 
-              {/* Arrow Nav Buttons */}
-              <button
-                type="button"
-                className="dynamic-arrow-btn prev"
-                onClick={handlePrevPhoto}
-                aria-label="Previous photograph"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                type="button"
-                className="dynamic-arrow-btn next"
-                onClick={handleNextPhoto}
-                aria-label="Next photograph"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-
-            {/* Thumbnail Pills Selector */}
-            <div className="dynamic-thumb-pills" role="tablist" aria-label="Quick jump to photograph">
-              {dynamicAboutPhotos.map((photo, idx) => (
-                <button
-                  key={photo.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={idx === activePhotoIndex}
-                  className={`dynamic-thumb-dot ${idx === activePhotoIndex ? 'active' : ''}`}
-                  onClick={() => setActivePhotoIndex(idx)}
-                  title={photo.title}
-                  aria-label={`Jump to slide ${idx + 1}: ${photo.title}`}
-                />
-              ))}
+              {/* Thumbnail Pills Selector (Positioned at Bottom of Lightbox Frame) */}
+              <div className="dynamic-thumb-pills" role="tablist" aria-label="Quick jump to photograph">
+                {dynamicAboutPhotos.map((photo, idx) => (
+                  <button
+                    key={photo.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={idx === activePhotoIndex}
+                    className={`dynamic-thumb-dot ${idx === activePhotoIndex ? 'active' : ''}`}
+                    onClick={() => setActivePhotoIndex(idx)}
+                    title={photo.title}
+                    aria-label={`Jump to slide ${idx + 1}: ${photo.title}`}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Secondary Companion Floating Frame */}
@@ -371,138 +373,142 @@ export const AboutSection: React.FC = () => {
         </div>
 
         {/* Team Collective Header & Interactive Role Filter */}
-        <div className="about-team-header">
-          <div className="eyebrow" style={{ justifyContent: 'center' }}>
-            <Heart size={13} fill="currentColor" /> Meet Our Collective
-          </div>
-          <h3 className="about-team-title">
-            The Creative Minds Guiding Your Day
-          </h3>
-          <p className="about-team-subtitle">
-            Every wedding commission is personally crafted by our core specialists. Click any artist to explore their philosophy, equipment, and signature captures.
-          </p>
-
-          <div className="team-filter-tabs" role="tablist" aria-label="Filter team members by specialization">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'all'}
-              className={`team-tab-btn ${activeTab === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveTab('all')}
-            >
-              All Specialists
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'direction'}
-              className={`team-tab-btn ${activeTab === 'direction' ? 'active' : ''}`}
-              onClick={() => setActiveTab('direction')}
-            >
-              <Camera size={14} /> Direction &amp; Portraits
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'cinematography'}
-              className={`team-tab-btn ${activeTab === 'cinematography' ? 'active' : ''}`}
-              onClick={() => setActiveTab('cinematography')}
-            >
-              <Film size={14} /> Cinematography
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'candid'}
-              className={`team-tab-btn ${activeTab === 'candid' ? 'active' : ''}`}
-              onClick={() => setActiveTab('candid')}
-            >
-              <Eye size={14} /> Candid Documentary
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === 'post'}
-              className={`team-tab-btn ${activeTab === 'post' ? 'active' : ''}`}
-              onClick={() => setActiveTab('post')}
-            >
-              <Palette size={14} /> Color &amp; Print
-            </button>
-          </div>
-        </div>
-
-        {/* Interactive Team Cards Grid with Signature Previews */}
-        <div className="team-cards-grid" ref={teamGridRef}>
-          {filteredMembers.map((member) => (
-            <article
-              key={member.id}
-              className="team-card"
-              onClick={() => setSelectedMember(member)}
-              role="button"
-              tabIndex={0}
-              aria-label={`View detailed profile and signature works for ${member.name}`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  setSelectedMember(member);
-                }
-              }}
-            >
-              <div className="team-card-image-wrap">
-                <img
-                  src={member.image}
-                  alt={`${member.name} - ${member.role}`}
-                  className="team-card-image"
-                  loading="lazy"
-                  onError={(e) => handleImageError(e, DEFAULT_AVATAR)}
-                />
-                <div className="team-card-overlay-gradient" />
-                <div className="team-card-role-pill">
-                  {getRoleIcon(member.id)}
-                  <span>{member.role}</span>
-                </div>
-                <div className="team-card-stat-chip">
-                  <strong>{member.stats.value}</strong>
-                  <span>{member.stats.label}</span>
-                </div>
+        {showTeamSection && (
+          <>
+            <div className="about-team-header">
+              <div className="eyebrow" style={{ justifyContent: 'center' }}>
+                <Heart size={13} fill="currentColor" /> Meet Our Collective
               </div>
+              <h3 className="about-team-title">
+                The Creative Minds Guiding Your Day
+              </h3>
+              <p className="about-team-subtitle">
+                Every wedding commission is personally crafted by our core specialists. Click any artist to explore their philosophy, equipment, and signature captures.
+              </p>
 
-              <div className="team-card-body">
-                <h4 className="team-member-name">{member.name}</h4>
-                <p className="team-member-tagline">{member.tagline}</p>
-                <div className="team-member-specialty">
-                  <span>Specialty:</span> {member.specialty}
-                </div>
+              <div className="team-filter-tabs" role="tablist" aria-label="Filter team members by specialization">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'all'}
+                  className={`team-tab-btn ${activeTab === 'all' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('all')}
+                >
+                  All Specialists
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'direction'}
+                  className={`team-tab-btn ${activeTab === 'direction' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('direction')}
+                >
+                  <Camera size={14} /> Direction &amp; Portraits
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'cinematography'}
+                  className={`team-tab-btn ${activeTab === 'cinematography' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('cinematography')}
+                >
+                  <Film size={14} /> Cinematography
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'candid'}
+                  className={`team-tab-btn ${activeTab === 'candid' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('candid')}
+                >
+                  <Eye size={14} /> Candid Documentary
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'post'}
+                  className={`team-tab-btn ${activeTab === 'post' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('post')}
+                >
+                  <Palette size={14} /> Color &amp; Print
+                </button>
+              </div>
+            </div>
 
-                {/* Signature Works Miniature Strip */}
-                {member.signatureWorks && member.signatureWorks.length > 0 && (
-                  <div className="team-signature-preview-row">
-                    <span className="signature-preview-label">Signature Works:</span>
-                    <div className="signature-thumbnails-list">
-                      {member.signatureWorks.slice(0, 3).map((sig) => (
-                        <div key={sig.id} className="signature-mini-chip" title={sig.title}>
-                          <img src={sig.url} alt={sig.title} loading="lazy" />
-                        </div>
-                      ))}
+            {/* Interactive Team Cards Grid with Signature Previews */}
+            <div className="team-cards-grid" ref={teamGridRef}>
+              {filteredMembers.map((member) => (
+                <article
+                  key={member.id}
+                  className="team-card"
+                  onClick={() => setSelectedMember(member)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View detailed profile and signature works for ${member.name}`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setSelectedMember(member);
+                    }
+                  }}
+                >
+                  <div className="team-card-image-wrap">
+                    <img
+                      src={member.image}
+                      alt={`${member.name} - ${member.role}`}
+                      className="team-card-image"
+                      loading="lazy"
+                      onError={(e) => handleImageError(e, DEFAULT_AVATAR)}
+                    />
+                    <div className="team-card-overlay-gradient" />
+                    <div className="team-card-role-pill">
+                      {getRoleIcon(member.id)}
+                      <span>{member.role}</span>
+                    </div>
+                    <div className="team-card-stat-chip">
+                      <strong>{member.stats.value}</strong>
+                      <span>{member.stats.label}</span>
                     </div>
                   </div>
-                )}
 
-                <div className="team-card-footer">
-                  <span className="team-card-explore-link">
-                    Explore Profile &amp; Works &rarr;
-                  </span>
-                  <span className="team-card-social">
-                    <InstagramIcon size={14} /> {member.socialHandle}
-                  </span>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+                  <div className="team-card-body">
+                    <h4 className="team-member-name">{member.name}</h4>
+                    <p className="team-member-tagline">{member.tagline}</p>
+                    <div className="team-member-specialty">
+                      <span>Specialty:</span> {member.specialty}
+                    </div>
+
+                    {/* Signature Works Miniature Strip */}
+                    {member.signatureWorks && member.signatureWorks.length > 0 && (
+                      <div className="team-signature-preview-row">
+                        <span className="signature-preview-label">Signature Works:</span>
+                        <div className="signature-thumbnails-list">
+                          {member.signatureWorks.slice(0, 3).map((sig) => (
+                            <div key={sig.id} className="signature-mini-chip" title={sig.title}>
+                              <img src={sig.url} alt={sig.title} loading="lazy" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="team-card-footer">
+                      <span className="team-card-explore-link">
+                        Explore Profile &amp; Works &rarr;
+                      </span>
+                      <span className="team-card-social">
+                        <InstagramIcon size={14} /> {member.socialHandle}
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Interactive Team Member Spotlight Modal with Signature Portfolio */}
-      {selectedMember && (
+      {showTeamSection && selectedMember && (
         <div
           className="team-modal-backdrop"
           onClick={() => setSelectedMember(null)}

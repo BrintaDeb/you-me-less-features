@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { X, Play, ArrowRight, ChevronLeft, ChevronRight, Eye, LayoutGrid, Film as FilmIcon } from 'lucide-react';
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory, WeddingImage } from '../data/couplesData';
@@ -40,25 +40,7 @@ interface CinemaFilm {
   videoUrl: string;
 }
 
-interface BehindTheLensReel {
-  id: string;
-  number: string;
-  title: string;
-  poster: string;
-  videoUrl: string;
-}
-
-const CATEGORIES = [
-  { id: 'all', label: 'All Stories' },
-  { id: 'wedding', label: 'Wedding' },
-  { id: 'pre-wedding', label: 'Pre Wedding' },
-  { id: 'bengali', label: 'Bengali Wedding' },
-  { id: 'destination', label: 'Destination' },
-  { id: 'traditional', label: 'Traditional' }
-];
-
 export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectStory }) => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [allStories, setAllStories] = useState<WeddingStory[]>(couplesData);
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
   const [activeVideo, setActiveVideo] = useState<{ url: string; poster?: string; title: string } | null>(null);
@@ -66,8 +48,6 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectStory }) =
   const [headerRevealed, setHeaderRevealed] = useState(false);
   const [wallExpanded, setWallExpanded] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'filmstrip'>('grid');
-  const reelTrackRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const t = setTimeout(() => setHeaderRevealed(true), 80);
     return () => clearTimeout(t);
@@ -81,17 +61,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectStory }) =
     return () => { isMounted = false; };
   }, []);
 
-  // Filter stories based on selected category pill
-  const filteredStories = allStories.filter(story => {
-    if (selectedCategory === 'all') return true;
-    const cat = story.category.toLowerCase();
-    if (selectedCategory === 'wedding') return cat.includes('wedding') && !cat.includes('pre');
-    if (selectedCategory === 'pre-wedding') return cat.includes('pre') || cat.includes('destination');
-    if (selectedCategory === 'bengali') return cat.includes('bengali');
-    if (selectedCategory === 'destination') return cat.includes('destination');
-    if (selectedCategory === 'traditional') return cat.includes('traditional');
-    return true;
-  });
+  const filteredStories = allStories;
 
   // Prepare Curated Collections for "OUR PHOTOS"
   const collections: PhotoCollection[] = [
@@ -206,52 +176,6 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectStory }) =
     }
   ];
 
-  // Behind the Lens Reels for "REEL 03 · OFF CAMERA"
-  const behindTheLensReels: BehindTheLensReel[] = [
-    {
-      id: 'reel-1',
-      number: '01',
-      title: 'DIRECTING THE CHAOS',
-      poster: '/assets/team/brinta_deb.jpg',
-      videoUrl: '/assets/videos/paraj_mrinmoyee.mp4'
-    },
-    {
-      id: 'reel-2',
-      number: '02',
-      title: 'GOLDEN HOUR RUN',
-      poster: '/assets/posters/suchi_hira.jpg',
-      videoUrl: '/assets/videos/suchi_hira.mp4'
-    },
-    {
-      id: 'reel-3',
-      number: '03',
-      title: 'BETWEEN TAKES',
-      poster: '/assets/team/anirban_roy.jpg',
-      videoUrl: '/assets/videos/ankita_subhadeep.mp4'
-    },
-    {
-      id: 'reel-4',
-      number: '04',
-      title: 'CANDID SMILES',
-      poster: '/assets/team/sayan_mukherjee.jpg',
-      videoUrl: '/assets/videos/avik_binita.mp4'
-    },
-    {
-      id: 'reel-5',
-      number: '05',
-      title: 'DRONE PERSPECTIVE',
-      poster: '/assets/portfolio/default_wedding_photo.jpg',
-      videoUrl: '/assets/videos/portfolio_bg.mp4'
-    },
-    {
-      id: 'reel-6',
-      number: '06',
-      title: 'CELEBRATION GLOW',
-      poster: '/assets/posters/urmi_jasraj.jpg',
-      videoUrl: '/assets/videos/urmi_jasraj.mp4'
-    }
-  ];
-
   // Build all wall images for Wall of Moments
   const wallImages: Array<{ url: string; alt: string; storyTitle: string; story: WeddingStory }> = [];
   for (const story of filteredStories) {
@@ -287,11 +211,6 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectStory }) =
     setLightbox({ images: story.images, index: imgIdx, storyTitle: story.title });
   };
 
-  const scrollReelTrack = (direction: 'left' | 'right') => {
-    if (!reelTrackRef.current) return;
-    const amount = direction === 'left' ? -340 : 340;
-    reelTrackRef.current.scrollBy({ left: amount, behavior: 'smooth' });
-  };
 
   return (
     <main className="gm-portfolio-page" id="main-content">
@@ -331,21 +250,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectStory }) =
             Timeless stories captured through our lens — every frame below made it to the wall.
           </p>
 
-          {/* Filter Pills */}
-          <div className="gm-hero-pills" role="tablist" aria-label="Filter stories by theme">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat.id}
-                type="button"
-                role="tab"
-                aria-selected={selectedCategory === cat.id}
-                className={`gm-hero-pill-btn ${selectedCategory === cat.id ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat.id)}
-              >
-                <span>{cat.label}</span>
-              </button>
-            ))}
-          </div>
+
         </div>
 
         {/* Dual-Ribbon Continuous Photo Showreel tilted at -2deg */}
@@ -620,81 +525,7 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({ onSelectStory }) =
         </div>
       </section>
 
-      {/* ── 4. REEL 03 · OFF CAMERA — BEHIND THE LENS ── */}
-      <section className="gm-behind-lens-section" id="behind-the-lens">
-        <div className="gm-container">
-          <div className="gm-section-header">
-            <p className="gm-section-eyebrow">REEL 03 · OFF CAMERA</p>
-            <h2 className="gm-section-display-title">BEHIND THE LENS</h2>
-            <p className="gm-section-subtitle">
-              The frames you never see — our crew at work, straight from the gram.
-            </p>
-          </div>
-
-          <div className="gm-reel-carousel-container">
-            {/* Scroll Navigation Arrows */}
-            <button
-              type="button"
-              className="gm-carousel-arrow left"
-              onClick={() => scrollReelTrack('left')}
-              aria-label="Scroll left"
-            >
-              <ChevronLeft size={22} />
-            </button>
-            <button
-              type="button"
-              className="gm-carousel-arrow right"
-              onClick={() => scrollReelTrack('right')}
-              aria-label="Scroll right"
-            >
-              <ChevronRight size={22} />
-            </button>
-
-            {/* Horizontal Track of 9:16 Vertical Reels */}
-            <div className="gm-reel-track" ref={reelTrackRef}>
-              {behindTheLensReels.map((reel) => (
-                <button
-                  key={reel.id}
-                  type="button"
-                  className="gm-reel-vertical-card"
-                  onClick={() => setActiveVideo({ url: reel.videoUrl, poster: reel.poster, title: `Behind The Lens — ${reel.title}` })}
-                  aria-label={`Play Behind The Lens Reel ${reel.number}: ${reel.title}`}
-                >
-                  <div className="gm-reel-media">
-                    <img
-                      src={reel.poster}
-                      alt={reel.title}
-                      className="gm-reel-poster"
-                      loading="lazy"
-                      onError={handleImageError}
-                    />
-                    <div className="gm-reel-overlay" />
-
-                    {/* Corner pips */}
-                    <span className="corner-pip corner-tl" aria-hidden="true" />
-                    <span className="corner-pip corner-tr" aria-hidden="true" />
-                    <span className="corner-pip corner-bl" aria-hidden="true" />
-                    <span className="corner-pip corner-br" aria-hidden="true" />
-
-                    {/* Play Badge */}
-                    <div className="gm-reel-play-btn">
-                      <Play size={18} fill="currentColor" />
-                    </div>
-
-                    {/* Bottom Metadata */}
-                    <div className="gm-reel-meta">
-                      <span className="gm-reel-number">{reel.number}</span>
-                      <h4 className="gm-reel-title">{reel.title}</h4>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. CTA Banner: YOUR STORY BELONGS HERE ────── */}
+      {/* ── 4. CTA Banner: YOUR STORY BELONGS HERE ────── */}
       <section className="gm-cta-banner">
         <div className="gm-cta-inner">
           <p className="gm-cta-label">Your turn</p>

@@ -162,7 +162,8 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
     setBackendStatus('checking');
     const start = performance.now();
     try {
-      const res = await fetch('http://localhost:8000/api/health', { signal: AbortSignal.timeout(2500) });
+      const backendBase = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+      const res = await fetch(`${backendBase}/api/health`, { signal: AbortSignal.timeout(2500) });
       if (res.ok) {
         const end = performance.now();
         setBackendLatency(Math.round(end - start));

@@ -21,6 +21,8 @@ import { useSmoothScroll, smoothScrollTo } from './hooks/useSmoothScroll';
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage').then(m => ({ default: m.PortfolioPage })));
 const StoryGalleryPage = lazy(() => import('./pages/StoryGalleryPage').then(m => ({ default: m.StoryGalleryPage })));
 const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
+const BehindTheScenesPage = lazy(() => import('./pages/BehindTheScenesPage').then(m => ({ default: m.BehindTheScenesPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })));
 const AccessibilityPage = lazy(() => import('./pages/AccessibilityPage').then(m => ({ default: m.AccessibilityPage })));
 const ClientLoungePage = lazy(() => import('./pages/ClientLoungePage').then(m => ({ default: m.ClientLoungePage })));
@@ -66,7 +68,7 @@ const RouteLoadingFallback = () => (
 );
 
 export function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'portfolio' | 'story' | 'about' | 'privacy' | 'accessibility' | 'client-lounge' | 'admin'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'portfolio' | 'story' | 'about' | 'behind-the-scenes' | 'contact' | 'privacy' | 'accessibility' | 'client-lounge' | 'admin'>('home');
   const [selectedStory, setSelectedStory] = useState<WeddingStory | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeFilmStory, setActiveFilmStory] = useState<WeddingStory | null>(null);
@@ -108,8 +110,14 @@ export function App() {
         } else {
           setCurrentView('portfolio');
         }
-      } else if (pathname === '/about' || pathname === '/contact') {
+      } else if (pathname === '/behind-the-scenes' || pathname === '/bts' || pathname === '/behind-the-lens') {
+        setCurrentView('behind-the-scenes');
+        setSelectedStory(null);
+      } else if (pathname === '/about') {
         setCurrentView('about');
+        setSelectedStory(null);
+      } else if (pathname === '/contact') {
+        setCurrentView('contact');
         setSelectedStory(null);
       } else if (pathname === '/celebrations' || pathname === '/packages') {
         setCurrentView('home');
@@ -166,8 +174,12 @@ export function App() {
       document.title = `${selectedStory.title} — Wedding Story | YOU & ME`;
     } else if (currentView === 'portfolio') {
       document.title = 'Portfolio & Archive | YOU & ME Wedding Photography';
+    } else if (currentView === 'behind-the-scenes') {
+      document.title = 'Behind The Lens · Off Camera & Atelier Diaries | YOU & ME';
     } else if (currentView === 'about') {
       document.title = 'About Us & Team | YOU & ME Wedding Photography';
+    } else if (currentView === 'contact') {
+      document.title = 'Contact & Check Availability | YOU & ME Wedding Photography';
     } else if (currentView === 'client-lounge') {
       document.title = 'VIP Client Lounge & Album Curation | YOU & ME';
     } else if (currentView === 'admin') {
@@ -195,10 +207,18 @@ export function App() {
         setSelectedStory(null);
         window.history.pushState(null, '', '/portfolio');
 
+      } else if (view === 'behind-the-scenes') {
+        setCurrentView('behind-the-scenes');
+        setSelectedStory(null);
+        window.history.pushState(null, '', '/behind-the-scenes');
       } else if (view === 'about') {
         setCurrentView('about');
         setSelectedStory(null);
         window.history.pushState(null, '', '/about');
+      } else if (view === 'contact') {
+        setCurrentView('contact');
+        setSelectedStory(null);
+        window.history.pushState(null, '', '/contact');
       } else if (view === 'client-lounge') {
         setCurrentView('client-lounge');
         setSelectedStory(null);
@@ -268,7 +288,7 @@ export function App() {
           <MarqueeRibbon />
 
           {/* Scene 3 — About You & Me */}
-          <AboutSection />
+          <AboutSection showTeamSection={false} />
 
           {/* Golden Moment Signature: Deckle Edge Torn Paper Banner */}
           <DeckleBanner
@@ -325,6 +345,18 @@ export function App() {
           <AboutPage />
         )}
 
+        {currentView === 'behind-the-scenes' && (
+          <BehindTheScenesPage
+            onNavigateToContact={() => navigateTo('contact')}
+          />
+        )}
+
+        {currentView === 'contact' && (
+          <ContactPage
+            onBackToHome={() => navigateTo('home')}
+          />
+        )}
+
         {currentView === 'client-lounge' && (
           <ClientLoungePage
             onBackToHome={() => navigateTo('home')}
@@ -361,6 +393,7 @@ export function App() {
             videoUrl={activeFilmStory.videoUrl}
             posterUrl={activeFilmStory.videoPoster}
             title={activeFilmStory.title}
+            initialTime={activeFilmStory.initialTime}
             isOpen={true}
             onClose={() => setActiveFilmStory(null)}
           />

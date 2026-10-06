@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
 import { handleImageError } from '../utils/imageFallback';
@@ -21,44 +21,50 @@ interface PhotoShowreelProps {
   showCaption?: boolean;
 }
 
+// Curate high-impact photo slides with stable, pure indexing across couplesData
+const buildShowreelCards = () => {
+  const CARDS_PER_ROW = 8;
+  const couples = couplesData;
+  const r1Couples = couples.slice(0, CARDS_PER_ROW);
+  const r2Couples = couples.length >= CARDS_PER_ROW * 2
+    ? couples.slice(CARDS_PER_ROW, CARDS_PER_ROW * 2)
+    : couples.slice(0, CARDS_PER_ROW);
+
+  const createCard = (story: WeddingStory, offset: number): ShowreelCard => {
+    const imagesCount = story.images.length;
+    const imgIdx = imagesCount > 0 ? (offset % imagesCount) : 0;
+    const img = story.images[imgIdx] || {
+      id: `${story.id}-cover`,
+      url: story.coverImage,
+      alt: story.title
+    };
+
+    return {
+      id: `${story.id}-${img.id || imgIdx}`,
+      story,
+      imageIndex: imgIdx,
+      imageUrl: img.url,
+      coupleTitle: story.title,
+      category: story.category,
+      location: story.location || 'Agartala • Kolkata'
+    };
+  };
+
+  return {
+    row1Cards: r1Couples.map((story, i) => createCard(story, i * 3)),
+    row2Cards: r2Couples.map((story, i) => createCard(story, i * 3 + 1))
+  };
+};
+
+const STATIC_SHOWREEL_CARDS = buildShowreelCards();
+
 export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
   onPhotoClick,
   tiltAngle = -2,
   className = '',
   showCaption = false
 }) => {
-  // Build two distinct, rich sets of wedding portrait photos from couplesData
-  const { row1Cards, row2Cards } = useMemo(() => {
-    const r1: ShowreelCard[] = [];
-    const r2: ShowreelCard[] = [];
-
-    couplesData.forEach((story, storyIdx) => {
-      story.images.forEach((img, imgIdx) => {
-        const card: ShowreelCard = {
-          id: `${story.id}-${img.id || imgIdx}`,
-          story,
-          imageIndex: imgIdx,
-          imageUrl: img.url,
-          coupleTitle: story.title,
-          category: story.category,
-          location: story.location || 'Agartala • Kolkata'
-        };
-
-        // Alternate cards between row 1 and row 2 for diverse visual pacing
-        if ((storyIdx + imgIdx) % 2 === 0) {
-          if (r1.length < 16) r1.push(card);
-        } else {
-          if (r2.length < 16) r2.push(card);
-        }
-      });
-    });
-
-    // Fallbacks if fewer images
-    return {
-      row1Cards: r1.length > 0 ? r1 : r1.concat(r1),
-      row2Cards: r2.length > 0 ? r2 : r2.concat(r2)
-    };
-  }, []);
+  const { row1Cards, row2Cards } = STATIC_SHOWREEL_CARDS;
 
   const handleCardClick = (card: ShowreelCard) => {
     if (onPhotoClick) {
@@ -99,7 +105,12 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
                   loading="lazy"
                   onError={handleImageError}
                 />
-                <div className="showreel-card-overlay" aria-hidden="true" />
+                <div className="showreel-card-overlay" aria-hidden="true">
+                  <div className="showreel-hover-meta">
+                    <span className="showreel-hover-title">{card.coupleTitle}</span>
+                    <span className="showreel-hover-tag">{card.category}</span>
+                  </div>
+                </div>
               </div>
               {showCaption && (
                 <div className="showreel-card-caption">
@@ -128,7 +139,12 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
                   loading="lazy"
                   onError={handleImageError}
                 />
-                <div className="showreel-card-overlay" />
+                <div className="showreel-card-overlay">
+                  <div className="showreel-hover-meta">
+                    <span className="showreel-hover-title">{card.coupleTitle}</span>
+                    <span className="showreel-hover-tag">{card.category}</span>
+                  </div>
+                </div>
               </div>
               {showCaption && (
                 <div className="showreel-card-caption">
@@ -168,7 +184,12 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
                   loading="lazy"
                   onError={handleImageError}
                 />
-                <div className="showreel-card-overlay" aria-hidden="true" />
+                <div className="showreel-card-overlay" aria-hidden="true">
+                  <div className="showreel-hover-meta">
+                    <span className="showreel-hover-title">{card.coupleTitle}</span>
+                    <span className="showreel-hover-tag">{card.category}</span>
+                  </div>
+                </div>
               </div>
               {showCaption && (
                 <div className="showreel-card-caption">
@@ -197,7 +218,12 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
                   loading="lazy"
                   onError={handleImageError}
                 />
-                <div className="showreel-card-overlay" />
+                <div className="showreel-card-overlay">
+                  <div className="showreel-hover-meta">
+                    <span className="showreel-hover-title">{card.coupleTitle}</span>
+                    <span className="showreel-hover-tag">{card.category}</span>
+                  </div>
+                </div>
               </div>
               {showCaption && (
                 <div className="showreel-card-caption">

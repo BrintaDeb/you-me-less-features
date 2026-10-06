@@ -8,6 +8,7 @@ interface VideoModalProps {
   posterUrl?: string;
   title: string;
   isOpen: boolean;
+  initialTime?: number;
   onClose: () => void;
 }
 
@@ -16,6 +17,7 @@ export const VideoModal: React.FC<VideoModalProps> = ({
   posterUrl = DEFAULT_VIDEO_POSTER,
   title,
   isOpen,
+  initialTime = 0,
   onClose
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -33,6 +35,9 @@ export const VideoModal: React.FC<VideoModalProps> = ({
 
       const videoEl = videoRef.current;
       if (videoEl) {
+        if (typeof initialTime === 'number' && initialTime > 0) {
+          videoEl.currentTime = initialTime;
+        }
         videoEl.play().catch(() => {});
       }
 
@@ -44,7 +49,7 @@ export const VideoModal: React.FC<VideoModalProps> = ({
         }
       };
     }
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, initialTime]);
 
   if (!isOpen) return null;
 

@@ -1,0 +1,158 @@
+/* ==========================================================================
+   ContactPage.css — Dedicated Studio Atelier Contact Page
+   ========================================================================== */
+
+.contact-page {
+  padding-top: calc(var(--nav-height, 74px) + 20px);
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  position: relative;
+}
+
+.contact-page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.contact-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.contact-back-link:hover {
+  transform: translateX(-4px);
+  color: #FFFFFF;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .contact-back-link {
+  color: var(--gm-wine, #8A1212);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .contact-back-link:hover {
+  color: #1A1412;
+}
+
+.contact-hero-content {
+  text-align: center;
+  padding: 30px 0 20px;
+}
+
+.contact-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .contact-eyebrow {
+  color: var(--gm-wine, #8A1212);
+}
+
+.contact-title {
+  font-family: var(--font-heading, 'Fraunces', Georgia, serif);
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  margin-bottom: 18px;
+}
+
+:is([data-theme="burgundy"], [data-theme="dark"]) .contact-title {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5EDE6 65%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.6));
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .contact-title {
+  color: #1A1412;
+}
+
+.contact-subtitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-style: italic;
+  max-width: 660px;
+  margin: 0 auto 36px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.contact-concierge-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.concierge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 9999px;
+  background: var(--bg-card, rgba(35, 12, 22, 0.7));
+  border: 1px solid var(--border-subtle, rgba(212, 175, 55, 0.25));
+  font-family: var(--font-sans);
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .concierge-badge {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px rgba(45, 30, 22, 0.05);
+}
+
+.concierge-badge:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-gold);
+}
+
+.concierge-badge.whatsapp:hover {
+  background: #25D366;
+  color: #FFFFFF;
+  border-color: #25D366;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+}
+
+.contact-form-section {
+  position: relative;
+  margin-top: -30px;
+}
+
+@media (max-width: 768px) {
+  .contact-page {
+    padding-top: calc(var(--nav-height, 70px) + 12px);
+  }
+  .contact-title {
+    font-size: 2.2rem;
+  }
+  .concierge-badge {
+    width: 100%;
+    justify-content: center;
+  }
+}

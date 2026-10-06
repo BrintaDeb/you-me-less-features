@@ -178,7 +178,7 @@ export const businessInfo = {
   },
   location: "Agartala, Tripura & Available Worldwide for Destination Weddings",
   about: {
-    title: "About Us — Scripting Visual Love Stories",
+    title: "Scripting Visual Love Stories",
     paragraphs: [
       "We are YOU & ME — an artisanal collective of documentary photographers, cinematographers, and colorists who believe that wedding memories deserve more than conventional posing. We turn your sacred celebration into cinematic heirloom art.",
       "Rooted in genuine observation, we embrace the fleeting laughter, the silent tears of family, and the unrepeatable energy of your rituals. With a discreet presence and tailored artistry, we script visual love stories that remain timeless across generations."
