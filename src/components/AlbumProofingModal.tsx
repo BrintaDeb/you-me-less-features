@@ -12,13 +12,13 @@ import {
   Palette,
   Layers,
   ShieldCheck,
-  Lock,
   Download
 } from 'lucide-react';
 import type { WeddingStory } from '../data/couplesData';
 import type { ClientRole } from '../utils/galleryStorage';
 import { downloadPhotoFile } from '../utils/photoDownloader';
 import { triggerHaptic, hapticPageFlip } from '../utils/haptics';
+import { acousticFeedback } from '../utils/acousticFeedback';
 import './AlbumProofingModal.css';
 
 interface AlbumRevisionPin {
@@ -200,6 +200,7 @@ export const AlbumProofingModal: React.FC<AlbumProofingModalProps> = ({
       setFlipDirection('next');
       setIsFlipping(true);
       hapticPageFlip();
+      acousticFeedback.playAlbumFlip();
       setTimeout(() => {
         setCurrentSpread(prev => prev + 1);
         setIsFlipping(false);
@@ -212,6 +213,7 @@ export const AlbumProofingModal: React.FC<AlbumProofingModalProps> = ({
       setFlipDirection('prev');
       setIsFlipping(true);
       hapticPageFlip();
+      acousticFeedback.playAlbumFlip();
       setTimeout(() => {
         setCurrentSpread(prev => prev - 1);
         setIsFlipping(false);
@@ -220,9 +222,6 @@ export const AlbumProofingModal: React.FC<AlbumProofingModalProps> = ({
   }, [currentSpread, isFlipping]);
 
   const openNoteDialog = (photoUrl: string) => {
-    if (userRole === 'guest') {
-      return;
-    }
     setTargetPhotoForNote(photoUrl);
     setNoteText('');
     setIsAddingNote(true);
@@ -392,10 +391,8 @@ export const AlbumProofingModal: React.FC<AlbumProofingModalProps> = ({
             <div className={`album-role-chip role-${userRole}`}>
               {userRole === 'couple' ? (
                 <><ShieldCheck size={13} /> Master Suite</>
-              ) : userRole === 'family' ? (
-                <><ShieldCheck size={13} /> Family Access</>
               ) : (
-                <><Lock size={13} /> Guest View</>
+                <><ShieldCheck size={13} /> Family Access</>
               )}
             </div>
 
@@ -438,14 +435,12 @@ export const AlbumProofingModal: React.FC<AlbumProofingModalProps> = ({
           </div>
         </header>
 
-        {/* Guest / Family Advisory Notice if not Master Couple */}
+        {/* Family Advisory Notice if not Master Couple */}
         {userRole !== 'couple' && (
           <div className="album-tier-notice-banner">
             <Sparkles size={14} className="gold-icon" />
             <span>
-              {userRole === 'family'
-                ? 'Family Sanctuary Mode: You can view spreads and submit blessings/notes. Final print sign-off is reserved for the Couple Master PIN.'
-                : 'Guest Gallery Mode: You are previewing the couple\'s heirloom volume layout. Revision notes and bindery sign-off are reserved for the Couple Master Suite.'}
+              Family Sanctuary Mode: You can view spreads and submit blessings/notes. Final print sign-off is reserved for the Couple Master PIN.
             </span>
           </div>
         )}
@@ -678,6 +673,7 @@ export const AlbumProofingModal: React.FC<AlbumProofingModalProps> = ({
                 onClick={() => {
                   setCurrentSpread(idx);
                   triggerHaptic('pageFlip');
+                  acousticFeedback.playAlbumFlip();
                 }}
               >
                 <span className="thumb-index">{idx === 0 ? 'Cover' : idx === spreads.length - 1 ? 'Back' : `${idx}`}</span>

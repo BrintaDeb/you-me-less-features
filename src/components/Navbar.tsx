@@ -3,7 +3,7 @@ import { Menu, X, House, Film, Info, Key, Calendar, Clapperboard } from 'lucide-
 import { AudioToggle } from './AudioToggle';
 import { ThemeToggle } from './ThemeToggle';
 import { businessInfo } from '../data/businessData';
-import { smoothScrollTo } from '../hooks/useSmoothScroll';
+import { smoothScrollTo, scrollToTop } from '../hooks/useSmoothScroll';
 import './Navbar.css';
 
 interface NavbarProps {
@@ -61,25 +61,25 @@ export const Navbar: React.FC<NavbarProps> = ({
     if (onNavigate) {
       if (target === 'portfolio') {
         onNavigate('portfolio');
-        smoothScrollTo(0);
+        scrollToTop(true);
         return;
       }
 
       if (target === 'behind-the-scenes') {
         onNavigate('behind-the-scenes');
-        smoothScrollTo(0);
+        scrollToTop(true);
         return;
       }
 
       if (target === 'about') {
         onNavigate('about');
-        smoothScrollTo(0);
+        scrollToTop(true);
         return;
       }
 
       if (target === 'client-lounge') {
         onNavigate('client-lounge');
-        smoothScrollTo(0);
+        scrollToTop(true);
         return;
       }
 
@@ -88,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           smoothScrollTo('contact');
         } else {
           onNavigate('contact');
-          smoothScrollTo(0);
+          scrollToTop(true);
         }
         return;
       }
@@ -115,7 +115,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         onClick={(e) => {
           e.preventDefault();
           if (onNavigate) onNavigate('home');
-          smoothScrollTo(0);
+          scrollToTop(true);
         }}
         aria-label="YOU & ME Wedding Photography Home"
       >

@@ -49,10 +49,14 @@ const InstagramIcon = ({ size = 16 }: { size?: number }) => (
 
 interface AboutSectionProps {
   showTeamSection?: boolean;
+  showPillarsSection?: boolean;
+  showMetricsBar?: boolean;
 }
 
 export const AboutSection: React.FC<AboutSectionProps> = ({
-  showTeamSection = true
+  showTeamSection = true,
+  showPillarsSection = true,
+  showMetricsBar = false
 }) => {
   // Team filter & modal state
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
@@ -187,15 +191,17 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             </div>
 
             {/* Credibility & Trust Metrics Bar */}
-            <div className="about-metrics-bar">
-              {studioMetrics.map((metric, i) => (
-                <div key={i} className="metric-item">
-                  <span className="metric-value">{metric.value}</span>
-                  <span className="metric-label">{metric.label}</span>
-                  <span className="metric-detail">{metric.detail}</span>
-                </div>
-              ))}
-            </div>
+            {showMetricsBar && (
+              <div className="about-metrics-bar">
+                {studioMetrics.map((metric, i) => (
+                  <div key={i} className="metric-item">
+                    <span className="metric-value">{metric.value}</span>
+                    <span className="metric-label">{metric.label}</span>
+                    <span className="metric-detail">{metric.detail}</span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="about-actions-row">
               <a
@@ -342,35 +348,37 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
         </div>
 
         {/* Interactive Studio Craft Pillars */}
-        <div className="about-pillars-section">
-          <div className="eyebrow" style={{ justifyContent: 'center' }}>
-            <Layers size={13} /> Our Artistic Tenets
-          </div>
-          <h3 className="about-pillars-title">The Foundation of Our Visual Language</h3>
-          <p className="about-pillars-sub">
-            Three disciplined principles that separate artisanal documentary heirloom filmmaking from conventional wedding photography.
-          </p>
+        {showPillarsSection && (
+          <div className="about-pillars-section">
+            <div className="eyebrow" style={{ justifyContent: 'center' }}>
+              <Layers size={13} /> Our Artistic Tenets
+            </div>
+            <h3 className="about-pillars-title">The Foundation of Our Visual Language</h3>
+            <p className="about-pillars-sub">
+              Three disciplined principles that separate artisanal documentary heirloom filmmaking from conventional wedding photography.
+            </p>
 
-          <div className="about-pillars-grid">
-            {studioPillars.map((pillar) => (
-              <article key={pillar.id} className="pillar-card">
-                <div className="pillar-card-header">
-                  <span className="pillar-number">{pillar.number}</span>
-                  <div className="pillar-card-badge">
-                    <ShieldCheck size={14} /> Documented Standard
+            <div className="about-pillars-grid">
+              {studioPillars.map((pillar) => (
+                <article key={pillar.id} className="pillar-card">
+                  <div className="pillar-card-header">
+                    <span className="pillar-number">{pillar.number}</span>
+                    <div className="pillar-card-badge">
+                      <ShieldCheck size={14} /> Documented Standard
+                    </div>
                   </div>
-                </div>
-                <h4 className="pillar-title">{pillar.title}</h4>
-                <p className="pillar-tagline">{pillar.tagline}</p>
-                <p className="pillar-desc">{pillar.description}</p>
-                <div className="pillar-craft-focus">
-                  <Sliders size={13} />
-                  <span>{pillar.craftFocus}</span>
-                </div>
-              </article>
-            ))}
+                  <h4 className="pillar-title">{pillar.title}</h4>
+                  <p className="pillar-tagline">{pillar.tagline}</p>
+                  <p className="pillar-desc">{pillar.description}</p>
+                  <div className="pillar-craft-focus">
+                    <Sliders size={13} />
+                    <span>{pillar.craftFocus}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Team Collective Header & Interactive Role Filter */}
         {showTeamSection && (

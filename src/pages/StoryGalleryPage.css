@@ -92,6 +92,66 @@
   transform: translateY(-2px);
 }
 
+/* ── Editorial Chapter Monograph Introduction ──────────────────────── */
+.story-chapter-monograph {
+  padding: 48px 0 20px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.chapter-rubric {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.rubric-line {
+  width: 48px;
+  height: 1px;
+  background: rgba(212, 175, 55, 0.35);
+}
+
+.rubric-kicker {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-gold, #D4AF37);
+}
+
+.chapter-prose-card {
+  padding: 2.2rem 2.6rem;
+  background: rgba(138, 18, 18, 0.02);
+  border: 1px solid rgba(138, 18, 18, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.05);
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .chapter-prose-card {
+  background: rgba(25, 20, 19, 0.6);
+  border-color: rgba(212, 175, 55, 0.18);
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.45);
+}
+
+.chapter-prose-lead {
+  font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.chapter-prose-lead strong {
+  color: var(--accent-wine, #8A1212);
+  font-weight: 600;
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .chapter-prose-lead strong {
+  color: var(--accent-gold, #D4AF37);
+}
 
 /* Masonry Photo Grid */
 .gallery-masonry-section {

@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useId, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Sparkles,
   Heart,
@@ -40,6 +41,7 @@ import { galleryStorage } from '../utils/galleryStorage';
 import type { ClientRole } from '../utils/galleryStorage';
 import { downloadPhotoFile } from '../utils/photoDownloader';
 import { triggerHaptic, hapticFavorite } from '../utils/haptics';
+import { acousticFeedback } from '../utils/acousticFeedback';
 import { downloadBatchAsZip } from '../utils/zipDownloader';
 import type { BatchZipProgress } from '../utils/zipDownloader';
 import { handleImageError, DEFAULT_FALLBACK_IMAGE } from '../utils/imageFallback';
@@ -47,6 +49,24 @@ import './ClientLoungePage.css';
 
 interface ClientLoungePageProps {
   onBackToHome: () => void;
+}
+
+interface FloatingPetal {
+  id: string;
+  x: number;
+  y: number;
+  midDx: number;
+  midDy: number;
+  endDx: number;
+  endDy: number;
+  baseRot: number;
+  midRot: number;
+  endRot: number;
+  scale: number;
+  size: number;
+  variant: 'rose' | 'jasmine';
+  duration: number;
+  delay: number;
 }
 
 const DEMO_PIN = '2026';
@@ -85,15 +105,21 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
   // Family Collaboration & Access Sharing
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [copiedRole, setCopiedRole] = useState<string | null>(null);
-  const [subPins, setSubPins] = useState<{ couplePin: string; familyPin: string; guestPin: string }>({
+  const [subPins, setSubPins] = useState<{ couplePin: string; familyPin: string }>({
     couplePin: '2026',
-    familyPin: '2027',
-    guestPin: '2028'
+    familyPin: '2027'
   });
 
   // Client-Side Batch ZIP Packaging State
   const [isZipPackaging, setIsZipPackaging] = useState(false);
   const [zipProgress, setZipProgress] = useState<BatchZipProgress | null>(null);
+
+  // Golden Petal Reaction Burst State
+  const [floatingPetals, setFloatingPetals] = useState<FloatingPetal[]>([]);
+
+  // 3D Parchment Envelope & Wax Seal Unfolding State
+  const [envelopeStage, setEnvelopeStage] = useState<'sealed' | 'cracking' | 'unfolding' | 'unfolded'>('sealed');
+  const [ribbonRemoved, setRibbonRemoved] = useState(false);
 
   // Modals & Media Player
   const [isFilmModalOpen, setIsFilmModalOpen] = useState(false);
@@ -119,49 +145,71 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
       }
       const resolved = await galleryStorage.resolvePin(cleanPin);
 
-      if (resolved) {
-        setSelectedStoryId(resolved.story.id);
-        const finalRole = requestedRole || resolved.role;
-        setUserRole(finalRole);
-        setIsAuthenticated(true);
-        setPinError(false);
-        localStorage.setItem('youandme_client_auth', 'true');
-        localStorage.setItem('youandme_client_story', resolved.story.id);
-        localStorage.setItem('youandme_client_role', finalRole);
-        if (rememberDevice) {
-          localStorage.setItem('youandme_vip_remembered', 'true');
+      if (resolved || cleanPin === DEMO_PIN || cleanPin.length >= 4) {
+        if (resolved) {
+          setSelectedStoryId(resolved.story.id);
         }
-        triggerHaptic('success');
-      } else if (cleanPin === DEMO_PIN || cleanPin.length >= 4) {
-        setIsAuthenticated(true);
-        const finalRole = requestedRole || 'couple';
+        const finalRole = requestedRole || (resolved ? resolved.role : 'couple');
         setUserRole(finalRole);
         setPinError(false);
-        localStorage.setItem('youandme_client_auth', 'true');
-        localStorage.setItem('youandme_client_role', finalRole);
-        if (rememberDevice) {
-          localStorage.setItem('youandme_vip_remembered', 'true');
-        }
-        triggerHaptic('success');
+
+        // Sequence physical wax seal cracking & envelope unfolding
+        setEnvelopeStage('cracking');
+        triggerHaptic('heavy');
+        acousticFeedback.playWaxStampCrackle();
+
+        setTimeout(() => {
+          setEnvelopeStage('unfolding');
+          triggerHaptic('medium');
+        }, 340);
+
+        setTimeout(() => {
+          setEnvelopeStage('unfolded');
+          setIsAuthenticated(true);
+          localStorage.setItem('youandme_client_auth', 'true');
+          if (resolved) {
+            localStorage.setItem('youandme_client_story', resolved.story.id);
+          }
+          localStorage.setItem('youandme_client_role', finalRole);
+          if (rememberDevice) {
+            localStorage.setItem('youandme_vip_remembered', 'true');
+          }
+          acousticFeedback.playThemeChime();
+          triggerHaptic('success');
+          setIsSubmittingPin(false);
+        }, 1180);
       } else {
         setPinError(true);
         triggerHaptic('warning');
+        setIsSubmittingPin(false);
       }
     } catch {
       if (pin === DEMO_PIN || pin.length >= 4) {
-        setIsAuthenticated(true);
-        const finalRole = requestedRole || 'couple';
-        setUserRole(finalRole);
-        setPinError(false);
-        localStorage.setItem('youandme_client_auth', 'true');
-        localStorage.setItem('youandme_client_role', finalRole);
-        triggerHaptic('success');
+        setEnvelopeStage('cracking');
+        triggerHaptic('heavy');
+        acousticFeedback.playWaxStampCrackle();
+
+        setTimeout(() => {
+          setEnvelopeStage('unfolding');
+        }, 340);
+
+        setTimeout(() => {
+          setEnvelopeStage('unfolded');
+          setIsAuthenticated(true);
+          const finalRole = requestedRole || 'couple';
+          setUserRole(finalRole);
+          setPinError(false);
+          localStorage.setItem('youandme_client_auth', 'true');
+          localStorage.setItem('youandme_client_role', finalRole);
+          acousticFeedback.playThemeChime();
+          triggerHaptic('success');
+          setIsSubmittingPin(false);
+        }, 1180);
       } else {
         setPinError(true);
         triggerHaptic('warning');
+        setIsSubmittingPin(false);
       }
-    } finally {
-      setIsSubmittingPin(false);
     }
   }, [rememberDevice]);
 
@@ -260,7 +308,15 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
     return allStories.find(c => c.id === selectedStoryId) || allStories[0] || couplesData[0];
   }, [allStories, selectedStoryId]);
 
-  // Handle PIN digit input
+  const coupleInitials = useMemo(() => {
+    const title = currentStory?.title || 'Prianka & Rohan';
+    const parts = title.split('&').map(s => s.trim());
+    const first = parts[0] ? parts[0].charAt(0).toUpperCase() : 'P';
+    const second = parts[1] ? parts[1].charAt(0).toUpperCase() : 'R';
+    return { first, second, full: `${first} & ${second}` };
+  }, [currentStory]);
+
+  // Handle PIN digit input with paper rustle acoustic feedback & liquid gold progression
   const handleDigitChange = (index: number, val: string) => {
     if (!/^\d*$/.test(val)) return;
 
@@ -269,6 +325,12 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
     newDigits[index] = char;
     setPinDigits(newDigits);
     setPinError(false);
+
+    if (char) {
+      setRibbonRemoved(true);
+      acousticFeedback.playPaperRustle();
+      triggerHaptic('light');
+    }
 
     // Auto-advance
     if (char && index < 3) {
@@ -282,8 +344,12 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
   };
 
   const handleDigitKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !pinDigits[index] && index > 0) {
-      pinInputRefs[index - 1].current?.focus();
+    if (e.key === 'Backspace') {
+      acousticFeedback.playPaperRustle();
+      triggerHaptic('light');
+      if (!pinDigits[index] && index > 0) {
+        pinInputRefs[index - 1].current?.focus();
+      }
     }
   };
 
@@ -297,6 +363,10 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
       newDigits[i] = pasted[i];
     }
     setPinDigits(newDigits);
+    setRibbonRemoved(true);
+    acousticFeedback.playPaperRustle();
+    triggerHaptic('light');
+
     if (pasted.length === 4) {
       verifyAndLogin(pasted);
     } else if (pasted.length > 0) {
@@ -304,9 +374,9 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
     }
   };
 
-
   const handleBiometricUnlock = async () => {
     setIsBiometricAuthenticating(true);
+    setRibbonRemoved(true);
     triggerHaptic('medium');
 
     setTimeout(async () => {
@@ -314,18 +384,32 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
       if (unified && unified.length > 0) {
         setAllStories(unified);
       }
-      setIsAuthenticated(true);
-      setUserRole('couple');
-      localStorage.setItem('youandme_client_auth', 'true');
-      localStorage.setItem('youandme_client_role', 'couple');
-      localStorage.setItem('youandme_vip_remembered', 'true');
-      setIsBiometricAuthenticating(false);
-      triggerHaptic('success');
-    }, 650);
+      setEnvelopeStage('cracking');
+      triggerHaptic('heavy');
+      acousticFeedback.playWaxStampCrackle();
+
+      setTimeout(() => {
+        setEnvelopeStage('unfolding');
+      }, 340);
+
+      setTimeout(() => {
+        setEnvelopeStage('unfolded');
+        setIsAuthenticated(true);
+        setUserRole('couple');
+        localStorage.setItem('youandme_client_auth', 'true');
+        localStorage.setItem('youandme_client_role', 'couple');
+        localStorage.setItem('youandme_vip_remembered', 'true');
+        setIsBiometricAuthenticating(false);
+        acousticFeedback.playThemeChime();
+        triggerHaptic('success');
+      }, 1180);
+    }, 450);
   };
 
   const handleQuickDemoLogin = () => {
     setPinDigits(['2', '0', '2', '6']);
+    setRibbonRemoved(true);
+    acousticFeedback.playPaperRustle();
     verifyAndLogin('2026');
   };
 
@@ -336,18 +420,98 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
     triggerHaptic('light');
   };
 
-  // Toggle favorite photo for album with haptic + acoustic feedback & role protection
+  // Toggle favorite photo for album with haptic + acoustic feedback + golden petal reaction burst
   const togglePhotoSelection = (photoId: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    if (userRole === 'guest') {
-      showToast('Guest View: Album curation is reserved for the couple and family.');
-      triggerHaptic('warning');
-      return;
+
+    const isCurrentlySelected = selectedPhotoIds.includes(photoId);
+
+    // Extract viewport coordinates synchronously from click target or pointer
+    let originX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
+    let originY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
+
+    if (e) {
+      const target = e.currentTarget as HTMLElement | null;
+      if (target && target.getBoundingClientRect) {
+        const rect = target.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          originX = rect.left + rect.width / 2;
+          originY = rect.top + rect.height / 2;
+        } else if (e.clientX && e.clientY) {
+          originX = e.clientX;
+          originY = e.clientY;
+        }
+      } else if (e.clientX && e.clientY) {
+        originX = e.clientX;
+        originY = e.clientY;
+      }
+    }
+
+    // If favoriting, trigger miniature golden petals burst floating upward
+    if (!isCurrentlySelected) {
+      try {
+        acousticFeedback.playThemeChime();
+      } catch {}
+
+      // Exactly 6 delicate botanical rose & jasmine petals in an upward floral arc
+      const fanAngles = [-135, -114, -97, -83, -66, -45];
+      const variants: Array<'rose' | 'jasmine'> = [
+        'rose',
+        'jasmine',
+        'rose',
+        'jasmine',
+        'rose',
+        'jasmine'
+      ];
+
+      const newPetals: FloatingPetal[] = fanAngles.map((baseAngleDeg, idx) => {
+        const angleDeg = baseAngleDeg + (Math.random() - 0.5) * 6;
+        const angleRad = (angleDeg * Math.PI) / 180;
+        const distance = 80 + (idx % 2 === 0 ? 16 : 0) + Math.random() * 18;
+
+        const burstDx = Math.cos(angleRad) * distance;
+        const burstDy = Math.sin(angleRad) * distance;
+
+        // Additional gentle upward thermal lift & horizontal drift
+        const upwardLift = 52 + Math.random() * 28;
+        const horizontalDrift = (idx < 3 ? -1 : 1) * (15 + Math.random() * 16);
+
+        const endDx = burstDx + horizontalDrift;
+        const endDy = burstDy - upwardLift;
+
+        // Base rotation: petal tip points outward along its natural trajectory
+        const baseRot = angleDeg + 90;
+        const midRot = baseRot + (idx % 2 === 0 ? 10 : -10);
+        const endRot = baseRot + (idx % 2 === 0 ? 22 : -22);
+
+        return {
+          id: `petal-${Date.now()}-${idx}-${Math.random().toString(36).substring(2, 6)}`,
+          x: originX,
+          y: originY,
+          midDx: burstDx,
+          midDy: burstDy,
+          endDx,
+          endDy,
+          baseRot,
+          midRot,
+          endRot,
+          scale: 0.95 + (idx % 3) * 0.08,
+          size: variants[idx] === 'rose' ? 32 : 30,
+          variant: variants[idx],
+          duration: 1100 + idx * 50,
+          delay: idx * 22,
+        };
+      });
+
+      setFloatingPetals(prev => [...prev, ...newPetals]);
+
+      setTimeout(() => {
+        setFloatingPetals(prev => prev.filter(p => !newPetals.some(np => np.id === p.id)));
+      }, 1600);
     }
 
     setSelectedPhotoIds(prev => {
       let updated: string[];
-      const isCurrentlySelected = prev.includes(photoId);
       if (isCurrentlySelected) {
         updated = prev.filter(id => id !== photoId);
         hapticFavorite(false);
@@ -409,7 +573,7 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
     navigator.clipboard.writeText(shareUrl).then(() => {
       setCopiedRole(role);
       triggerHaptic('success');
-      showToast(`Copied ${role === 'couple' ? 'Couple Master' : role === 'family' ? 'Family Circle' : 'Guest'} access link!`);
+      showToast(`Copied ${role === 'couple' ? 'Couple Master' : 'Family Circle'} access link!`);
       setTimeout(() => setCopiedRole(null), 2500);
     });
   };
@@ -418,7 +582,7 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
   const handleShareWhatsApp = (role: ClientRole, pin: string) => {
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
     const shareUrl = `${origin}/client-lounge?pin=${pin}&role=${role}`;
-    const roleTitle = role === 'couple' ? 'Couple Master Suite' : role === 'family' ? 'Family Circle' : 'Guest Gallery';
+    const roleTitle = role === 'couple' ? 'Couple Master Suite' : 'Family Circle Suite';
     const msg = encodeURIComponent(
       `✨ YOU & ME Wedding Photography — Private Client Sanctuary ✨\n\n` +
       `Celebration: ${currentStory.title}\n` +
@@ -578,118 +742,340 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
           </div>
         </div>
 
-        <div className="container">
-          <div className="lounge-auth-card">
-            {/* Atelier Crest Seal */}
-            <div className="auth-crest-seal">
-              <div className="crest-seal-ring">
-                <Crown size={26} className="crest-crown-icon" />
-              </div>
-              <span className="crest-text-top">YOU &amp; ME ATELIER</span>
-              <span className="crest-text-bot">PRIVATE COLLECTION</span>
-            </div>
+        <div className="container auth-envelope-stage">
+          {/* 3D Physical Vellum Envelope Stage */}
+          <div
+            className={`auth-envelope-wrap ${envelopeStage} ${ribbonRemoved ? 'ribbon-untied' : ''} ${pinError ? 'has-error' : ''}`}
+            onMouseEnter={() => setRibbonRemoved(true)}
+          >
+            {/* Dark Linen Floor Ambient Shadow */}
+            <div className="envelope-shadow-floor" aria-hidden="true" />
 
-            <span className="auth-eyebrow">VIP Client Sanctuary</span>
-            <h1 className="auth-title">Enter Your Wedding Suite</h1>
-            <p className="auth-desc">
-              Welcome to your private studio sanctuary. Enter your 4-digit wedding access PIN to review your archival collection, screen your wedding film, and proof your lay-flat heirloom volume.
-            </p>
-
-            {/* Segmented 4-Box PIN Input */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                verifyAndLogin(pinDigits.join(''));
-              }}
-              className="auth-segmented-form"
+            {/* 1. Burgundy Silk Ribbon (Unties & slides off on interaction) */}
+            <div
+              className="envelope-silk-ribbon"
+              aria-hidden="true"
+              onClick={() => setRibbonRemoved(true)}
             >
-              <div className={`segmented-pin-row ${pinError ? 'has-error' : ''}`}>
-                {pinDigits.map((digit, idx) => (
-                  <input
-                    key={idx}
-                    ref={pinInputRefs[idx]}
-                    type="password"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleDigitChange(idx, e.target.value)}
-                    onKeyDown={(e) => handleDigitKeyDown(idx, e)}
-                    onPaste={handleDigitPaste}
-                    className="segmented-pin-box"
-                    aria-label={`PIN Digit ${idx + 1}`}
-                    autoFocus={idx === 0}
-                  />
-                ))}
-              </div>
-
-              {pinError && (
-                <div className="auth-error-banner">
-                  <span>Passcode unrecognized. Please check your wedding invitation card or click instant preview below.</span>
+              <div className="ribbon-band">
+                <span className="ribbon-metallic-edge top" />
+                <div className="ribbon-seal-knot">
+                  <span className="knot-icon">✦</span>
+                  <span className="knot-text">YOU &amp; ME ATELIER PRIVÉ</span>
+                  <span className="knot-icon">✦</span>
                 </div>
-              )}
+                <span className="ribbon-metallic-edge bot" />
+              </div>
+            </div>
 
-              <div className="auth-remember-row">
-                <label className="auth-remember-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={rememberDevice}
-                    onChange={e => setRememberDevice(e.target.checked)}
-                  />
-                  <span>Remember this device for instant biometric unlock</span>
-                </label>
+            {/* 2. Physical 3D Vellum Envelope Structure */}
+            <div className="vellum-envelope-structure">
+              {/* Back Wall of Envelope */}
+              <div className="envelope-back-wall" />
+
+              {/* Envelope Pocket Cavity with Personalized VIP Invitation Card */}
+              <div className="envelope-pocket-cavity">
+                {/* 3. Personalized Atelier VIP Invitation Card */}
+                <div className="vip-invitation-card">
+                  <div className="card-engraved-frame">
+                    {/* Feature 2: Dual-Monogram Liquid Gold Heraldry */}
+                    <div className="heraldic-monogram-crest" aria-label={`Monogram for ${coupleInitials.full}`}>
+                      <svg viewBox="0 0 160 115" className="heraldry-svg">
+                        <defs>
+                          <linearGradient id="liquidGoldHeraldry" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#FFF9D2" />
+                            <stop offset="30%" stopColor="#F5D77F" />
+                            <stop offset="65%" stopColor="#D4AF37" />
+                            <stop offset="100%" stopColor="#8A6510" />
+                          </linearGradient>
+                          <radialGradient id="heraldryGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stopColor="rgba(212, 175, 55, 0.4)" />
+                            <stop offset="100%" stopColor="rgba(212, 175, 55, 0)" />
+                          </radialGradient>
+                          <filter id="goldShineFilter" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#D4AF37" floodOpacity="0.5" />
+                          </filter>
+                        </defs>
+
+                        {/* Ambient Gold Radial Core */}
+                        <circle cx="80" cy="52" r="42" fill="url(#heraldryGlow)" />
+
+                        {/* Mughal Lotus Vines & Filigree Cartouche */}
+                        <g className="heraldry-vines" stroke="url(#liquidGoldHeraldry)" strokeWidth="1.2" fill="none">
+                          {/* Left Lotus Branch */}
+                          <path
+                            d="M 28 72 C 32 58, 44 40, 58 36 C 53 44, 52 56, 46 66 C 40 64, 34 68, 28 72 Z"
+                            strokeDasharray="140"
+                            strokeDashoffset={140 * (1 - Math.min(1, pinDigits.filter(Boolean).length / 2))}
+                            className="liquid-stroke"
+                          />
+                          {/* Right Lotus Branch */}
+                          <path
+                            d="M 132 72 C 128 58, 116 40, 102 36 C 107 44, 108 56, 114 66 C 120 64, 126 68, 132 72 Z"
+                            strokeDasharray="140"
+                            strokeDashoffset={140 * (1 - Math.min(1, Math.max(0, (pinDigits.filter(Boolean).length - 1) / 2)))}
+                            className="liquid-stroke"
+                          />
+                          {/* Royal Coronet Arch */}
+                          <path
+                            d="M 68 26 C 72 20, 80 16, 88 20 C 90 23, 80 23, 68 26 Z"
+                            strokeDasharray="60"
+                            strokeDashoffset={60 * (1 - pinDigits.filter(Boolean).length / 4)}
+                            className="liquid-stroke"
+                          />
+                          <polygon
+                            points="80,12 83,19 89,19 84,23 86,29 80,25 74,29 76,23 71,19 77,19"
+                            fill={pinDigits.filter(Boolean).length >= 4 ? "url(#liquidGoldHeraldry)" : "none"}
+                            stroke="url(#liquidGoldHeraldry)"
+                            strokeWidth="1"
+                            className="coronet-star"
+                          />
+                        </g>
+
+                        {/* Couple Dual Monogram Initials */}
+                        <g className="heraldry-monogram-initials">
+                          {/* Engraved Background Track */}
+                          <text
+                            x="64"
+                            y="70"
+                            fontFamily="Cinzel, 'Playfair Display', serif"
+                            fontSize="32"
+                            fontWeight="600"
+                            textAnchor="middle"
+                            fill="none"
+                            stroke="rgba(212, 175, 55, 0.25)"
+                            strokeWidth="1"
+                            letterSpacing="0.05em"
+                          >
+                            {coupleInitials.first}
+                          </text>
+                          <text
+                            x="80"
+                            y="68"
+                            fontFamily="'Alex Brush', cursive, serif"
+                            fontSize="20"
+                            textAnchor="middle"
+                            fill="rgba(212, 175, 55, 0.4)"
+                          >
+                            &amp;
+                          </text>
+                          <text
+                            x="96"
+                            y="70"
+                            fontFamily="Cinzel, 'Playfair Display', serif"
+                            fontSize="32"
+                            fontWeight="600"
+                            textAnchor="middle"
+                            fill="none"
+                            stroke="rgba(212, 175, 55, 0.25)"
+                            strokeWidth="1"
+                            letterSpacing="0.05em"
+                          >
+                            {coupleInitials.second}
+                          </text>
+
+                          {/* Dynamic Liquid Gold Flowing Foreground Text */}
+                          <text
+                            x="64"
+                            y="70"
+                            fontFamily="Cinzel, 'Playfair Display', serif"
+                            fontSize="32"
+                            fontWeight="600"
+                            textAnchor="middle"
+                            fill="url(#liquidGoldHeraldry)"
+                            className={`liquid-gold-letter ${pinDigits.filter(Boolean).length >= 1 ? 'filled' : ''}`}
+                            filter={pinDigits.filter(Boolean).length >= 1 ? "url(#goldShineFilter)" : undefined}
+                            opacity={pinDigits.filter(Boolean).length >= 1 ? 1 : 0.08}
+                          >
+                            {coupleInitials.first}
+                          </text>
+                          <text
+                            x="80"
+                            y="68"
+                            fontFamily="'Alex Brush', cursive, serif"
+                            fontSize="20"
+                            textAnchor="middle"
+                            fill="url(#liquidGoldHeraldry)"
+                            className={`liquid-gold-ampersand ${pinDigits.filter(Boolean).length >= 2 ? 'filled' : ''}`}
+                            opacity={pinDigits.filter(Boolean).length >= 2 ? 1 : 0.15}
+                          >
+                            &amp;
+                          </text>
+                          <text
+                            x="96"
+                            y="70"
+                            fontFamily="Cinzel, 'Playfair Display', serif"
+                            fontSize="32"
+                            fontWeight="600"
+                            textAnchor="middle"
+                            fill="url(#liquidGoldHeraldry)"
+                            className={`liquid-gold-letter ${pinDigits.filter(Boolean).length >= 3 ? 'filled' : ''}`}
+                            filter={pinDigits.filter(Boolean).length >= 3 ? "url(#goldShineFilter)" : undefined}
+                            opacity={pinDigits.filter(Boolean).length >= 3 ? 1 : 0.08}
+                          >
+                            {coupleInitials.second}
+                          </text>
+                        </g>
+
+                        {/* Liquid Gold Progress Hairline */}
+                        <line
+                          x1="45"
+                          y1="86"
+                          x2="115"
+                          y2="86"
+                          stroke="rgba(212, 175, 55, 0.2)"
+                          strokeWidth="1"
+                        />
+                        <line
+                          x1="45"
+                          y1="86"
+                          x2={45 + (pinDigits.filter(Boolean).length / 4) * 70}
+                          y2="86"
+                          stroke="url(#liquidGoldHeraldry)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          className="liquid-progress-line"
+                        />
+                      </svg>
+                      {pinDigits.filter(Boolean).length === 4 && <div className="gold-gleam-sweep" />}
+                    </div>
+
+                    <div className="card-content-body">
+                      <span className="auth-eyebrow">VIP CLIENT SANCTUARY</span>
+                      <h1 className="auth-title">The Wedding Suite of {currentStory.title}</h1>
+                      <p className="auth-desc">
+                        Enter your private 4-digit key to unlock your wedding collection, film screening, and lay-flat heirloom proof.
+                      </p>
+
+                      {/* Segmented 4-Box PIN Input */}
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          verifyAndLogin(pinDigits.join(''));
+                        }}
+                        className="auth-segmented-form"
+                      >
+                        <div className={`segmented-pin-row ${pinError ? 'has-error' : ''}`}>
+                          {pinDigits.map((digit, idx) => (
+                            <input
+                              key={idx}
+                              ref={pinInputRefs[idx]}
+                              type="password"
+                              inputMode="numeric"
+                              maxLength={1}
+                              value={digit}
+                              onChange={(e) => handleDigitChange(idx, e.target.value)}
+                              onKeyDown={(e) => handleDigitKeyDown(idx, e)}
+                              onPaste={handleDigitPaste}
+                              className="segmented-pin-box"
+                              aria-label={`PIN Digit ${idx + 1}`}
+                              autoFocus={idx === 0}
+                            />
+                          ))}
+                        </div>
+
+                        {pinError && (
+                          <div className="auth-error-banner">
+                            <span>Passcode unrecognized. Please check your wedding invitation card or click instant preview below.</span>
+                          </div>
+                        )}
+
+                        <div className="auth-remember-row">
+                          <label className="auth-remember-checkbox">
+                            <input
+                              type="checkbox"
+                              checked={rememberDevice}
+                              onChange={e => setRememberDevice(e.target.checked)}
+                            />
+                            <span>Remember this device for instant biometric unlock</span>
+                          </label>
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="btn btn-primary auth-enter-btn"
+                          disabled={isSubmittingPin || pinDigits.some(d => d === '')}
+                        >
+                          <span>{isSubmittingPin ? 'Verifying...' : 'Unlock Private Suite'}</span>
+                          <ChevronRight size={16} />
+                        </button>
+                      </form>
+
+                      {/* Biometric VIP Quick Unlock */}
+                      <button
+                        type="button"
+                        className="auth-biometric-btn"
+                        onClick={handleBiometricUnlock}
+                        disabled={isBiometricAuthenticating}
+                        title="Fast-pass biometric device unlock"
+                      >
+                        <Fingerprint size={18} className="gold-icon" />
+                        <span>{isBiometricAuthenticating ? 'Authenticating Device...' : 'Touch ID / Face ID Fast-Pass'}</span>
+                      </button>
+
+                      {/* 1-Click Demo Shortcut */}
+                      <button
+                        type="button"
+                        className="auth-quick-demo-btn"
+                        onClick={handleQuickDemoLogin}
+                        title="One-click instantaneous access for demo review"
+                      >
+                        <Sparkles size={15} className="gold-icon" />
+                        <span>Instant VIP Demo Access (PIN: <strong>2026</strong>)</span>
+                      </button>
+
+                      {/* Private & Family Access Hint */}
+                      <div className="auth-tier-hints">
+                        <span>Couple PIN: <strong>2026</strong></span>
+                        <span className="sep">&bull;</span>
+                        <span>Family Circle PIN: <strong>2027</strong></span>
+                      </div>
+
+                      {/* Security Guarantee Badge */}
+                      <div className="auth-encryption-badge">
+                        <ShieldCheck size={14} className="gold-icon" />
+                        <span>256-Bit Private Couple Encryption • Archival Cloud Guarantee</span>
+                      </div>
+
+                      <button type="button" className="auth-back-link" onClick={onBackToHome}>
+                        ← Return to Main Website
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <button
-                type="submit"
-                className="btn btn-primary auth-enter-btn"
-                disabled={isSubmittingPin || pinDigits.some(d => d === '')}
-              >
-                <span>{isSubmittingPin ? 'Verifying...' : 'Unlock Private Suite'}</span>
-                <ChevronRight size={16} />
-              </button>
-            </form>
+              {/* Lower Triangle Pocket Folds (Front of envelope) */}
+              <div className="envelope-pocket-front" aria-hidden="true">
+                <div className="envelope-fold left" />
+                <div className="envelope-fold right" />
+                <div className="envelope-fold bottom" />
+              </div>
 
-            {/* Biometric VIP Quick Unlock */}
-            <button
-              type="button"
-              className="auth-biometric-btn"
-              onClick={handleBiometricUnlock}
-              disabled={isBiometricAuthenticating}
-              title="Fast-pass biometric device unlock"
-            >
-              <Fingerprint size={18} className="gold-icon" />
-              <span>{isBiometricAuthenticating ? 'Authenticating Device...' : 'Touch ID / Face ID Fast-Pass'}</span>
-            </button>
-
-            {/* 1-Click Demo Shortcut */}
-            <button
-              type="button"
-              className="auth-quick-demo-btn"
-              onClick={handleQuickDemoLogin}
-              title="One-click instantaneous access for demo review"
-            >
-              <Sparkles size={15} className="gold-icon" />
-              <span>Instant VIP Demo Access (PIN: <strong>2026</strong>)</span>
-            </button>
-
-            {/* Multi-Tier Access Hint */}
-            <div className="auth-tier-hints">
-              <span>Couple PIN: <strong>2026</strong></span>
-              <span className="sep">&bull;</span>
-              <span>Family PIN: <strong>2027</strong></span>
-              <span className="sep">&bull;</span>
-              <span>Guest PIN: <strong>2028</strong></span>
+              {/* 4. Triangular Flap with 3D Embossed Gold Wax Seal */}
+              <div className="envelope-top-flap" aria-hidden="true">
+                <div className="flap-vellum-surface" />
+                {/* Embossed Gold Wax Seal (Cracks open on verification) */}
+                <div className={`flap-gold-seal ${envelopeStage === 'cracking' ? 'cracked' : ''}`}>
+                  <svg viewBox="0 0 70 70" className="wax-seal-crest-svg">
+                    <defs>
+                      <radialGradient id="goldWaxGradient" cx="45%" cy="40%" r="55%">
+                        <stop offset="0%" stopColor="#FFF2A8" />
+                        <stop offset="35%" stopColor="#E5B942" />
+                        <stop offset="70%" stopColor="#B3841D" />
+                        <stop offset="100%" stopColor="#684705" />
+                      </radialGradient>
+                    </defs>
+                    <circle cx="35" cy="35" r="30" fill="url(#goldWaxGradient)" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.45))" />
+                    <circle cx="35" cy="35" r="25" fill="none" stroke="#FFF7C2" strokeWidth="1" strokeDasharray="2 2" opacity="0.8" />
+                    <text x="35" y="40" fontSize="15" fontFamily="Cinzel, serif" fontWeight="700" textAnchor="middle" fill="#4B3202">
+                      {coupleInitials.first}{coupleInitials.second}
+                    </text>
+                  </svg>
+                  {envelopeStage === 'cracking' && <span className="seal-fracture-line" />}
+                </div>
+              </div>
             </div>
-
-            {/* Security Guarantee Badge */}
-            <div className="auth-encryption-badge">
-              <ShieldCheck size={14} className="gold-icon" />
-              <span>256-Bit Private Couple Encryption • Archival Cloud Guarantee</span>
-            </div>
-
-            <button type="button" className="auth-back-link" onClick={onBackToHome}>
-              ← Return to Main Website
-            </button>
           </div>
         </div>
       </main>
@@ -712,14 +1098,17 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
         <div className="container-wide hero-banner-content">
           <div className="hero-banner-topbar">
             <div className={`suite-tag role-${userRole}`}>
-              {userRole === 'couple' && <Crown size={14} className="gold-icon" />}
-              {userRole === 'family' && <Users size={14} className="gold-icon" />}
-              {userRole === 'guest' && <Sparkles size={14} className="gold-icon" />}
-              <span>
-                {userRole === 'couple' && 'Master VIP Sanctuary • Couple Suite'}
-                {userRole === 'family' && 'Family Circle Suite • Curation Access'}
-                {userRole === 'guest' && 'Guest Gallery Viewing Access'}
-              </span>
+              {userRole === 'couple' ? (
+                <>
+                  <Crown size={14} className="gold-icon" />
+                  <span>Master VIP Sanctuary • Couple Suite</span>
+                </>
+              ) : (
+                <>
+                  <Users size={14} className="gold-icon" />
+                  <span>Family Circle Suite • Private Access</span>
+                </>
+              )}
             </div>
 
             <div className="hero-topbar-actions">
@@ -1021,74 +1410,74 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
       <section className="workbench-toolbar-section">
         <div className="container-wide">
           <div className="workbench-toolbar-card">
-            {/* Chapter Navigator Filter Pills */}
+            {/* Chapter Navigator Filter Pills with Calligraphic Ink-Bleed Ribbon */}
             <div className="chapter-tabs-scroll">
-              <button
-                type="button"
-                className={`chapter-chip ${activeChapter === 'all' ? 'active' : ''}`}
-                onClick={() => {
-                  setActiveChapter('all');
-                  triggerHaptic('light');
-                }}
-              >
-                <Filter size={13} /> All Moments ({currentStory.images.length})
-              </button>
+              {[
+                { id: 'all', label: `All Moments (${currentStory.images.length})`, icon: Filter },
+                { id: 'prep', label: 'Getting Ready & Details' },
+                { id: 'ceremony', label: 'Sacred Rituals' },
+                { id: 'portraits', label: 'Portraits & Twilight' },
+                { id: 'revelry', label: 'Reception & Revelry' },
+                { id: 'curated', label: `Album Curated (${selectedPhotoIds.length})`, isHeart: true },
+              ].map(chapter => {
+                const isActive = activeChapter === chapter.id;
+                const IconComponent = chapter.icon;
 
-              <button
-                type="button"
-                className={`chapter-chip ${activeChapter === 'prep' ? 'active' : ''}`}
-                onClick={() => {
-                  setActiveChapter('prep');
-                  triggerHaptic('light');
-                }}
-              >
-                Getting Ready &amp; Details
-              </button>
+                return (
+                  <button
+                    key={chapter.id}
+                    type="button"
+                    className={`chapter-chip ${chapter.isHeart ? 'curated-chip' : ''} ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveChapter(chapter.id as ChapterFilter);
+                      acousticFeedback.playPaperRustle();
+                      triggerHaptic('light');
+                    }}
+                  >
+                    {/* Feature 3: Calligraphic Wet Ink Bleed Ribbon */}
+                    {isActive && (
+                      <span className="ink-bleed-ribbon" aria-hidden="true">
+                        <svg viewBox="0 0 200 44" preserveAspectRatio="none" className="ink-bleed-svg">
+                          <defs>
+                            <linearGradient id="wetBurgundyInk" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#4A060F" />
+                              <stop offset="25%" stopColor="#7E121E" />
+                              <stop offset="60%" stopColor="#A81D2E" />
+                              <stop offset="100%" stopColor="#5E0813" />
+                            </linearGradient>
+                            <linearGradient id="wetGoldInk" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#684705" />
+                              <stop offset="30%" stopColor="#D4AF37" />
+                              <stop offset="70%" stopColor="#F5D77F" />
+                              <stop offset="100%" stopColor="#8A6510" />
+                            </linearGradient>
+                          </defs>
+                          {/* Absorbent wet wash with Hahnemühle paper edge feathering */}
+                          <path
+                            d="M 6 22 Q 35 6, 95 18 T 192 20 C 196 23, 194 34, 188 36 Q 130 42, 65 29 T 6 25 Z"
+                            className="ink-wash-path"
+                          />
+                          {/* Fluid core calligraphic pen stroke */}
+                          <path
+                            d="M 10 22 C 45 14, 110 26, 188 20"
+                            className="ink-pen-stroke"
+                          />
+                        </svg>
+                      </span>
+                    )}
 
-              <button
-                type="button"
-                className={`chapter-chip ${activeChapter === 'ceremony' ? 'active' : ''}`}
-                onClick={() => {
-                  setActiveChapter('ceremony');
-                  triggerHaptic('light');
-                }}
-              >
-                Sacred Rituals
-              </button>
-
-              <button
-                type="button"
-                className={`chapter-chip ${activeChapter === 'portraits' ? 'active' : ''}`}
-                onClick={() => {
-                  setActiveChapter('portraits');
-                  triggerHaptic('light');
-                }}
-              >
-                Portraits &amp; Twilight
-              </button>
-
-              <button
-                type="button"
-                className={`chapter-chip ${activeChapter === 'revelry' ? 'active' : ''}`}
-                onClick={() => {
-                  setActiveChapter('revelry');
-                  triggerHaptic('light');
-                }}
-              >
-                Reception &amp; Revelry
-              </button>
-
-              <button
-                type="button"
-                className={`chapter-chip curated-chip ${activeChapter === 'curated' ? 'active' : ''}`}
-                onClick={() => {
-                  setActiveChapter('curated');
-                  triggerHaptic('light');
-                }}
-              >
-                <Heart size={13} fill={activeChapter === 'curated' ? '#E5253A' : 'none'} />
-                Album Curated ({selectedPhotoIds.length})
-              </button>
+                    {IconComponent && <IconComponent size={13} className="chip-leading-icon" />}
+                    {chapter.isHeart && (
+                      <Heart
+                        size={13}
+                        fill={isActive ? '#E5253A' : 'none'}
+                        className="chip-leading-icon"
+                      />
+                    )}
+                    <span className="chip-label-text">{chapter.label}</span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Search & Mode Switcher */}
@@ -1305,9 +1694,9 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
                 className={`slideshow-heart-btn ${
                   displayedImages[slideshowIndex] && selectedPhotoIds.includes(displayedImages[slideshowIndex].id) ? 'active' : ''
                 }`}
-                onClick={() => {
+                onClick={(e) => {
                   if (displayedImages[slideshowIndex]) {
-                    togglePhotoSelection(displayedImages[slideshowIndex].id);
+                    togglePhotoSelection(displayedImages[slideshowIndex].id, e);
                   }
                 }}
                 title="Curate for Heirloom Album"
@@ -1412,9 +1801,9 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
             </div>
 
             <div className="family-share-intro">
-              <h3>Private Family &amp; Guest Access Links</h3>
+              <h3>Private Family Access Vault</h3>
               <p>
-                Provide unique access links for parents, bridal party, and close family members with customized permission tiers.
+                Provide confidential access links for parents, bridal party, and immediate family members with customized permission tiers.
               </p>
             </div>
 
@@ -1482,38 +1871,6 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
                   </button>
                 </div>
               </div>
-
-              {/* Role 3: Guest Viewing */}
-              <div className="collab-role-card guest-role">
-                <div className="role-card-top">
-                  <div className="role-title-wrap">
-                    <ShieldCheck size={16} className="gold-icon" />
-                    <span className="role-name">Guest Gallery Sanctuary</span>
-                    <span className="role-badge guest">View Only</span>
-                  </div>
-                  <span className="role-pin-badge">PIN: {subPins.guestPin}</span>
-                </div>
-                <p className="role-desc">
-                  View-only presentation for guests and distant relatives. Download individual web-optimized photos without modifying the couple's album curation.
-                </p>
-                <div className="role-action-row">
-                  <button
-                    type="button"
-                    className="role-action-btn copy-btn"
-                    onClick={() => handleCopyShareLink('guest', subPins.guestPin)}
-                  >
-                    {copiedRole === 'guest' ? <Check size={14} className="gold-icon" /> : <Copy size={14} />}
-                    {copiedRole === 'guest' ? 'Link Copied!' : 'Copy Guest Link'}
-                  </button>
-                  <button
-                    type="button"
-                    className="role-action-btn whatsapp-btn"
-                    onClick={() => handleShareWhatsApp('guest', subPins.guestPin)}
-                  >
-                    <Share2 size={14} /> WhatsApp Invitation
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -1551,6 +1908,134 @@ export const ClientLoungePage: React.FC<ClientLoungePageProps> = ({ onBackToHome
           <span>{toastMessage}</span>
         </aside>
       )}
+
+      {/* ── Client Heart-Reaction Golden Petal Burst Overlay (Portal directly to document.body) ── */}
+      {typeof document !== 'undefined' &&
+        floatingPetals.length > 0 &&
+        createPortal(
+          <div className="golden-petals-overlay" aria-hidden="true">
+            {/* Global Metallic Foil Gradients & Specular Filter */}
+            <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
+              <defs>
+                <linearGradient id="goldLeafRoseGrad" x1="15%" y1="0%" x2="85%" y2="100%">
+                  <stop offset="0%" stopColor="#FFFEE8" />
+                  <stop offset="20%" stopColor="#FDE184" />
+                  <stop offset="50%" stopColor="#E2B742" />
+                  <stop offset="80%" stopColor="#B8861B" />
+                  <stop offset="100%" stopColor="#7A5208" />
+                </linearGradient>
+                <linearGradient id="goldLeafJasmineGrad" x1="0%" y1="15%" x2="100%" y2="85%">
+                  <stop offset="0%" stopColor="#FFFDD0" />
+                  <stop offset="25%" stopColor="#F9E28C" />
+                  <stop offset="60%" stopColor="#D4AF37" />
+                  <stop offset="85%" stopColor="#A67C1E" />
+                  <stop offset="100%" stopColor="#6E4B07" />
+                </linearGradient>
+                <linearGradient id="goldFoilRimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.95" />
+                  <stop offset="40%" stopColor="#FFECA0" stopOpacity="0.9" />
+                  <stop offset="80%" stopColor="#D4AF37" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#8A6510" stopOpacity="0.7" />
+                </linearGradient>
+              </defs>
+            </svg>
+
+            {floatingPetals.map(petal => (
+              <div
+                key={petal.id}
+                className={`golden-petal-item variant-${petal.variant}`}
+                style={{
+                  ['--origin-x' as any]: `${petal.x}px`,
+                  ['--origin-y' as any]: `${petal.y}px`,
+                  ['--mid-dx' as any]: `${petal.midDx}px`,
+                  ['--mid-dy' as any]: `${petal.midDy}px`,
+                  ['--end-dx' as any]: `${petal.endDx}px`,
+                  ['--end-dy' as any]: `${petal.endDy}px`,
+                  ['--base-rot' as any]: `${petal.baseRot}deg`,
+                  ['--mid-rot' as any]: `${petal.midRot}deg`,
+                  ['--end-rot' as any]: `${petal.endRot}deg`,
+                  ['--petal-scale' as any]: petal.scale,
+                  ['--petal-duration' as any]: `${petal.duration}ms`,
+                  animationDelay: `${petal.delay}ms`
+                }}
+              >
+                <div className="golden-petal-inner">
+                  {petal.variant === 'rose' && (
+                    <svg width={petal.size} height={petal.size * 1.22} viewBox="0 0 36 44" fill="none">
+                      <path
+                        d="M 18,4 C 13,2 6,6 4,13 C 2,21 3,29 9,36 C 13,40 16,43 18,43 C 20,43 23,40 27,36 C 33,29 34,21 32,13 C 30,6 23,2 18,4 Z"
+                        fill="url(#goldLeafRoseGrad)"
+                        stroke="url(#goldFoilRimGrad)"
+                        strokeWidth="0.85"
+                      />
+                      <path
+                        d="M 18,8 C 14,7 8,11 7,16 C 6,22 8,28 13,34 C 16,37 17,39 18,40"
+                        stroke="#FFFEE8"
+                        strokeWidth="0.8"
+                        strokeLinecap="round"
+                        opacity="0.85"
+                      />
+                      <path
+                        d="M 18,8 C 17.8,18 18,28 18,40"
+                        stroke="#FFE28A"
+                        strokeWidth="0.75"
+                        strokeLinecap="round"
+                        opacity="0.9"
+                      />
+                      <path
+                        d="M 17.8,18 C 13,16 9,18 7,20"
+                        stroke="#FDE074"
+                        strokeWidth="0.5"
+                        strokeLinecap="round"
+                        opacity="0.7"
+                      />
+                      <path
+                        d="M 18,22 C 23,20 27,22 29,24"
+                        stroke="#FDE074"
+                        strokeWidth="0.5"
+                        strokeLinecap="round"
+                        opacity="0.7"
+                      />
+                    </svg>
+                  )}
+
+                  {petal.variant === 'jasmine' && (
+                    <svg width={petal.size * 0.72} height={petal.size * 1.1} viewBox="0 0 30 46" fill="none">
+                      <path
+                        d="M 15,2 C 11,10 5,20 5,30 C 5,38 9.5,44 15,44 C 20.5,44 25,38 25,30 C 25,20 19,10 15,2 Z"
+                        fill="url(#goldLeafJasmineGrad)"
+                        stroke="url(#goldFoilRimGrad)"
+                        strokeWidth="0.85"
+                      />
+                      <path
+                        d="M 15,4 C 15,14 15,30 15,41"
+                        stroke="#FFFEE8"
+                        strokeWidth="0.8"
+                        strokeLinecap="round"
+                        opacity="0.85"
+                      />
+                      <path
+                        d="M 14.8,16 C 11,17 8,22 8,27"
+                        stroke="#FDE074"
+                        strokeWidth="0.5"
+                        strokeLinecap="round"
+                        opacity="0.65"
+                      />
+                      <path
+                        d="M 15.2,20 C 19,21 22,25 22,30"
+                        stroke="#FDE074"
+                        strokeWidth="0.5"
+                        strokeLinecap="round"
+                        opacity="0.65"
+                      />
+                    </svg>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>,
+          document.body
+        )}
     </main>
   );
 };

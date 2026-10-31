@@ -66,8 +66,8 @@ export const HeartCursor: React.FC = () => {
       const dy = e.clientY - lastY;
       const speed = Math.sqrt(dx * dx + dy * dy) / dt;
 
-      // Scale heart size based on velocity (clamped 1x – 1.35x)
-      velocityScale = Math.min(1.35, 1 + speed * 0.3);
+      // Scale heart size based on velocity (delicate, clamped 1x – 1.08x)
+      velocityScale = Math.min(1.08, 1 + speed * 0.06);
 
       mousePos.current = { x: e.clientX, y: e.clientY };
       lastX = e.clientX;
@@ -221,7 +221,7 @@ export const HeartCursor: React.FC = () => {
       // Main heart locks directly to mouse position for instant, razor-sharp response
       if (heartRef.current) {
         const isSpecialBadge = cursorModeRef.current !== 'default' && cursorModeRef.current !== 'magnetic';
-        const opacity = isSpecialBadge ? 0 : isTextInput ? 0.45 : 1;
+        const opacity = isSpecialBadge || isTextInput ? 0 : 1;
         heartRef.current.style.opacity = `${opacity}`;
         heartRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) translate(-50%, -50%) scale(${velocityScale})`;
       }
@@ -248,9 +248,9 @@ export const HeartCursor: React.FC = () => {
         }
       }
 
-      // Smooth trailing ring follows with fluid damping
-      ringPos.current.x += (targetX - ringPos.current.x) * 0.18;
-      ringPos.current.y += (targetY - ringPos.current.y) * 0.18;
+      // Smooth trailing ring follows with snappy, fluid response
+      ringPos.current.x += (targetX - ringPos.current.x) * 0.32;
+      ringPos.current.y += (targetY - ringPos.current.y) * 0.32;
 
       if (ringRef.current) {
         ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%)`;
@@ -352,26 +352,33 @@ export const HeartCursor: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. Precision Heart Pointer */}
+      {/* 2. Precision Focal Dot & Jewel Micro-Heart Pointer */}
       <div
         ref={heartRef}
         className={`clean-cursor-heart ${isHovered ? 'is-hovered' : ''} ${
           isPressed ? 'is-pressed' : ''
         } ${isTextInput ? 'is-text-input' : ''}`}
       >
+        <div className="clean-cursor-dot" />
         <svg viewBox="0 0 24 24" className="clean-heart-svg">
           <defs>
             <linearGradient id="cleanHeartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#F5E6D3" />
-              <stop offset="45%" stopColor="#C8A46B" />
-              <stop offset="90%" stopColor="#E5253A" />
+              <stop offset="0%" stopColor="#FBF5E8" />
+              <stop offset="35%" stopColor="#E5C378" />
+              <stop offset="70%" stopColor="#C49A45" />
+              <stop offset="100%" stopColor="#871A27" />
+            </linearGradient>
+            <linearGradient id="cleanHeartStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="#F5DC98" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#871A27" stopOpacity="0.6" />
             </linearGradient>
           </defs>
           <path
             d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
             fill="url(#cleanHeartGradient)"
-            stroke="rgba(255, 255, 255, 0.75)"
-            strokeWidth="0.8"
+            stroke="url(#cleanHeartStroke)"
+            strokeWidth="0.9"
           />
         </svg>
       </div>

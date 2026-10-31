@@ -102,7 +102,7 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
   // Stories and PINs state
   const [stories, setStories] = useState<WeddingStory[]>([]);
   const [pinsMap, setPinsMap] = useState<Record<string, string>>({});
-  const [subPinsMap, setSubPinsMap] = useState<Record<string, { couplePin: string; familyPin: string; guestPin: string }>>({});
+  const [subPinsMap, setSubPinsMap] = useState<Record<string, { couplePin: string; familyPin: string }>>({});
   const [copiedInviteId, setCopiedInviteId] = useState<string | null>(null);
   const [copiedPinKey, setCopiedPinKey] = useState<string | null>(null);
   const [selectedStoryId, setSelectedStoryId] = useState<string>('');
@@ -316,7 +316,7 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
 
   // Load sub-pins for all stories
   const loadSubPinsForStories = async (storyList: WeddingStory[]) => {
-    const map: Record<string, { couplePin: string; familyPin: string; guestPin: string }> = {};
+    const map: Record<string, { couplePin: string; familyPin: string }> = {};
     for (const s of storyList) {
       map[s.id] = await galleryStorage.getSubPinsForStory(s.id);
     }
@@ -362,15 +362,14 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
     }
   };
 
-  const handleCopyWhatsAppInvite = (story: WeddingStory, pins: { couplePin: string; familyPin: string; guestPin: string }) => {
+  const handleCopyWhatsAppInvite = (story: WeddingStory, pins: { couplePin: string; familyPin: string }) => {
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
     const text =
       `✨ YOU & ME Studios — Private Wedding Collection ✨\n\n` +
       `Dear ${story.title},\n` +
       `Your private wedding sanctuary is live! Enter using your personal access codes:\n\n` +
       `🗝️ Couple Master Suite PIN: ${pins.couplePin}\n` +
-      `👨‍👩‍👧 Family Sanctuary PIN: ${pins.familyPin}\n` +
-      `🎉 Guest Celebration PIN: ${pins.guestPin}\n\n` +
+      `👨‍👩‍👧 Family Circle Sanctuary PIN: ${pins.familyPin}\n\n` +
       `Enter suite: ${origin}/client-lounge\n\n` +
       `Warm regards,\nYOU & ME Atelier Team`;
 
@@ -1450,7 +1449,7 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
                                 className="action-btn-sm"
                                 title="Copy WhatsApp Invitation"
                                 onClick={() => {
-                                  const subPins = subPinsMap[story.id] || { couplePin: currentPin !== '—' ? currentPin : '2026', familyPin: '2027', guestPin: '2028' };
+                                  const subPins = subPinsMap[story.id] || { couplePin: currentPin !== '—' ? currentPin : '2026', familyPin: '2027' };
                                   handleCopyWhatsAppInvite(story, subPins);
                                 }}
                               >
@@ -1749,14 +1748,14 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
                 <div className="card-header-row">
                   <div className="card-title-group">
                     <Users size={18} className="gold-icon" />
-                    <h3>Multi-Tier Sub-PIN Access &amp; Dispatch</h3>
+                    <h3>Private Couple &amp; Family PIN Access</h3>
                   </div>
-                  <span className="card-badge">Couple • Family • Guest</span>
+                  <span className="card-badge">Couple • Family Only</span>
                 </div>
 
                 <div className="subpin-cards-list">
                   {stories.map(story => {
-                    const pins = subPinsMap[story.id] || { couplePin: '2026', familyPin: '2027', guestPin: '2028' };
+                    const pins = subPinsMap[story.id] || { couplePin: '2026', familyPin: '2027' };
                     const isInviteCopied = copiedInviteId === story.id;
 
                     return (
@@ -1798,17 +1797,6 @@ export const AdminPanelPage: React.FC<AdminPanelPageProps> = ({
                             <span className="pin-role">Family PIN</span>
                             <span className="pin-code">{pins.familyPin}</span>
                             {copiedPinKey === `${story.id}-family` ? <Check size={12} /> : <Copy size={12} />}
-                          </div>
-
-                          {/* Guest PIN */}
-                          <div
-                            className="subpin-pill guest-pill"
-                            onClick={() => handleCopyPin(pins.guestPin, `${story.id}-guest`)}
-                            title="Click to copy Guest PIN"
-                          >
-                            <span className="pin-role">Guest PIN</span>
-                            <span className="pin-code">{pins.guestPin}</span>
-                            {copiedPinKey === `${story.id}-guest` ? <Check size={12} /> : <Copy size={12} />}
                           </div>
                         </div>
                       </div>

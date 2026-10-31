@@ -7,7 +7,8 @@ import { CinemaWalkthroughModal } from '../components/CinemaWalkthroughModal';
 import { ResponsiveImage } from '../components/ResponsiveImage';
 import { triggerHaptic } from '../utils/haptics';
 import { galleryStorage } from '../utils/galleryStorage';
-import { smoothScrollTo } from '../hooks/useSmoothScroll';
+import { scrollToTop } from '../hooks/useSmoothScroll';
+import { IlluminatedDropCap } from '../components/IlluminatedDropCap';
 import './StoryGalleryPage.css';
 
 interface StoryGalleryPageProps {
@@ -104,6 +105,26 @@ export const StoryGalleryPage: React.FC<StoryGalleryPageProps> = ({
         </div>
       </header>
 
+      {/* Editorial Chapter Monograph Introduction */}
+      <section className="story-chapter-monograph" aria-label="Story chapter monograph">
+        <div className="container-narrow">
+          <div className="chapter-rubric">
+            <span className="rubric-line" aria-hidden="true" />
+            <span className="rubric-kicker">CHAPTER I · SACRED VOWS &amp; CHRONICLES</span>
+            <span className="rubric-line" aria-hidden="true" />
+          </div>
+          <div className="chapter-prose-card">
+            <IlluminatedDropCap letter={story.title.charAt(0)} size="lg" />
+            <p className="chapter-prose-lead">
+              <strong>{story.title}</strong> is an intimate testament to timeless devotion and generational continuity.
+              {story.tagline ? ` Preserved under the ethos "${story.tagline}", ` : ' '}
+              every photograph in this curated collection was captured through unhurried documentary discretion.
+              From sacred rituals and emotional sindoor ceremonies to spontaneous twilight laughter, each master still is permanently archived for future generations.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="gallery-masonry-section">
         <div className="container-wide">
           <div className="gallery-masonry-grid" role="region" aria-label="Wedding Photographs Masonry">
@@ -145,7 +166,7 @@ export const StoryGalleryPage: React.FC<StoryGalleryPageProps> = ({
               onClick={() => {
                 triggerHaptic('light');
                 onSelectStory(prevStory);
-                smoothScrollTo(0);
+                scrollToTop(true);
               }}
             >
               <ArrowLeft size={16} /> Previous: {prevStory.title}
@@ -170,7 +191,7 @@ export const StoryGalleryPage: React.FC<StoryGalleryPageProps> = ({
               onClick={() => {
                 triggerHaptic('light');
                 onSelectStory(nextStory);
-                smoothScrollTo(0);
+                scrollToTop(true);
               }}
             >
               Next: {nextStory.title} <ArrowRight size={16} />

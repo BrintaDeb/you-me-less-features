@@ -6,7 +6,6 @@ import {
   Printer,
   Sparkles,
   CheckCircle2,
-  Lock,
   FileArchive
 } from 'lucide-react';
 import type { WeddingStory } from '../data/couplesData';
@@ -38,6 +37,8 @@ export const DownloadTierModal: React.FC<DownloadTierModalProps> = ({
   const [isFinished, setIsFinished] = useState(false);
   const timerIdsRef = useRef<number[]>([]);
 
+  const isMasterLocked = userRole === 'family';
+
   const clearAllTimers = () => {
     timerIdsRef.current.forEach(id => window.clearTimeout(id));
     timerIdsRef.current = [];
@@ -49,14 +50,7 @@ export const DownloadTierModal: React.FC<DownloadTierModalProps> = ({
 
   if (!isOpen) return null;
 
-  const isMasterLocked = userRole === 'guest';
-
   const handleStartDownload = () => {
-    if (selectedTier === 'master' && isMasterLocked) {
-      triggerHaptic('warning');
-      return;
-    }
-
     clearAllTimers();
     setIsPackaging(true);
     setProgressPercent(10);
@@ -162,22 +156,14 @@ export const DownloadTierModal: React.FC<DownloadTierModalProps> = ({
 
           {/* Card 2: 45MP Master Print Archive */}
           <div
-            className={`tier-card ${selectedTier === 'master' ? 'selected' : ''} ${isMasterLocked ? 'is-locked' : ''}`}
+            className={`tier-card ${selectedTier === 'master' ? 'selected' : ''}`}
             onClick={() => {
-              if (!isMasterLocked) {
-                setSelectedTier('master');
-                triggerHaptic('light');
-              } else {
-                triggerHaptic('warning');
-              }
+              setSelectedTier('master');
+              triggerHaptic('light');
             }}
           >
             <div className="tier-card-radio">
-              {isMasterLocked ? (
-                <Lock size={15} className="lock-icon" />
-              ) : (
-                <span className={`radio-dot ${selectedTier === 'master' ? 'active' : ''}`} />
-              )}
+              <span className={`radio-dot ${selectedTier === 'master' ? 'active' : ''}`} />
             </div>
 
             <div className="tier-card-body">
@@ -187,11 +173,7 @@ export const DownloadTierModal: React.FC<DownloadTierModalProps> = ({
 
               <div className="tier-header-row">
                 <h3 className="tier-name">45MP Master Print Archive</h3>
-                {isMasterLocked ? (
-                  <span className="tier-pill-locked">Couple / Family Only</span>
-                ) : (
-                  <span className="tier-pill-master">Museum Quality</span>
-                )}
+                <span className="tier-pill-master">Museum Quality</span>
               </div>
 
               <div className="tier-spec-list">

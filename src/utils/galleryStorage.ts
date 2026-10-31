@@ -1,7 +1,7 @@
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory, WeddingImage } from '../data/couplesData';
 
-export type ClientRole = 'couple' | 'family' | 'guest';
+export type ClientRole = 'couple' | 'family';
 
 interface PinRecord {
   pin: string;
@@ -15,18 +15,15 @@ const STORE_STORIES = 'stories';
 const STORE_PINS = 'pins';
 
 const DEFAULT_PIN_RECORDS: PinRecord[] = [
-  // Paraj & Mrinmoyee
+  // Paraj & Mrinmoyee (Private Couple & Family Only)
   { pin: '2026', storyId: couplesData[0].id, role: 'couple' },
   { pin: '2027', storyId: couplesData[0].id, role: 'family' },
-  { pin: '2028', storyId: couplesData[0].id, role: 'guest' },
   // Jasraj & Urmi
   { pin: '1122', storyId: couplesData[1]?.id || couplesData[0].id, role: 'couple' },
   { pin: '1123', storyId: couplesData[1]?.id || couplesData[0].id, role: 'family' },
-  { pin: '1124', storyId: couplesData[1]?.id || couplesData[0].id, role: 'guest' },
   // Avik & Binita
   { pin: '3344', storyId: couplesData[2]?.id || couplesData[0].id, role: 'couple' },
-  { pin: '3345', storyId: couplesData[2]?.id || couplesData[0].id, role: 'family' },
-  { pin: '3346', storyId: couplesData[2]?.id || couplesData[0].id, role: 'guest' }
+  { pin: '3345', storyId: couplesData[2]?.id || couplesData[0].id, role: 'family' }
 ];
 
 class GalleryStorageManager {
@@ -205,14 +202,13 @@ class GalleryStorageManager {
     return map;
   }
 
-  // Get sub-pins for a specific story
-  public async getSubPinsForStory(storyId: string): Promise<{ couplePin: string; familyPin: string; guestPin: string }> {
+  // Get sub-pins for a specific story (Private Couple & Family Only)
+  public async getSubPinsForStory(storyId: string): Promise<{ couplePin: string; familyPin: string }> {
     const records = await this.getAllPinRecords();
     const storyPins = records.filter(p => p.storyId === storyId);
 
     const couple = storyPins.find(p => p.role === 'couple')?.pin;
     const family = storyPins.find(p => p.role === 'family')?.pin;
-    const guest = storyPins.find(p => p.role === 'guest')?.pin;
 
     // Deterministic fallbacks if not explicitly set
     const fallbackBase = storyId.length >= 4 ? storyId.slice(0, 4) : '2026';
@@ -220,22 +216,19 @@ class GalleryStorageManager {
 
     return {
       couplePin: couple || String(numBase),
-      familyPin: family || String(numBase + 1),
-      guestPin: guest || String(numBase + 2)
+      familyPin: family || String(numBase + 1)
     };
   }
 
-  // Save all 3 sub-PINs for a story
+  // Save sub-PINs for a story (Private Couple & Family Only)
   public async saveSubPins(
     storyId: string,
     couplePin: string,
-    familyPin: string,
-    guestPin: string
+    familyPin: string
   ): Promise<boolean> {
     const records: PinRecord[] = [
       { pin: couplePin.trim(), storyId, role: 'couple' },
-      { pin: familyPin.trim(), storyId, role: 'family' },
-      { pin: guestPin.trim(), storyId, role: 'guest' }
+      { pin: familyPin.trim(), storyId, role: 'family' }
     ];
 
     for (const r of records) {
@@ -317,10 +310,9 @@ class GalleryStorageManager {
       return { story, role: match.role };
     }
 
-    // Default demo fallback: 2026 -> couple, 2027 -> family, 2028 -> guest
+    // Default demo fallback: 2026 -> couple, 2027 -> family
     if (clean === '2026') return { story: couplesData[0], role: 'couple' };
     if (clean === '2027') return { story: couplesData[0], role: 'family' };
-    if (clean === '2028') return { story: couplesData[0], role: 'guest' };
 
     return null;
   }

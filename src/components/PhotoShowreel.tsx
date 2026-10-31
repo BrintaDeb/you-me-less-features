@@ -1,7 +1,7 @@
 import React from 'react';
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
-import { handleImageError } from '../utils/imageFallback';
+import { handleImageError, getOptimizedWixImageUrl } from '../utils/imageFallback';
 import './PhotoShowreel.css';
 
 interface ShowreelCard {
@@ -9,6 +9,7 @@ interface ShowreelCard {
   story: WeddingStory;
   imageIndex: number;
   imageUrl: string;
+  rawImageUrl: string;
   coupleTitle: string;
   category: string;
   location: string;
@@ -43,7 +44,9 @@ const buildShowreelCards = () => {
       id: `${story.id}-${img.id || imgIdx}`,
       story,
       imageIndex: imgIdx,
-      imageUrl: img.url,
+      // Streamline Wix master 40MP RAW files into buttery 600x800 retina thumbnails
+      imageUrl: getOptimizedWixImageUrl(img.url, 600, 800, 80),
+      rawImageUrl: img.url,
       coupleTitle: story.title,
       category: story.category,
       location: story.location || 'Agartala • Kolkata'
@@ -88,6 +91,8 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
               className="showreel-card"
               role="button"
               tabIndex={0}
+              data-cursor="expand"
+              data-cursor-label="VIEW PHOTO"
               onClick={() => handleCardClick(card)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -103,6 +108,9 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
                   alt={card.coupleTitle}
                   className="showreel-img"
                   loading="lazy"
+                  decoding="async"
+                  width={360}
+                  height={480}
                   onError={handleImageError}
                 />
                 <div className="showreel-card-overlay" aria-hidden="true">
@@ -129,6 +137,8 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
               role="button"
               tabIndex={0}
               aria-hidden="true"
+              data-cursor="expand"
+              data-cursor-label="VIEW PHOTO"
               onClick={() => handleCardClick(card)}
             >
               <div className="showreel-media">
@@ -137,6 +147,9 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
                   alt=""
                   className="showreel-img"
                   loading="lazy"
+                  decoding="async"
+                  width={360}
+                  height={480}
                   onError={handleImageError}
                 />
                 <div className="showreel-card-overlay">
@@ -167,6 +180,8 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
               className="showreel-card"
               role="button"
               tabIndex={0}
+              data-cursor="expand"
+              data-cursor-label="VIEW PHOTO"
               onClick={() => handleCardClick(card)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -182,6 +197,9 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
                   alt={card.coupleTitle}
                   className="showreel-img"
                   loading="lazy"
+                  decoding="async"
+                  width={360}
+                  height={480}
                   onError={handleImageError}
                 />
                 <div className="showreel-card-overlay" aria-hidden="true">
@@ -208,6 +226,8 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
               role="button"
               tabIndex={0}
               aria-hidden="true"
+              data-cursor="expand"
+              data-cursor-label="VIEW PHOTO"
               onClick={() => handleCardClick(card)}
             >
               <div className="showreel-media">
@@ -216,6 +236,9 @@ export const PhotoShowreel: React.FC<PhotoShowreelProps> = ({
                   alt=""
                   className="showreel-img"
                   loading="lazy"
+                  decoding="async"
+                  width={360}
+                  height={480}
                   onError={handleImageError}
                 />
                 <div className="showreel-card-overlay">

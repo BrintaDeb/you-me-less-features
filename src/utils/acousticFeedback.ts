@@ -175,6 +175,76 @@ class AcousticFeedbackManager {
       // Ignore audio synthesis errors
     }
   }
+
+  /**
+   * Acoustic Wax-Crackle & Brass Stamp Thump
+   * Synthesizes the authentic contact sound of a heavy brass seal pressing into warm burgundy wax
+   */
+  public playWaxStampCrackle(): void {
+    if (!this.isEnabled) return;
+    const ctx = this.initCtx();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+
+      // 1. Resonant low brass stamp impact thump (90Hz -> 38Hz)
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(95, now);
+      osc.frequency.exponentialRampToValueAtTime(38, now + 0.14);
+
+      oscGain.gain.setValueAtTime(0.08, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+      osc.connect(oscGain);
+      oscGain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.17);
+
+      // 2. Melting wax sizzle / crackle burst
+      const bufferSize = Math.floor(ctx.sampleRate * 0.08);
+      const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+      }
+
+      const noise = ctx.createBufferSource();
+      noise.buffer = noiseBuffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1600, now);
+      filter.Q.setValueAtTime(2.0, now);
+
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.05, now + 0.01);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+
+      noise.start(now + 0.01);
+      noise.stop(now + 0.09);
+
+      // 3. Delicate sealing chime after 250ms
+      setTimeout(() => {
+        this.playThemeChime();
+      }, 260);
+    } catch {
+      // Gracefully ignore audio synthesis errors
+    }
+  }
+
+  /**
+   * Alias for page flip sound in album proofing
+   */
+  public playAlbumFlip(): void {
+    this.playPaperRustle();
+  }
 }
 
 export const acousticFeedback = new AcousticFeedbackManager();

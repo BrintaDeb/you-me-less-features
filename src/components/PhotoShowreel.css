@@ -24,6 +24,10 @@
   gap: clamp(14px, 1.8vw, 24px);
   pointer-events: auto;
   user-select: none;
+  /* Fluid unhindered vertical scrolling & GPU isolation */
+  touch-action: pan-y;
+  contain: layout style;
+  backface-visibility: hidden;
 }
 
 /* Subtle edge fade mask for luxury editorial finish */
@@ -53,6 +57,9 @@
   overflow: hidden;
   width: 100%;
   display: flex;
+  touch-action: pan-y;
+  contain: layout paint;
+  backface-visibility: hidden;
 }
 
 .showreel-track {
@@ -61,6 +68,9 @@
   gap: clamp(14px, 1.6vw, 24px);
   width: max-content;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  touch-action: pan-y;
 }
 
 /* Row 1: Leftward Infinite Marquee */
@@ -73,9 +83,9 @@
   animation: showreelScrollRight 48s linear infinite;
 }
 
-/* Pause smoothly when hovering either track or showreel container */
+/* Smooth continuous motion: marquee stays buttery and never gets stuck on hover */
 .photo-showreel-container:hover .showreel-track {
-  animation-play-state: paused;
+  animation-play-state: running;
 }
 
 @keyframes showreelScrollLeft {
@@ -105,36 +115,40 @@
   background: #FFFFFF;
   border: 4px solid #FFFFFF;
   box-shadow:
-    0 20px 48px -8px rgba(0, 0, 0, 0.28),
-    0 8px 20px -4px rgba(0, 0, 0, 0.14);
+    0 16px 36px -8px rgba(0, 0, 0, 0.22),
+    0 6px 14px -4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  contain: paint;
+  backface-visibility: hidden;
+  transform: translateZ(0);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.35s ease,
               border-color 0.35s ease;
   position: relative;
+  touch-action: pan-y;
 }
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .showreel-card {
   box-shadow:
-    0 22px 46px -8px rgba(45, 30, 22, 0.22),
-    0 8px 18px -4px rgba(45, 30, 22, 0.12);
+    0 18px 36px -8px rgba(45, 30, 22, 0.18),
+    0 6px 14px -4px rgba(45, 30, 22, 0.08);
   border-color: #FFFFFF;
 }
 
 :is([data-theme="burgundy"], [data-theme="dark"]) .showreel-card {
   box-shadow:
-    0 24px 52px -8px rgba(0, 0, 0, 0.6),
-    0 10px 22px -4px rgba(0, 0, 0, 0.38);
+    0 20px 42px -8px rgba(0, 0, 0, 0.52),
+    0 8px 18px -4px rgba(0, 0, 0, 0.3);
   border: 3.5px solid rgba(255, 255, 255, 0.92);
 }
 
 /* Card Hover Elevation & Glow */
 .showreel-card:hover {
-  transform: scale(1.04) translateY(-6px);
+  transform: scale(1.025) translateY(-5px);
   z-index: 15;
   box-shadow:
-    0 30px 60px -12px rgba(0, 0, 0, 0.42),
-    0 14px 28px -4px rgba(0, 0, 0, 0.26),
+    0 24px 48px -10px rgba(0, 0, 0, 0.35),
+    0 10px 20px -4px rgba(0, 0, 0, 0.2),
     0 0 0 2px var(--gm-wine, #8A1212);
 }
 
@@ -157,6 +171,9 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  content-visibility: auto;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

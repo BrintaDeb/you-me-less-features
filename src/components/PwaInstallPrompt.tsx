@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, X, Sparkles, Share, PlusSquare, Check, Laptop } from 'lucide-react';
+import { Download, X, Sparkles, Share, PlusSquare, Check, Laptop, ChevronDown, ChevronUp } from 'lucide-react';
 import { triggerHaptic } from '../utils/haptics';
 import './PwaInstallPrompt.css';
 
@@ -33,6 +33,7 @@ export const PwaInstallPrompt: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   // Always show on mobile, ipad or desktop until and unless already downloaded
   const [isVisible, setIsVisible] = useState(() => !isAlreadyInstalled());
+  const [isMinimized, setIsMinimized] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [isStoryboardActive, setIsStoryboardActive] = useState(false);
 
@@ -132,46 +133,103 @@ export const PwaInstallPrompt: React.FC = () => {
 
   return (
     <>
-      <aside
-        className={`pwa-prompt-banner${isStoryboardActive ? ' pwa-suppressed-storyboard' : ''}`}
-        aria-label="Install Web Application"
-      >
-        <div className="pwa-prompt-content">
-          <div className="pwa-prompt-icon">
-            <Sparkles size={20} className="gold-icon" />
-          </div>
-          <div className="pwa-prompt-text">
-            <div className="pwa-prompt-title-row">
-              <span className="pwa-prompt-heart" aria-hidden="true">🧡</span>
-              <strong className="pwa-prompt-title">
-                Install <em>YOU &amp; ME</em> App
-              </strong>
-            </div>
-            <span className="pwa-prompt-subtitle">
-              Browse galleries &amp; proof heirloom a...
-            </span>
-          </div>
-        </div>
-
-        <div className="pwa-prompt-actions">
+      {isMinimized ? (
+        <aside
+          className={`pwa-corner-chip${isStoryboardActive ? ' pwa-suppressed-storyboard' : ''}`}
+          aria-label="Install App Shortcut"
+        >
           <button
             type="button"
-            className="pwa-install-btn"
-            onClick={handleInstallClick}
+            className="pwa-chip-btn"
+            onClick={() => {
+              triggerHaptic('light');
+              setIsMinimized(false);
+            }}
+            title="Expand App Install Drawer"
           >
-            <Download size={14} className="pwa-download-icon" /> INSTALL APP
+            <div className="pwa-chip-icon">
+              <Sparkles size={14} className="gold-icon" />
+            </div>
+            <span className="pwa-chip-label">
+              <span className="chip-heart" aria-hidden="true">🧡</span> Install App
+            </span>
+            <ChevronUp size={14} className="pwa-chip-arrow" />
           </button>
-
           <button
             type="button"
-            className="pwa-dismiss-btn"
+            className="pwa-chip-close"
             onClick={handleDismiss}
             aria-label="Dismiss install prompt"
+            title="Dismiss"
           >
-            <X size={16} />
+            <X size={13} />
           </button>
-        </div>
-      </aside>
+        </aside>
+      ) : (
+        <aside
+          className={`pwa-prompt-banner pwa-corner-drawer${isStoryboardActive ? ' pwa-suppressed-storyboard' : ''}`}
+          aria-label="Install Web Application"
+        >
+          <div className="pwa-drawer-top-bar">
+            <div className="pwa-drawer-badge">
+              <Sparkles size={12} className="gold-icon" />
+              <span>OFFICIAL ATELIER APP</span>
+            </div>
+            <div className="pwa-drawer-window-controls">
+              <button
+                type="button"
+                className="pwa-control-btn pwa-minimize-btn"
+                onClick={() => {
+                  triggerHaptic('light');
+                  setIsMinimized(true);
+                }}
+                aria-label="Minimize install banner"
+                title="Minimize to corner chip"
+              >
+                <ChevronDown size={14} />
+              </button>
+              <button
+                type="button"
+                className="pwa-control-btn pwa-dismiss-btn"
+                onClick={handleDismiss}
+                aria-label="Dismiss install prompt"
+                title="Dismiss"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          </div>
+
+          <div className="pwa-prompt-main-row">
+            <div className="pwa-prompt-content">
+              <div className="pwa-prompt-icon">
+                <Sparkles size={18} className="gold-icon" />
+              </div>
+              <div className="pwa-prompt-text">
+                <div className="pwa-prompt-title-row">
+                  <span className="pwa-prompt-heart" aria-hidden="true">🧡</span>
+                  <strong className="pwa-prompt-title">
+                    Install <em>YOU &amp; ME</em> App
+                  </strong>
+                </div>
+                <span className="pwa-prompt-subtitle">
+                  Browse galleries &amp; proof heirloom albums offline
+                </span>
+              </div>
+            </div>
+
+            <div className="pwa-prompt-actions">
+              <button
+                type="button"
+                className="pwa-install-btn"
+                onClick={handleInstallClick}
+              >
+                <Download size={13} className="pwa-download-icon" /> INSTALL APP
+              </button>
+            </div>
+          </div>
+        </aside>
+      )}
 
       {/* Interactive Helper Modal for iOS / iPad or manual browser install */}
       {showInstructions && (

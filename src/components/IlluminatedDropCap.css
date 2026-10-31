@@ -1,0 +1,75 @@
+/* ==========================================================================
+   ILLUMINATED DROP-CAP — Renaissance & Mughal Gold Foil Embellishment
+   ========================================================================== */
+
+.illuminated-dropcap-wrap {
+  float: left;
+  display: inline-block;
+  margin: 0.15rem 1rem 0.25rem 0;
+  line-height: 1;
+  user-select: none;
+}
+
+.illuminated-dropcap-wrap.size-sm {
+  width: 52px;
+  height: 52px;
+  margin-right: 0.75rem;
+}
+
+.illuminated-dropcap-wrap.size-md {
+  width: 68px;
+  height: 68px;
+  margin-right: 0.95rem;
+}
+
+.illuminated-dropcap-wrap.size-lg {
+  width: 84px;
+  height: 84px;
+  margin-right: 1.15rem;
+}
+
+.dropcap-ornament-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.4s ease;
+}
+
+.illuminated-dropcap-wrap:hover .dropcap-ornament-svg {
+  transform: translateY(-2px) scale(1.03);
+  filter: drop-shadow(0 10px 22px rgba(212, 175, 55, 0.35));
+}
+
+/* Animated filigree stroke draw-in */
+.dropcap-inner-frame {
+  stroke-dasharray: 6 3;
+  animation: dropcapFrameRotate 40s linear infinite;
+}
+
+@keyframes dropcapFrameRotate {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 100; }
+}
+
+.dropcap-vine {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: dropcapVineDraw 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+}
+
+@keyframes dropcapVineDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+.dropcap-letter-text {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Light / Champagne Theme Adaptations */
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .dropcap-cartouche {
+  fill: #7A121D;
+}
+

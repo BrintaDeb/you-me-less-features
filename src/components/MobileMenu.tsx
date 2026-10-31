@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { X, Phone, Mail, ArrowRight } from 'lucide-react';
 import { businessInfo } from '../data/businessData';
 import { ThemeToggle } from './ThemeToggle';
-import { smoothScrollTo } from '../hooks/useSmoothScroll';
+import { smoothScrollTo, scrollToTop } from '../hooks/useSmoothScroll';
 import './MobileMenu.css';
 
 interface MobileMenuProps {
@@ -40,7 +40,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onNavig
         smoothScrollTo(hash);
       }, 150);
     } else {
-      smoothScrollTo(0);
+      scrollToTop(true);
     }
   };
 

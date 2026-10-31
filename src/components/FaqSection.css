@@ -35,6 +35,7 @@
   overflow: hidden;
   transition: all var(--transition-fast);
 }
+
 .faq-item.open {
   border-color: rgba(200, 164, 107, 0.4);
   background: rgba(26, 21, 20, 0.85);
@@ -61,6 +62,7 @@
   line-height: 1.35;
   transition: color var(--transition-fast);
 }
+
 .faq-trigger:hover .faq-question,
 .faq-item.open .faq-question {
   color: var(--accent-gold-light);
@@ -78,6 +80,7 @@
   color: var(--text-muted);
   transition: all var(--transition-fast);
 }
+
 .faq-item.open .faq-icon-badge {
   border-color: var(--accent-gold);
   color: var(--accent-gold);
@@ -93,8 +96,15 @@
 }
 
 @keyframes faqSlideDown {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* White / Light Theme Optimizations */
@@ -144,4 +154,3 @@
   color: #FFFFFF;
   background: var(--accent-wine, #8A1212);
 }
-

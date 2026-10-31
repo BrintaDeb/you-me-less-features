@@ -491,7 +491,7 @@
 /* Scene 2 — 3D Camera-Path Space (Selected Stories Multi-Plane Exhibition) */
 .camera-track-section {
   position: relative;
-  height: 480vh; /* Smooth, luxurious scroll distance */
+  height: 240vh; /* Snappy, fluid scroll pacing */
   background-color: var(--bg-primary);
 }
 
@@ -1068,7 +1068,7 @@
 /* Mobile & Small Screen 3D Storyboard Optimizations (≤768px) */
 @media (max-width: 768px) {
   .camera-track-section {
-    height: 320vh; /* Smooth, natural pace for mobile thumb-scroll */
+    height: 175vh; /* Fast, responsive pace for mobile thumb-scroll */
   }
 
   .camera-viewport {

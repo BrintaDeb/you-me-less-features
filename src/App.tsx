@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useLayoutEffect, lazy, Suspense } from 'react';
 import { Navbar } from './components/Navbar';
 import { MobileMenu } from './components/MobileMenu';
 import { Footer } from './components/Footer';
@@ -10,12 +10,14 @@ import { FaqSection } from './components/FaqSection';
 import { EnquirySection } from './components/EnquirySection';
 import { MarqueeRibbon } from './components/MarqueeRibbon';
 import { DeckleBanner } from './components/DeckleBanner';
+import { StudioMetricsSection } from './components/StudioMetricsSection';
 import { couplesData, getStoryBySlug } from './data/couplesData';
 import type { WeddingStory } from './data/couplesData';
 import { audioAtmosphere } from './utils/audioAtmosphere';
 import { HeartCursor } from './components/HeartCursor';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
-import { useSmoothScroll, smoothScrollTo } from './hooks/useSmoothScroll';
+import { StartupLoader } from './components/StartupLoader';
+import { useSmoothScroll, smoothScrollTo, scrollToTop } from './hooks/useSmoothScroll';
 
 // Route code-splitting: isolate heavy dependencies (jszip, rich lounges, modals) to demand
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage').then(m => ({ default: m.PortfolioPage })));
@@ -73,6 +75,31 @@ export function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeFilmStory, setActiveFilmStory] = useState<WeddingStory | null>(null);
 
+  // Startup Loading Page with Rose Petals Shower & Opening Reveal
+  const [showStartupLoader, setShowStartupLoader] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('splash') || urlParams.has('loader')) {
+        return true;
+      }
+      return !sessionStorage.getItem('youandme_startup_seen');
+    }
+    return true;
+  });
+
+  const handleStartupComplete = () => {
+    setShowStartupLoader(false);
+    try {
+      sessionStorage.setItem('youandme_startup_seen', 'true');
+    } catch {}
+  };
+
+  useEffect(() => {
+    const handleReplay = () => setShowStartupLoader(true);
+    window.addEventListener('replay-startup-loader', handleReplay);
+    return () => window.removeEventListener('replay-startup-loader', handleReplay);
+  }, []);
+
   // Smooth momentum scrolling (disabled on functional portals like admin and client-lounge for pure native scroll; auto-paused during modals/drawer)
   useSmoothScroll({
     enabled: currentView !== 'admin' && currentView !== 'client-lounge',
@@ -101,9 +128,9 @@ export function App() {
       if (pathname === '/portfolio') {
         setCurrentView('portfolio');
         setSelectedStory(null);
-      } else if (pathname.startsWith('/portfolio/')) {
-        const slug = pathname.replace('/portfolio/', '');
-        const found = getStoryBySlug(slug);
+      } else if (pathname.startsWith('/portfolio/') || pathname.startsWith('/story/') || pathname.startsWith('/stories/')) {
+        const slug = pathname.replace(/^\/(portfolio|story|stories)\//, '');
+        const found = getStoryBySlug(slug) || couplesData.find(c => c.slug === slug);
         if (found) {
           setSelectedStory(found);
           setCurrentView('story');
@@ -167,6 +194,29 @@ export function App() {
     window.addEventListener('popstate', handleLocationChange);
     return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
+
+  // Set history scrollRestoration to manual so browser back/forward starts strictly from top
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  // Universal Page Scroll Reset: Guarantee EVERY page starts strictly from the top (0, 0)
+  useLayoutEffect(() => {
+    scrollToTop(true);
+    const rafId = requestAnimationFrame(() => {
+      scrollToTop(true);
+    });
+    const timer = setTimeout(() => {
+      scrollToTop(true);
+    }, 40);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timer);
+    };
+  }, [currentView, selectedStory?.id]);
 
   // Update document title dynamically
   useEffect(() => {
@@ -241,7 +291,7 @@ export function App() {
         window.history.pushState(null, '', '/');
       }
     });
-    smoothScrollTo(0);
+    scrollToTop(true);
   };
 
   const handleSelectStory = (story: WeddingStory) => {
@@ -250,7 +300,7 @@ export function App() {
       setCurrentView('story');
       window.history.pushState(null, '', `/portfolio/${story.slug}`);
     });
-    smoothScrollTo(0);
+    scrollToTop(true);
   };
 
   return (
@@ -288,7 +338,7 @@ export function App() {
           <MarqueeRibbon />
 
           {/* Scene 3 — About You & Me */}
-          <AboutSection showTeamSection={false} />
+          <AboutSection showTeamSection={false} showPillarsSection={false} />
 
           {/* Golden Moment Signature: Deckle Edge Torn Paper Banner */}
           <DeckleBanner
@@ -308,6 +358,9 @@ export function App() {
           <WeddingFilmsSection
             onPlayFilm={(story) => setActiveFilmStory(story)}
           />
+
+          {/* Golden Moment Signature: Creative Studio Credibility & Metrics Showcase */}
+          <StudioMetricsSection />
 
           {/* Scene 6 — Trust and FAQ */}
           <FaqSection />
@@ -404,6 +457,11 @@ export function App() {
 
       {/* PWA Install Prompt for Mobile & Desktop */}
       <PwaInstallPrompt />
+
+      {/* Startup Loading Page: Rose Petal Shower & Cinematic Opening Reveal */}
+      {showStartupLoader && (
+        <StartupLoader onComplete={handleStartupComplete} />
+      )}
     </div>
   );
 }

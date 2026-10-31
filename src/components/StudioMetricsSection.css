@@ -1,0 +1,314 @@
+/* ==========================================================================
+   StudioMetricsSection.css — Bespoke Luxury Editorial Atelier Provenance
+   Crafted with custom typography, architectural spacing, and stationery details
+   ========================================================================== */
+
+.provenance-section {
+  position: relative;
+  width: 100%;
+  padding: 5.5rem 1.75rem 4.5rem;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  transition: background-color var(--transition-normal);
+}
+
+.provenance-container {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── 1. Minimalist Editorial Header ──────────────────────────────────────── */
+.provenance-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3.25rem;
+}
+
+.provenance-kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.kicker-line {
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: rgba(138, 18, 18, 0.3);
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .kicker-line {
+  background: rgba(212, 175, 55, 0.35);
+}
+
+.kicker-label {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-wine, #8A1212);
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .kicker-label {
+  color: var(--accent-gold, #D4AF37);
+}
+
+.provenance-title {
+  font-family: var(--font-heading, 'Fraunces', Georgia, serif);
+  font-size: clamp(2rem, 3.5vw, 2.85rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 1rem;
+}
+
+.provenance-title em {
+  font-family: var(--font-editorial-italic, 'Cormorant', serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent-wine, #8A1212);
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .provenance-title em {
+  color: var(--accent-gold, #D4AF37);
+}
+
+.provenance-lede {
+  font-family: var(--font-body);
+  font-size: clamp(0.92rem, 1.1vw, 1rem);
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── 2. The Architectural 5-Pillar Card (Exact Reference Alignment) ──────── */
+.provenance-card-envelope {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.provenance-card {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid rgba(138, 18, 18, 0.12);
+  border-radius: 18px;
+  box-shadow: 
+    0 20px 44px -12px rgba(45, 25, 20, 0.06),
+    0 2px 8px rgba(138, 18, 18, 0.03);
+  padding: 2.75rem 2.25rem;
+  box-sizing: border-box;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .provenance-card {
+  background: #171312;
+  border-color: rgba(212, 175, 55, 0.2);
+  box-shadow: 
+    0 24px 50px -14px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.provenance-card:hover {
+  box-shadow: 
+    0 26px 54px -12px rgba(45, 25, 20, 0.09),
+    0 4px 14px rgba(138, 18, 18, 0.05);
+}
+
+/* Single Column */
+.provenance-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
+}
+
+/* Delicate Archival Roman Index */
+.col-index {
+  display: inline-block;
+  font-family: var(--font-serif, 'Gloock', serif);
+  font-size: 0.68rem;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: rgba(138, 18, 18, 0.38);
+  margin-bottom: 0.35rem;
+  line-height: 1;
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .col-index {
+  color: rgba(212, 175, 55, 0.45);
+}
+
+/* Crimson Editorial Serif Number (Never Cut Off) */
+.col-num-wrap {
+  display: block;
+  width: 100%;
+}
+
+.col-num {
+  display: inline-block;
+  font-family: var(--font-heading, 'Fraunces', Georgia, serif);
+  font-size: clamp(2.35rem, 3.2vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--accent-wine, #8A1212);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .col-num {
+  color: var(--accent-gold, #D4AF37);
+}
+
+.provenance-col:hover .col-num {
+  transform: translateY(-2px);
+}
+
+/* Uppercase Bold Tracked Label */
+.col-label {
+  font-family: var(--font-sans);
+  font-size: clamp(0.72rem, 0.8vw, 0.82rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  line-height: 1.35;
+  margin: 0.75rem 0 0.35rem;
+}
+
+/* Grounding Warm Detail Text */
+.col-detail {
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 0.88vw, 0.88rem);
+  line-height: 1.45;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Vertical Hairline Divider */
+.provenance-divider {
+  width: 1px;
+  flex: 0 0 1px;
+  align-self: stretch;
+  background: rgba(138, 18, 18, 0.14);
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .provenance-divider {
+  background: rgba(212, 175, 55, 0.16);
+}
+
+/* ── 3. Handcrafted Editorial Footnote ───────────────────────────────────── */
+.provenance-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(138, 18, 18, 0.08);
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .provenance-footnote {
+  border-top-color: rgba(255, 255, 255, 0.05);
+}
+
+.footnote-mark {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-wine, #8A1212);
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .footnote-mark {
+  color: var(--accent-gold, #D4AF37);
+}
+
+.footnote-separator {
+  color: rgba(138, 18, 18, 0.25);
+  font-size: 0.75rem;
+}
+
+:is([data-theme="dark"], [data-theme="burgundy"]) .footnote-separator {
+  color: rgba(212, 175, 55, 0.3);
+}
+
+.footnote-text {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+/* Tablets / Medium Viewports */
+@media (max-width: 960px) {
+  .provenance-card {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.5rem;
+    padding: 2.25rem 1.75rem;
+  }
+
+  .provenance-divider {
+    display: none;
+  }
+
+  .provenance-col {
+    padding: 0;
+  }
+
+  .provenance-col:nth-child(9) {
+    grid-column: span 2;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 640px) {
+  .provenance-section {
+    padding: 4rem 1.15rem 3rem;
+  }
+
+  .provenance-header {
+    margin-bottom: 2.25rem;
+  }
+
+  .provenance-card {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    padding: 1.75rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  .provenance-col:nth-child(9) {
+    grid-column: span 1;
+  }
+
+  .col-num {
+    font-size: 2.5rem;
+  }
+
+  .provenance-footnote {
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+  }
+
+  .footnote-separator {
+    display: none;
+  }
+}

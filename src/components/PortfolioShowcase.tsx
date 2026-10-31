@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowRight, Sparkles, Image as ImageIcon, MapPin } from 'lucide-react';
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
-import { handleImageError } from '../utils/imageFallback';
+import { handleImageError, getOptimizedWixImageUrl } from '../utils/imageFallback';
 import { LetterFlipHeading } from './LetterFlipHeading';
 import { PhotoShowreel } from './PhotoShowreel';
 import './PortfolioShowcase.css';
@@ -99,7 +99,7 @@ export const PortfolioShowcase: React.FC<PortfolioShowcaseProps> = ({
                   <span className="corner-pip corner-br" aria-hidden="true" />
 
                   <img
-                    src={story.coverImage}
+                    src={getOptimizedWixImageUrl(story.coverImage, 800, 1000, 82)}
                     alt={story.title}
                     className="portfolio-card-img"
                     loading={idx < 2 ? 'eager' : 'lazy'}

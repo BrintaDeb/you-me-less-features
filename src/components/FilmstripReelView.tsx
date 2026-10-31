@@ -54,9 +54,9 @@ export const FilmstripReelView: React.FC<FilmstripReelViewProps> = ({
     el.addEventListener('scroll', updateScrollState, { passive: true });
     window.addEventListener('resize', updateScrollState);
 
-    // Mousewheel horizontal scroll support
+    // Mousewheel horizontal scroll support (only when holding Shift or trackpad horizontal pan)
     const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      if (e.shiftKey) {
         e.preventDefault();
         el.scrollLeft += e.deltaY * 1.5;
       }

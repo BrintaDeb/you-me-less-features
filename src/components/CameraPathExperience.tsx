@@ -160,21 +160,33 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
 
     const handleMouseMove = (e: MouseEvent) => {
       if (isMobile) return;
+      // Skip expensive coordinate state updates if user is scrolled past CameraPath section
+      if (window.scrollY > (trackRef.current?.offsetHeight || window.innerHeight * 2.5)) return;
       // Normalized mouse coordinates from -1 to 1 for interactive 3D parallax
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = (e.clientY / window.innerHeight) * 2 - 1;
       setMousePos({ x, y });
     };
 
+    let lastIdx = -1;
     const updateLoop = () => {
-      // Silky lerp interpolation for 60fps cinematic fluidity (slightly snappier on mobile thumb scroll)
-      currentProgress += (targetProgress - currentProgress) * (isMobile ? 0.18 : 0.1);
-      setScrollProgress(currentProgress);
+      // Snappy, agile lerp interpolation with settling threshold to prevent infinite idle re-renders
+      const diff = targetProgress - currentProgress;
+      if (Math.abs(diff) > 0.0003) {
+        currentProgress += diff * (isMobile ? 0.35 : 0.26);
+        setScrollProgress(currentProgress);
 
-      // Determine active story index based on progress (0 to total-1)
-      const total = featuredStories.length;
-      const idx = Math.min(total - 1, Math.max(0, Math.round(currentProgress * (total - 1))));
-      setActiveStoryIdx(idx);
+        // Determine active story index based on progress (0 to total-1)
+        const total = featuredStories.length;
+        const idx = Math.min(total - 1, Math.max(0, Math.round(currentProgress * (total - 1))));
+        if (idx !== lastIdx) {
+          lastIdx = idx;
+          setActiveStoryIdx(idx);
+        }
+      } else if (currentProgress !== targetProgress) {
+        currentProgress = targetProgress;
+        setScrollProgress(currentProgress);
+      }
 
       animFrame = requestAnimationFrame(updateLoop);
     };
@@ -197,7 +209,7 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
     const trackHeight = trackRef.current.offsetHeight - window.innerHeight;
     const targetScroll = trackTop + (index / (featuredStories.length - 1)) * trackHeight;
 
-    smoothScrollTo(targetScroll, { duration: 0.95 });
+    smoothScrollTo(targetScroll, { duration: 0.55 });
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {

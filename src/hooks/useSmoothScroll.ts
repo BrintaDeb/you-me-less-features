@@ -13,6 +13,42 @@ export interface SmoothScrollOptions {
 }
 
 /**
+ * Universal instant scroll-to-top utility.
+ * Synchronizes Lenis momentum state, window native scroll, and document root positions
+ * so that any page transition immediately renders from the top (0, 0).
+ */
+export function scrollToTop(immediate = true): void {
+  if (typeof window === 'undefined') return;
+
+  const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
+
+  if (lenis) {
+    lenis.scrollTo(0, {
+      immediate,
+      duration: immediate ? 0 : 0.6,
+      offset: 0,
+    });
+  }
+
+  try {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: immediate ? 'instant' : 'smooth',
+    });
+  } catch {
+    window.scrollTo(0, 0);
+  }
+
+  if (document.documentElement) {
+    document.documentElement.scrollTop = 0;
+  }
+  if (document.body) {
+    document.body.scrollTop = 0;
+  }
+}
+
+/**
  * Universal smooth scrolling utility.
  * Delegates to Lenis when available (desktop fine pointer), or native smooth scroll when on touch devices or reduced motion.
  */
@@ -22,12 +58,18 @@ export function smoothScrollTo(
 ): void {
   if (typeof window === 'undefined') return;
 
+  // Immediate top scroll when target is 0 unless duration is explicitly requested
+  if (target === 0 && options?.duration === undefined) {
+    scrollToTop(options?.immediate ?? true);
+    return;
+  }
+
   const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
 
   if (lenis && !lenis.isStopped) {
     if (typeof target === 'number') {
       lenis.scrollTo(target, {
-        duration: options?.immediate ? 0 : (options?.duration ?? 1.15),
+        duration: options?.immediate ? 0 : (options?.duration ?? 0.6),
         offset: options?.offset ?? 0,
         immediate: options?.immediate,
       });
@@ -40,7 +82,7 @@ export function smoothScrollTo(
         : document.getElementById(target) || document.querySelector(target);
       if (el) {
         lenis.scrollTo(el as HTMLElement, {
-          duration: options?.immediate ? 0 : (options?.duration ?? 1.15),
+          duration: options?.immediate ? 0 : (options?.duration ?? 0.6),
           offset: options?.offset ?? -80,
           immediate: options?.immediate,
         });
@@ -50,7 +92,7 @@ export function smoothScrollTo(
 
     if (target instanceof HTMLElement) {
       lenis.scrollTo(target, {
-        duration: options?.immediate ? 0 : (options?.duration ?? 1.15),
+        duration: options?.immediate ? 0 : (options?.duration ?? 0.6),
         offset: options?.offset ?? -80,
         immediate: options?.immediate,
       });
@@ -103,18 +145,19 @@ export function useSmoothScroll({ enabled = true, isPaused = false }: UseSmoothS
     }
 
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 0.65,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.0,
+      wheelMultiplier: 1.25,
+      touchMultiplier: 1.4,
       syncTouch: false, // Keep native touch momentum on touchscreens
       autoResize: true,
     });
 
     lenisRef.current = lenis;
+    document.documentElement.classList.add('lenis', 'lenis-smooth');
 
     // Attach to global window for external triggers
     (window as unknown as { __lenis: Lenis }).__lenis = lenis;
@@ -148,7 +191,7 @@ export function useSmoothScroll({ enabled = true, isPaused = false }: UseSmoothS
       const targetEl = document.querySelector(href);
       if (targetEl) {
         e.preventDefault();
-        lenis.scrollTo(targetEl as HTMLElement, { offset: -80, duration: 1.15 });
+        lenis.scrollTo(targetEl as HTMLElement, { offset: -80, duration: 0.6 });
       }
     };
 

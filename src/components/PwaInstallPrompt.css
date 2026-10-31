@@ -1,96 +1,142 @@
-/* PWA Install Banner & Universal Modal */
+/* PWA Install Banner, Corner Drawer & Universal Modal */
 
-.pwa-prompt-banner {
+/* ── 1. Corner Drawer Positioning (Unobtrusive & Clean) ────────── */
+.pwa-prompt-banner.pwa-corner-drawer {
   position: fixed;
-  bottom: max(24px, calc(12px + env(safe-area-inset-bottom, 0px)));
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(92vw, 540px);
-  background: linear-gradient(105deg, #1E0B10 0%, #2C1019 40%, #1E0B10 100%);
-  border: 1.5px solid rgba(240, 198, 85, 0.75);
-  border-radius: 9999px;
-  padding: 8px 14px 8px 10px;
+  bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 0px)));
+  right: max(24px, calc(16px + env(safe-area-inset-right, 0px)));
+  left: auto;
+  transform: none;
+  width: min(92vw, 390px);
+  background: linear-gradient(135deg, rgba(30, 11, 16, 0.96) 0%, rgba(44, 16, 25, 0.94) 50%, rgba(26, 9, 14, 0.98) 100%);
+  border: 1.5px solid rgba(240, 198, 85, 0.65);
+  border-radius: 18px;
+  padding: 12px 14px 14px 14px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 10px;
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75),
-              0 0 30px rgba(240, 198, 85, 0.18),
-              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.65),
+              0 0 25px rgba(240, 198, 85, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
   z-index: 9998;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  animation: slideUpPrompt 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  animation: slideUpCornerDrawer 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   overflow: visible;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.35s ease, transform 0.35s ease, box-shadow 0.3s ease;
+}
+
+.pwa-prompt-banner.pwa-corner-drawer:hover {
+  border-color: rgba(240, 198, 85, 0.9);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75),
+              0 0 32px rgba(240, 198, 85, 0.25),
+              inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 /* Suppress PWA banner during 3D Cinematic Storyboard to prevent collision */
 .pwa-prompt-banner.pwa-suppressed-storyboard,
+.pwa-corner-chip.pwa-suppressed-storyboard,
 body:has(.letterbox-active) .pwa-prompt-banner,
-.camera-path-container.letterbox-active ~ .pwa-prompt-banner {
+body:has(.letterbox-active) .pwa-corner-chip,
+.camera-path-container.letterbox-active ~ .pwa-prompt-banner,
+.camera-path-container.letterbox-active ~ .pwa-corner-chip {
   opacity: 0 !important;
   pointer-events: none !important;
-  transform: translate(-50%, 80px) !important;
+  transform: translateY(40px) !important;
 }
 
-/* Decorative outer ring — drawn relative to the icon circle itself */
-.pwa-prompt-icon::before {
-  content: '';
-  position: absolute;
-  inset: -7px;                             /* expands 7px beyond the 44px circle */
-  border-radius: 50%;
-  border: 1px solid rgba(240, 198, 85, 0.4);
-  box-shadow: 0 0 10px rgba(240, 198, 85, 0.15);
-  animation: ringFloat 3.5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes ringFloat {
-  0%, 100% { transform: scale(1);    opacity: 0.55; }
-  50%       { transform: scale(1.08); opacity: 1;    }
-}
-
-@keyframes slideUpPrompt {
+@keyframes slideUpCornerDrawer {
   from {
     opacity: 0;
-    transform: translate(-50%, 30px);
+    transform: translateY(24px) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translateY(0) scale(1);
   }
+}
+
+/* ── 2. Drawer Top Bar & Controls ────────────────────────────── */
+.pwa-drawer-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(240, 198, 85, 0.15);
+}
+
+.pwa-drawer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F8D988;
+}
+
+.pwa-drawer-window-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pwa-control-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+.pwa-control-btn:hover {
+  background: rgba(240, 198, 85, 0.2);
+  border-color: rgba(240, 198, 85, 0.5);
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+/* ── 3. Main Drawer Content Row ──────────────────────────────── */
+.pwa-prompt-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
 }
 
 .pwa-prompt-content {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
   flex: 1;
 }
 
 .pwa-prompt-icon {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #4A1E24, #2A0F14);
-  border: 1.5px solid rgba(240, 198, 85, 0.55);
+  border: 1.2px solid rgba(240, 198, 85, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    inset 0 0 12px rgba(0, 0, 0, 0.5),
-    0 0 0 0 rgba(240, 198, 85, 0);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 12px rgba(240, 198, 85, 0.2);
   position: relative;
-  animation: iconPulseRing 3.5s ease-in-out infinite;
-}
-
-@keyframes iconPulseRing {
-  0%, 100% { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 0 12px rgba(0,0,0,0.5), 0 0 0 0 rgba(240,198,85,0.4); }
-  55%       { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 0 12px rgba(0,0,0,0.5), 0 0 0 6px rgba(240,198,85,0); }
 }
 
 .pwa-prompt-icon .gold-icon {
@@ -108,12 +154,12 @@ body:has(.letterbox-active) .pwa-prompt-banner,
 .pwa-prompt-title-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   min-width: 0;
 }
 
 .pwa-prompt-heart {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   line-height: 1;
   display: inline-block;
   transform: translateY(-1px);
@@ -121,7 +167,7 @@ body:has(.letterbox-active) .pwa-prompt-banner,
 
 .pwa-prompt-title {
   font-family: var(--font-serif, "Cinzel", "Playfair Display", Georgia, serif);
-  font-size: 0.98rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: #FFFFFF;
   white-space: nowrap;
@@ -136,29 +182,29 @@ body:has(.letterbox-active) .pwa-prompt-banner,
 
 .pwa-prompt-subtitle {
   font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.75);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 210px;
+  max-width: 175px;
+  line-height: 1.25;
 }
 
 .pwa-prompt-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
   flex-shrink: 0;
 }
 
 .pwa-install-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 9px 20px;
-  font-size: 0.76rem;
+  gap: 5px;
+  padding: 8px 14px;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   border-radius: 9999px;
   white-space: nowrap;
@@ -166,7 +212,7 @@ body:has(.letterbox-active) .pwa-prompt-banner,
   color: #161005;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -176,33 +222,119 @@ body:has(.letterbox-active) .pwa-prompt-banner,
 
 .pwa-install-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(240, 198, 85, 0.55);
-  filter: brightness(1.05);
+  box-shadow: 0 6px 18px rgba(240, 198, 85, 0.55);
+  filter: brightness(1.06);
 }
 
 .pwa-install-btn:active {
   transform: scale(0.96);
 }
 
-.pwa-dismiss-btn {
+/* ── 4. Collapsed Corner Floating Chip ───────────────────────── */
+.pwa-corner-chip {
+  position: fixed;
+  bottom: max(24px, calc(16px + env(safe-area-inset-bottom, 0px)));
+  right: max(24px, calc(16px + env(safe-area-inset-right, 0px)));
+  left: auto;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(30, 11, 16, 0.94) 0%, rgba(44, 16, 25, 0.92) 100%);
+  border: 1.2px solid rgba(240, 198, 85, 0.65);
+  border-radius: 9999px;
+  padding: 3px 5px 3px 6px;
+  gap: 4px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55),
+              0 0 18px rgba(240, 198, 85, 0.2);
+  z-index: 9998;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: popInCornerChip 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pwa-corner-chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(240, 198, 85, 0.9);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.65),
+              0 0 24px rgba(240, 198, 85, 0.35);
+}
+
+@keyframes popInCornerChip {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pwa-chip-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.65);
+  padding: 5px 8px 5px 4px;
   cursor: pointer;
-  padding: 6px;
+  color: #FFFFFF;
+}
+
+.pwa-chip-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #4A1E24, #2A0F14);
+  border: 1px solid rgba(240, 198, 85, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.pwa-chip-label {
+  font-family: var(--font-serif, "Cinzel", Georgia, serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chip-heart {
+  font-size: 0.8rem;
+}
+
+.pwa-chip-arrow {
+  color: #F8D988;
+  transition: transform 0.2s ease;
+}
+
+.pwa-chip-btn:hover .pwa-chip-arrow {
+  transform: translateY(-1px);
+}
+
+.pwa-chip-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  padding: 4px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
 }
 
-.pwa-dismiss-btn:hover {
+.pwa-chip-close:hover {
   color: #FFFFFF;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-/* Instructions Overlay & Modal (for iOS / iPad / Desktop Manual Install) */
+/* ── 5. Instructions Overlay & Modal (for iOS / iPad / Desktop) ── */
 .pwa-instructions-overlay {
   position: fixed;
   inset: 0;
@@ -239,11 +371,11 @@ body:has(.letterbox-active) .pwa-prompt-banner,
 @keyframes scaleUpModal {
   from {
     opacity: 0;
-    transform: scale(0.92) translateY(12px);
+    transform: scale(0.92);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
 }
 
@@ -252,22 +384,20 @@ body:has(.letterbox-active) .pwa-prompt-banner,
   top: 16px;
   right: 16px;
   background: none;
-  border: 1px solid var(--border-subtle);
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
-  cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .pwa-modal-close-btn:hover {
-  border-color: var(--accent-gold);
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .pwa-modal-header {
@@ -276,36 +406,39 @@ body:has(.letterbox-active) .pwa-prompt-banner,
 }
 
 .pwa-modal-icon-badge {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.15);
-  border: 1px solid var(--accent-gold);
-  color: var(--accent-gold-light);
+  background: radial-gradient(circle, #4A1E24, #2A0F14);
+  border: 1.5px solid var(--accent-gold);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--accent-gold);
   margin: 0 auto 14px;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 .pwa-modal-title {
   font-family: var(--font-serif);
-  font-size: 1.45rem;
-  margin-bottom: 8px;
+  font-size: 1.35rem;
+  font-weight: 600;
   color: var(--text-primary);
+  margin-bottom: 8px;
 }
 
 .pwa-modal-subtitle {
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   color: var(--text-muted);
   line-height: 1.5;
+  margin: 0;
 }
 
 .pwa-instructions-steps {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 26px;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .pwa-step {
@@ -314,23 +447,22 @@ body:has(.letterbox-active) .pwa-prompt-banner,
   gap: 14px;
   padding: 12px 14px;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
 }
 
 .pwa-step-num {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--accent-gold);
-  color: #14100E;
-  font-weight: 700;
-  font-size: 0.8rem;
+  color: #120E0D;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 700;
+  font-size: 0.78rem;
   flex-shrink: 0;
-  margin-top: 2px;
 }
 
 .pwa-step-body {
@@ -341,101 +473,117 @@ body:has(.letterbox-active) .pwa-prompt-banner,
 
 .pwa-step-body strong {
   display: block;
-  font-size: 0.88rem;
-  margin-bottom: 2px;
   color: var(--text-primary);
+  margin-bottom: 4px;
 }
 
 .pwa-step-body p {
+  color: var(--text-muted);
   margin: 0;
-  color: var(--text-secondary);
 }
 
 .inline-icon {
-  display: inline;
-  vertical-align: middle;
+  display: inline-block;
+  vertical-align: -2px;
   color: var(--accent-gold-light);
-  margin: 0 2px;
 }
 
 .pwa-modal-footer {
-  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .pwa-confirm-installed-btn {
-  width: 100%;
-  padding: 12px;
-  font-size: 0.9rem;
-  font-weight: 600;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
-  color: #14100E;
+  padding: 11px 28px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #ECC150 0%, #D19C35 100%);
+  color: #161005;
   border: none;
   cursor: pointer;
-  transition: all 0.25s ease;
 }
 
-.pwa-confirm-installed-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
-}
-
-@media (max-width: 600px) {
-  .pwa-prompt-banner {
-    width: min(95vw, 420px);
-    bottom: 14px;
-    padding: 7px 10px 7px 12px;
-    gap: 8px;
-  }
-  .pwa-prompt-content {
-    gap: 8px;
-  }
-  .pwa-prompt-icon {
-    width: 38px;
-    height: 38px;
-  }
-  .pwa-prompt-title {
-    font-size: 0.88rem;
-  }
-  .pwa-prompt-subtitle {
-    font-size: 0.72rem;
-    max-width: 145px;
-  }
-  .pwa-install-btn {
-    padding: 7px 14px;
-    font-size: 0.7rem;
-    gap: 4px;
-  }
-  .pwa-prompt-icon::before {
-    inset: -6px; /* slightly tighter ring for 38px mobile icon */
-  }
-}
-
-/* White / Light Theme Polish */
-:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-prompt-banner {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1.5px solid rgba(138, 18, 18, 0.2);
+/* ── 6. Light / White / Champagne Theme Polish ────────────────── */
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-prompt-banner.pwa-corner-drawer {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1.5px solid rgba(200, 164, 107, 0.55);
   box-shadow: 0 16px 45px rgba(45, 30, 22, 0.14),
-              0 0 25px rgba(138, 18, 18, 0.08),
+              0 0 25px rgba(200, 164, 107, 0.12),
               inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-prompt-title {
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-drawer-top-bar {
+  border-bottom: 1px solid rgba(200, 164, 107, 0.2);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-drawer-badge {
+  color: #8C6A28;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-control-btn {
+  background: rgba(45, 30, 22, 0.05);
+  border-color: rgba(45, 30, 22, 0.12);
+  color: #54463F;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-control-btn:hover {
+  background: rgba(200, 164, 107, 0.2);
+  border-color: rgba(200, 164, 107, 0.6);
   color: #120E0D;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-prompt-title {
+  color: #1A1215;
 }
 
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-prompt-subtitle {
-  color: #54463F;
+  color: #5C4E52;
 }
 
-:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-prompt-close {
-  color: #54463F;
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-corner-chip {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(200, 164, 107, 0.65);
+  box-shadow: 0 10px 28px rgba(45, 30, 22, 0.12),
+              0 0 18px rgba(200, 164, 107, 0.15);
 }
 
-:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-prompt-close:hover {
-  color: #120E0D;
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-chip-btn {
+  color: #1A1215;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-chip-close {
+  color: #5C4E52;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .pwa-chip-close:hover {
+  color: #1A1215;
+  background: rgba(45, 30, 22, 0.08);
+}
+
+/* ── 7. Responsive Mobile Adaptations ─────────────────────────── */
+@media (max-width: 580px) {
+  .pwa-prompt-banner.pwa-corner-drawer {
+    bottom: max(14px, env(safe-area-inset-bottom, 0px));
+    right: 14px;
+    left: 14px;
+    width: auto;
+    max-width: none;
+    border-radius: 16px;
+    padding: 10px 12px 12px 12px;
+  }
+
+  .pwa-corner-chip {
+    bottom: max(14px, env(safe-area-inset-bottom, 0px));
+    right: 14px;
+    left: auto;
+  }
+
+  .pwa-prompt-subtitle {
+    max-width: 145px;
+  }
 }

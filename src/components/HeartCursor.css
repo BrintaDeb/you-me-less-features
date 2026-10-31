@@ -17,14 +17,14 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
-  height: 280px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   pointer-events: none;
   background: radial-gradient(
     circle,
-    rgba(212, 175, 55, 0.08) 0%,
-    rgba(212, 175, 55, 0.025) 45%,
+    rgba(212, 175, 55, 0.06) 0%,
+    rgba(212, 175, 55, 0.015) 45%,
     transparent 70%
   );
   transform: translate3d(-100px, -100px, 0);
@@ -37,23 +37,23 @@
 :is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .clean-cursor-glow {
   background: radial-gradient(
     circle,
-    rgba(180, 130, 60, 0.07) 0%,
-    rgba(180, 130, 60, 0.02) 45%,
+    rgba(180, 130, 60, 0.04) 0%,
+    rgba(180, 130, 60, 0.01) 45%,
     transparent 70%
   );
   mix-blend-mode: multiply;
 }
 
 .clean-cursor-glow.is-hovered {
-  width: 380px;
-  height: 380px;
-  opacity: 0.9;
+  width: 280px;
+  height: 280px;
+  opacity: 0.6;
 }
 
 .clean-cursor-glow.badge-active {
-  width: 440px;
-  height: 440px;
-  opacity: 1;
+  width: 360px;
+  height: 360px;
+  opacity: 0.85;
 }
 
 /* 1. Trailing Minimalist Glass Ring (Spring Lerp) */
@@ -61,35 +61,35 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  border: 1px solid rgba(200, 164, 107, 0.35);
-  background: rgba(200, 164, 107, 0.02);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(212, 175, 55, 0.02);
   pointer-events: none;
   will-change: transform;
-  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.25s ease,
               background-color 0.25s ease,
               opacity 0.25s ease;
 }
 
-/* Ring expands softly over interactive elements */
+/* Ring expands softly over interactive elements to create a target highlight */
 .clean-cursor-ring.is-hovered {
-  width: 48px;
-  height: 48px;
-  border-color: rgba(200, 164, 107, 0.75);
-  background: rgba(200, 164, 107, 0.08);
-  box-shadow: 0 0 18px rgba(200, 164, 107, 0.25);
+  width: 44px;
+  height: 44px;
+  border-color: rgba(212, 175, 55, 0.75);
+  background: rgba(212, 175, 55, 0.05);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
 }
 
 .clean-cursor-ring.mode-magnetic {
-  width: 54px;
-  height: 54px;
+  width: 50px;
+  height: 50px;
   border-color: rgba(212, 175, 55, 0.85);
-  background: rgba(212, 175, 55, 0.12);
-  box-shadow: 0 0 22px rgba(212, 175, 55, 0.35);
+  background: rgba(212, 175, 55, 0.08);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 /* When a context badge is active, fade out the small standard ring */
@@ -102,13 +102,14 @@
 }
 
 .clean-cursor-ring.is-pressed {
-  width: 28px;
-  height: 28px;
-  border-color: rgba(229, 37, 58, 0.65);
+  width: 24px;
+  height: 24px;
+  border-color: rgba(212, 175, 55, 0.85);
 }
 
 .clean-cursor-ring.is-text-input {
-  opacity: 0;
+  opacity: 0 !important;
+  display: none !important;
 }
 
 /* 1.5 Context-Aware Luxury Badges (Play, Expand, Story, Drag) */
@@ -116,8 +117,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 76px;
-  height: 76px;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 999998;
@@ -147,7 +148,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: rgba(15, 13, 11, 0.78);
+  background: rgba(22, 12, 16, 0.86);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1.2px solid rgba(212, 175, 55, 0.6);
@@ -165,10 +166,10 @@
 
 @keyframes badgePulsate {
   0%, 100% {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 18px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(212, 175, 55, 0.2);
   }
   50% {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 26px rgba(212, 175, 55, 0.38);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 24px rgba(212, 175, 55, 0.35);
   }
 }
 
@@ -225,44 +226,46 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 22px rgba(229, 37, 58, 0.3);
 }
 
-/* Light / Champagne Theme Variations */
-:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cursor-badge-inner {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(180, 130, 60, 0.6);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 18px rgba(180, 130, 60, 0.2);
-}
-
-:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cursor-badge-text {
-  color: #1A1412;
-}
-
-:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cursor-badge-icon.expand-icon {
-  color: #1A1412;
-}
-
-/* 2. Precision Heart Pointer (Locks precisely to coordinate) */
+/* 2. Precision Pointer (Dot + Jewel Micro-Heart) */
 .clean-cursor-heart {
   position: fixed;
   top: 0;
   left: 0;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   will-change: transform, opacity;
-  filter: drop-shadow(0 2px 6px rgba(229, 37, 58, 0.35));
-  transition: opacity 0.22s ease;
+  filter: drop-shadow(0 1px 3px rgba(138, 24, 38, 0.3));
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ultra-Fine Precision Starlight Center Dot */
+.clean-cursor-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: #F8D988;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 6px rgba(248, 217, 136, 0.85);
+  pointer-events: none;
+  z-index: 2;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .clean-heart-svg {
-  width: 100%;
-  height: 100%;
+  width: 12px;
+  height: 12px;
   transform-origin: center center;
-  animation: cleanHeartBreathe 3s ease-in-out infinite;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.25s ease;
+  animation: cleanHeartBreathe 3.4s ease-in-out infinite;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.22s ease;
 }
 
 /* Gentle, organic resting heartbeat */
@@ -271,31 +274,40 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.06);
+    transform: scale(1.05);
   }
 }
 
-/* Heart state on hover */
+/* ── CRITICAL REFINEMENT: Unobtrusive Interactive Hover State ── */
+/* When hovering over clickable text, chips, links, or inputs, the heart
+   softens into a translucent micro-focal point so text underneath is 100% legible! */
+.clean-cursor-heart.is-hovered {
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+}
+
 .clean-cursor-heart.is-hovered .clean-heart-svg {
   animation: none;
-  transform: scale(1.18);
-  filter: drop-shadow(0 0 8px rgba(200, 164, 107, 0.75));
+  transform: scale(0.55);
+  opacity: 0.35;
+}
+
+.clean-cursor-heart.is-hovered .clean-cursor-dot {
+  background: #D4AF37;
+  transform: translate(-50%, -50%) scale(1.2);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.9);
 }
 
 /* Heart state on click */
 .clean-cursor-heart.is-pressed .clean-heart-svg {
-  transform: scale(0.82);
-  filter: drop-shadow(0 0 10px rgba(229, 37, 58, 0.8));
+  transform: scale(0.75);
 }
 
-/* Heart over text input */
-.clean-cursor-heart.is-text-input {
-  opacity: 0.45;
-}
-
-.clean-cursor-heart.is-text-input .clean-heart-svg {
-  animation: none;
-  transform: scale(0.45);
+/* Text Input: Custom cursor completely disappears, leaving native caret unobstructed */
+.clean-cursor-heart.is-text-input,
+.clean-cursor-ring.is-text-input,
+.clean-cursor-glow.is-text-input {
+  opacity: 0 !important;
+  display: none !important;
 }
 
 /* 3. Subtle Click Shockwave Ripple */
@@ -303,26 +315,26 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border: 1px solid rgba(200, 164, 107, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.75);
   pointer-events: none;
-  animation: rippleExpand 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: rippleExpand 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes rippleExpand {
   0% {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     opacity: 0.85;
-    border-color: rgba(200, 164, 107, 0.85);
+    border-color: rgba(212, 175, 55, 0.85);
   }
   100% {
-    width: 56px;
-    height: 56px;
+    width: 44px;
+    height: 44px;
     opacity: 0;
-    border-color: rgba(229, 37, 58, 0.2);
+    border-color: rgba(212, 175, 55, 0.15);
   }
 }
 
@@ -338,8 +350,10 @@
     cursor: none !important;
   }
 
+  /* Always preserve native caret for input & textarea fields */
   .custom-heart-cursor-active input,
-  .custom-heart-cursor-active textarea {
+  .custom-heart-cursor-active textarea,
+  .custom-heart-cursor-active [contenteditable] {
     cursor: text !important;
   }
 }
@@ -349,16 +363,16 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   pointer-events: none;
   z-index: 999996;
-  animation: trailFade 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: trailFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes trailFade {
   0% {
-    opacity: 0.75;
+    opacity: 0.65;
     transform: translate(-50%, -50%) scale(1);
   }
   100% {
@@ -367,11 +381,35 @@
   }
 }
 
-/* Magnetic Element Class */
-.magnetic-btn,
-[data-magnetic] {
-  will-change: transform;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+/* 4. Light / White / Champagne Theme Polish (Crisp, High-Contrast, No Muddy Cast) */
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cursor-badge-inner {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(180, 130, 60, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 0 18px rgba(180, 130, 60, 0.2);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cursor-badge-text {
+  color: #1A1412;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .cursor-badge-icon.expand-icon {
+  color: #1A1412;
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .clean-cursor-dot {
+  background: #9A7228;
+  box-shadow: 0 0 5px rgba(154, 114, 40, 0.6);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .clean-cursor-ring {
+  border-color: rgba(154, 114, 40, 0.35);
+  background: rgba(154, 114, 40, 0.02);
+}
+
+:is([data-theme="white"], [data-theme="light"], [data-theme="champagne"]) .clean-cursor-ring.is-hovered {
+  border-color: rgba(154, 114, 40, 0.75);
+  background: rgba(154, 114, 40, 0.06);
+  box-shadow: 0 0 14px rgba(154, 114, 40, 0.2);
 }
 
 /* Reduced motion accessibility */
@@ -393,10 +431,5 @@
   }
   .cursor-badge-inner {
     animation: none !important;
-  }
-  .magnetic-btn,
-  [data-magnetic] {
-    transform: none !important;
-    transition: none !important;
   }
 }

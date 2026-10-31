@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    AUTHENTIC TORN / RIPPED PAPER EDITORIAL BANNER
    Unified single-surface fine-art torn paper banner.
    Zero seams, 100% continuous blended gradient from top rip to bottom rip.
@@ -10,6 +10,15 @@
   margin: clamp(2.5rem, 5vw, 4.5rem) 0;
   z-index: 10;
   overflow: visible;
+  perspective: 1200px;
+  --fiber-dx: 0px;
+  --fiber-dy: 0px;
+  --body-dx: 0px;
+  --body-dy: 0px;
+  --shadow-dx: 0px;
+  --shadow-dy: 14px;
+  --content-dx: 0px;
+  --content-dy: 0px;
 }
 
 /* ── Absolute Unified Torn Paper SVG ─────────────────────────────────────── */
@@ -21,26 +30,40 @@
   pointer-events: none;
   z-index: 1;
   overflow: visible;
-  /* Organic drop-shadow conforming to the real torn paper contour */
-  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.72)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+  /* Multi-plane organic drop-shadow shifting with cursor perspective */
+  filter: drop-shadow(var(--shadow-dx) var(--shadow-dy) 24px rgba(0, 0, 0, 0.72))
+          drop-shadow(calc(var(--shadow-dx) * 0.4) calc(var(--shadow-dy) * 0.4) 8px rgba(0, 0, 0, 0.45));
+  transition: filter 0.15s ease-out;
 }
 
 .deckle-paper-body {
   shape-rendering: geometricPrecision;
+  transform: translate3d(var(--body-dx), var(--body-dy), 0);
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .deckle-paper-vignette {
   shape-rendering: geometricPrecision;
   mix-blend-mode: soft-light;
+  transform: translate3d(var(--body-dx), var(--body-dy), 0);
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .deckle-paper-fiber {
   mix-blend-mode: screen;
   shape-rendering: geometricPrecision;
+  transform: translate3d(var(--fiber-dx), var(--fiber-dy), 0);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .deckle-paper-tear-line {
   shape-rendering: geometricPrecision;
+  transform: translate3d(var(--fiber-dx), var(--fiber-dy), 0);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 /* ── Fine paper grain overlay ────────────────────────────────────────────── */
@@ -80,6 +103,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transform: translate3d(var(--content-dx), var(--content-dy), 0);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 /* ── Header Title (Optional Variant) ─────────────────────────────────────── */

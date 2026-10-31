@@ -36,3 +36,30 @@ export function getSafeImageUrl(
   return url;
 }
 
+/**
+ * Generates high-performance optimized Wix CDN image URLs.
+ * Scales large 40MP RAW master camera exports down to responsive display dimensions,
+ * reducing decoded memory overhead by 98% and eliminating main-thread decode jank.
+ */
+export function getOptimizedWixImageUrl(
+  url?: string | null,
+  width: number = 600,
+  height: number = 800,
+  quality: number = 80
+): string {
+  if (!url || typeof url !== 'string' || url.trim() === '') {
+    return DEFAULT_FALLBACK_IMAGE;
+  }
+
+  // If already optimized or not a Wix CDN URL, return as-is
+  if (url.includes('/v1/fill/') || url.includes('/v1/crop/')) {
+    return url;
+  }
+  if (!url.includes('static.wixstatic.com/media/')) {
+    return url;
+  }
+
+  // Append Wix on-the-fly dynamic image optimization transform
+  return `${url}/v1/fill/w_${width},h_${height},q_${quality}/file.jpg`;
+}
+

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './DeckleBanner.css';
 import { UNIFIED_TORN_PATHS } from './deckleBannerUnifiedPaths';
 
@@ -20,9 +20,46 @@ export const DeckleBanner: React.FC<DeckleBannerProps> = ({
   variant = 'crimson'
 }) => {
   const isCrimson = variant === 'crimson';
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = bannerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    el.style.setProperty('--fiber-dx', `${x * 10}px`);
+    el.style.setProperty('--fiber-dy', `${y * 6}px`);
+    el.style.setProperty('--body-dx', `${x * 3.5}px`);
+    el.style.setProperty('--body-dy', `${y * 2.5}px`);
+    el.style.setProperty('--shadow-dx', `${-x * 20}px`);
+    el.style.setProperty('--shadow-dy', `${14 + -y * 14}px`);
+    el.style.setProperty('--content-dx', `${x * 14}px`);
+    el.style.setProperty('--content-dy', `${y * 8}px`);
+  };
+
+  const handleMouseLeave = () => {
+    const el = bannerRef.current;
+    if (!el) return;
+    el.style.setProperty('--fiber-dx', '0px');
+    el.style.setProperty('--fiber-dy', '0px');
+    el.style.setProperty('--body-dx', '0px');
+    el.style.setProperty('--body-dy', '0px');
+    el.style.setProperty('--shadow-dx', '0px');
+    el.style.setProperty('--shadow-dy', '14px');
+    el.style.setProperty('--content-dx', '0px');
+    el.style.setProperty('--content-dy', '0px');
+  };
 
   return (
-    <div className={`deckle-banner-wrapper ${variant} ${className}`} aria-hidden={!title && !quote ? undefined : undefined}>
+    <div
+      ref={bannerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`deckle-banner-wrapper ${variant} ${className}`}
+      aria-hidden={!title && !quote ? undefined : undefined}
+    >
       {/* ── UNIFIED TORN PAPER BACKGROUND (100% continuous, zero seams, perfectly blended) ── */}
       <svg
         className="deckle-paper-svg"

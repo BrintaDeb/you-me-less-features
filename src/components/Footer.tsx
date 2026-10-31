@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Phone, Mail } from 'lucide-react';
 import { businessInfo } from '../data/businessData';
-import { smoothScrollTo } from '../hooks/useSmoothScroll';
+import { smoothScrollTo, scrollToTop } from '../hooks/useSmoothScroll';
 import './Footer.css';
 
 interface FooterProps {
@@ -38,7 +38,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           smoothScrollTo(hash);
         }, 120);
       } else {
-        smoothScrollTo(0);
+        scrollToTop(true);
       }
     }
   };
@@ -190,17 +190,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 {businessInfo.affiliatedBy.name}
               </a>
             </p>
-            <p className="footer-attribution">
-              Designed by{' '}
-              <a
-                href={businessInfo.designedBy.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-attribution-link"
-              >
-                {businessInfo.designedBy.name}
-              </a>
-            </p>
           </div>
 
           <div className="footer-bottom-right">
@@ -212,6 +201,26 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <a href="/accessibility-statement" onClick={(e) => handleLinkClick(e, 'accessibility')}>
                 Accessibility Statement
               </a>
+              <span>•</span>
+              <button
+                type="button"
+                className="footer-replay-splash-link"
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('replay-startup-loader'));
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  font: 'inherit',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  opacity: 0.75
+                }}
+                title="Replay Floral Startup Shower"
+              >
+                Replay Rose Shower 🌸
+              </button>
             </div>
           </div>
         </div>
