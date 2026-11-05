@@ -47,10 +47,21 @@
     <meta name="apple-mobile-web-app-title" content="YOU &amp; ME" />
     <link rel="apple-touch-icon" href="/assets/brand/double_heart.png" />
 
-    <!-- Preconnect & Google Fonts -->
+    <!-- Preconnect & Resource Hints for Ultra-Fast Initial Paint -->
+    <link rel="preconnect" href="https://static.wixstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.wixstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Antonio:wght@700&family=Cormorant:ital,wght@1,400;1,600;1,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Gloock&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Preload LCP Hero Photograph -->
+    <link rel="preload" as="image" href="https://static.wixstatic.com/media/62230b_019e6537a70840b5b7ed80f4e77bad72~mv2.jpg/v1/fill/w_1920,h_1080,q_80/file.jpg" fetchpriority="high" />
+
+    <!-- Non-Render-Blocking Google Fonts (Fast FCP & LCP) -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Antonio:wght@700&family=Cormorant:ital,wght@1,400;1,600;1,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Gloock&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Antonio:wght@700&family=Cormorant:ital,wght@1,400;1,600;1,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Gloock&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Antonio:wght@700&family=Cormorant:ital,wght@1,400;1,600;1,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Gloock&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" />
+    </noscript>
 
     <!-- Structured Data: PhotographyBusiness & LocalBusiness (5B) -->
     <script type="application/ld+json">

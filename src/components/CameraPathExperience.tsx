@@ -4,7 +4,7 @@ import { featuredStories } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
 import { businessInfo } from '../data/businessData';
 import { triggerHaptic } from '../utils/haptics';
-import { handleImageError } from '../utils/imageFallback';
+import { handleImageError, getOptimizedWixImageUrl } from '../utils/imageFallback';
 import { smoothScrollTo } from '../hooks/useSmoothScroll';
 import { CursorSparkles } from './CursorSparkles';
 import './CameraPathExperience.css';
@@ -256,16 +256,16 @@ export const CameraPathExperience: React.FC<CameraPathExperienceProps> = ({
               >
                 <div
                   className="hero-slide-ambient"
-                  style={{ backgroundImage: `url(${slide.image})` }}
+                  style={{ backgroundImage: `url(${getOptimizedWixImageUrl(slide.image, 320, 180, 35)})` }}
                   aria-hidden="true"
                 />
                 <img
-                  src={slide.image}
+                  src={getOptimizedWixImageUrl(slide.image, 1920, 1080, 80)}
                   alt={slide.alt}
                   className="hero-slide-img"
-                  loading="eager"
+                  loading={idx === 0 ? 'eager' : 'lazy'}
                   decoding="async"
-                  fetchPriority={idx === 0 ? 'high' : 'auto'}
+                  fetchPriority={idx === 0 ? 'high' : 'low'}
                   onError={handleImageError}
                 />
               </div>

@@ -12,6 +12,11 @@ export const triggerHaptic = (pattern: HapticPattern = 'light'): void => {
     return;
   }
 
+  // Guard against background/timer calls before user interaction (prevents browser console warning)
+  if (typeof navigator.userActivation !== 'undefined' && !navigator.userActivation.hasBeenActive) {
+    return;
+  }
+
   try {
     switch (pattern) {
       case 'light':

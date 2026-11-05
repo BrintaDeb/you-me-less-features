@@ -157,7 +157,7 @@ export const StartupLoader: React.FC<StartupLoaderProps> = ({ onComplete }) => {
 
   // Initialize Particles (3D Rose Petals & Golden Stardust)
   const initParticles = useCallback((width: number, height: number) => {
-    const particleCount = window.innerWidth < 768 ? 28 : 46;
+    const particleCount = window.innerWidth < 768 ? 14 : 22;
     const petals: PetalParticle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -186,7 +186,7 @@ export const StartupLoader: React.FC<StartupLoaderProps> = ({ onComplete }) => {
 
     // Golden ambient sparkle dust
     const sparkles: GoldSparkle[] = [];
-    const sparkleCount = window.innerWidth < 768 ? 26 : 45;
+    const sparkleCount = window.innerWidth < 768 ? 14 : 22;
     for (let j = 0; j < sparkleCount; j++) {
       sparkles.push({
         x: Math.random() * width,
@@ -228,20 +228,20 @@ export const StartupLoader: React.FC<StartupLoaderProps> = ({ onComplete }) => {
       p.burstVy = Math.sin(angle) * force - (3 + Math.random() * 5);
     });
 
-    // Sequence transition into homepage
+    // Sequence rapid transition into homepage
     setTimeout(() => {
       setIsExiting(true);
-    }, 720);
+    }, 220);
 
     setTimeout(() => {
       onComplete();
-    }, 1150);
+    }, 450);
   }, [onComplete, soundEnabled]);
 
-  // Keyboard shortcut listener (Space or Enter to enter immediately)
+  // Keyboard and Tap-to-Enter shortcut listener (Space, Enter, Escape, or any tap)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'Space' || e.code === 'Enter') {
+      if (e.code === 'Space' || e.code === 'Enter' || e.code === 'Escape') {
         e.preventDefault();
         handleOpenHomepage();
       }
@@ -250,11 +250,11 @@ export const StartupLoader: React.FC<StartupLoaderProps> = ({ onComplete }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleOpenHomepage]);
 
-  // Smooth Craft Progress Counter (2.7s luxury cadence with acoustic feedback pips)
+  // Smooth Craft Progress Counter (0.95s snappy luxury cadence)
   useEffect(() => {
     let current = 0;
     const startTime = performance.now();
-    const duration = 2700;
+    const duration = 950;
     let lastPip = 0;
 
     const interval = setInterval(() => {
@@ -266,7 +266,7 @@ export const StartupLoader: React.FC<StartupLoaderProps> = ({ onComplete }) => {
 
       const elapsed = performance.now() - startTime;
       const progressRatio = Math.min(1, elapsed / duration);
-      // EaseOutCubic curve for organic deceleration
+      // EaseOutCubic curve for organic rapid deceleration
       const ease = 1 - Math.pow(1 - progressRatio, 3);
       current = Math.min(100, Math.round(ease * 100));
       setProgress(current);
@@ -282,9 +282,9 @@ export const StartupLoader: React.FC<StartupLoaderProps> = ({ onComplete }) => {
         clearInterval(interval);
         setTimeout(() => {
           handleOpenHomepage();
-        }, 320);
+        }, 120);
       }
-    }, 24);
+    }, 20);
 
     return () => clearInterval(interval);
   }, [handleOpenHomepage]);
@@ -475,6 +475,7 @@ export const StartupLoader: React.FC<StartupLoaderProps> = ({ onComplete }) => {
       role="dialog"
       aria-modal="true"
       aria-label="Welcome to YOU & ME Wedding Photography Atelier"
+      onClick={handleOpenHomepage}
     >
       {/* 1. Dynamic Falling Rose Petals & Golden Stardust Canvas */}
       <canvas ref={canvasRef} className="startup-petals-canvas" />

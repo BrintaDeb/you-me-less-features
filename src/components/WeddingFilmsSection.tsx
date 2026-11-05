@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
-import { handleImageError } from '../utils/imageFallback';
+import { handleImageError, getOptimizedWixImageUrl } from '../utils/imageFallback';
 import './WeddingFilmsSection.css';
 
 interface WeddingFilmsSectionProps {
@@ -559,10 +559,11 @@ export const WeddingFilmsSection: React.FC<WeddingFilmsSectionProps> = ({ onPlay
                   {/* Media Wrapper with Camera-Pan Slide Effect & Feature 1 Micro-Trailer */}
                   <div className="film-media-wrapper">
                     <img
-                      src={film.posterUrl}
+                      src={getOptimizedWixImageUrl(film.posterUrl, 800, 1000, 80)}
                       alt={`${film.title} cinema poster`}
                       className={`film-poster-slide-img ${activeTrailerId === film.id ? 'trailer-active' : ''}`}
-                      loading={idx < 2 ? 'eager' : 'lazy'}
+                      loading={idx === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
                       onError={handleImageError}
                     />
 
@@ -676,7 +677,7 @@ export const WeddingFilmsSection: React.FC<WeddingFilmsSectionProps> = ({ onPlay
                       <div className="film-stills-row">
                         {film.stills.map((stillUrl, sIdx) => (
                           <div key={sIdx} className="film-still-thumb">
-                            <img src={stillUrl} alt="" loading="lazy" onError={handleImageError} />
+                            <img src={getOptimizedWixImageUrl(stillUrl, 320, 240, 75)} alt="" loading="lazy" decoding="async" onError={handleImageError} />
                           </div>
                         ))}
                       </div>

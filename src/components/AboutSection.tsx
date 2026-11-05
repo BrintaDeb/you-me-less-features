@@ -26,7 +26,7 @@ import {
 import type { TeamMember } from '../data/businessData';
 import { AboutLightbox } from './AboutLightbox';
 import { smoothScrollTo } from '../hooks/useSmoothScroll';
-import { handleImageError, DEFAULT_AVATAR } from '../utils/imageFallback';
+import { handleImageError, getOptimizedWixImageUrl, DEFAULT_AVATAR } from '../utils/imageFallback';
 import './AboutSection.css';
 
 const InstagramIcon = ({ size = 16 }: { size?: number }) => (
@@ -248,10 +248,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
               >
                 <img
                   key={currentPhoto.id}
-                  src={currentPhoto.url}
+                  src={getOptimizedWixImageUrl(currentPhoto.url, 900, 1200, 80)}
                   alt={currentPhoto.title}
                   className="dynamic-main-img"
-                  loading="eager"
+                  loading="lazy"
+                  decoding="async"
                   onError={handleImageError}
                 />
 
@@ -335,9 +336,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
               }}
             >
               <img
-                src={secondaryPhoto.url}
+                src={getOptimizedWixImageUrl(secondaryPhoto.url, 480, 640, 75)}
                 alt={secondaryPhoto.title}
                 loading="lazy"
+                decoding="async"
               />
               <div className="secondary-hover-glow" />
               <div className="secondary-tag-chip">
@@ -492,7 +494,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                         <div className="signature-thumbnails-list">
                           {member.signatureWorks.slice(0, 3).map((sig) => (
                             <div key={sig.id} className="signature-mini-chip" title={sig.title}>
-                              <img src={sig.url} alt={sig.title} loading="lazy" />
+                              <img src={getOptimizedWixImageUrl(sig.url, 280, 200, 75)} alt={sig.title} loading="lazy" decoding="async" />
                             </div>
                           ))}
                         </div>
@@ -616,7 +618,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                             tabIndex={0}
                             aria-label={`View ${sig.title} in Lightbox`}
                           >
-                            <img src={sig.url} alt={sig.title} loading="lazy" />
+                            <img src={getOptimizedWixImageUrl(sig.url, 400, 300, 75)} alt={sig.title} loading="lazy" decoding="async" />
                             <div className="modal-sig-overlay">
                               <span className="modal-sig-title">{sig.title}</span>
                               <span className="modal-sig-cat">{sig.category}</span>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { couplesData } from '../data/couplesData';
 import type { WeddingStory } from '../data/couplesData';
-import { handleImageError } from '../utils/imageFallback';
+import { handleImageError, getOptimizedWixImageUrl } from '../utils/imageFallback';
 import './HangingPhotos.css';
 
 interface HangingPhotoItem {
@@ -124,10 +124,11 @@ export const HangingPhotos: React.FC<HangingPhotosProps> = ({
           >
             <div className="hanging-photo-media">
               <img
-                src={item.imageUrl}
+                src={getOptimizedWixImageUrl(item.imageUrl, 420, 560, 80)}
                 alt={item.title}
                 className="hanging-photo-img"
                 loading="lazy"
+                decoding="async"
                 onError={handleImageError}
               />
               <div className="hanging-photo-sheen" aria-hidden="true" />
